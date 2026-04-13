@@ -156,7 +156,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [AdminTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
 
         // ── Pengguna ──────────────────────────────────────────────────────
-        Route::prefix('pengguna')->name('pengguna.')->group(function () {
+        Route::prefix('pengguna')->name('pengguna.')->middleware('super_admin')->group(function () {
 
             // Siswa
             Route::get('siswa/export/excel', [AdminSiswaController::class, 'exportExcel'])->name('siswa.export.excel');

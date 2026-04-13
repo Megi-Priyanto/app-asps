@@ -14,10 +14,20 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        // Admin
-        Admin::factory()->create([
-            'nama' => 'Administrator',
+        // Super Admin
+        Admin::create([
+            'nama' => 'Super Administrator',
+            'username' => 'superadmin',
+            'password' => bcrypt('password'),
+            'role' => 'super_admin',
+        ]);
+
+        // Admin Biasa
+        Admin::create([
+            'nama' => 'Pramu Bakti / TATA USAHA',
             'username' => 'admin',
+            'password' => bcrypt('password'),
+            'role' => 'admin',
         ]);
 
         // Kategori

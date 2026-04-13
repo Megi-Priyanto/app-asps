@@ -686,6 +686,7 @@
         </a>
 
         {{-- Pengguna Dropdown --}}
+        @if(auth('admin')->user()->isSuperAdmin())
         @php
             $penggunaActive = request()->routeIs('admin.pengguna.*');
         @endphp
@@ -717,6 +718,7 @@
                 </a>
             </div>
         </div>
+        @endif
 
         <div class="sidebar-section-label">Pengaturan</div>
 
