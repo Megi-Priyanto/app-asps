@@ -24,9 +24,9 @@ class AkunController extends Controller
         $siswa = Auth::guard('siswa')->user();
 
         $request->validate([
-            'nis'   => 'required|unique:siswas,nis,' . $siswa->id,
-            'nama'  => 'required|string|max:100',
-            'kelas' => 'required|string|max:50',
+            'nis'   => 'required|integer|unique:siswas,nis,' . $siswa->id,
+            'nama'  => 'required|string|max:50',
+            'kelas' => 'required|string|max:20',
         ]);
 
         $siswa->update([
@@ -44,7 +44,7 @@ class AkunController extends Controller
     {
         $request->validate([
             'password_lama' => 'required',
-            'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::min(8)],
+            'password' => ['required', 'confirmed', \Illuminate\Validation\Rules\Password::min(8)->max(10)],
         ]);
 
         /** @var \App\Models\Siswa $siswa */

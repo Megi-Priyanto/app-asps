@@ -11,7 +11,8 @@ class Aspirasi extends Model
 
    protected $fillable = [
       'laporan_id',
-      'admin_id',
+      'responder_id',
+      'responder_type',
       'status',
       'feedback',
       'alasan',
@@ -22,8 +23,13 @@ class Aspirasi extends Model
       return $this->belongsTo(LaporanPengaduan::class, 'laporan_id');
    }
 
+   public function responder()
+   {
+      return $this->morphTo();
+   }
+
    public function admin()
    {
-      return $this->belongsTo(Admin::class);
+      return $this->responder();
    }
 }

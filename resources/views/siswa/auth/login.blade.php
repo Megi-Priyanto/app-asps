@@ -78,7 +78,7 @@
         </div>
 
         <button type="submit" class="auth-submit btn-primary-blue">
-            <i class="bi bi-box-arrow-in-right"></i> Masuk sebagai Siswa
+            <i class="bi bi-box-arrow-in-right"></i> Loginsebagai Siswa
         </button>
     </form>
 </div>
@@ -125,7 +125,7 @@
         </div>
 
         <button type="submit" class="auth-submit btn-primary-blue">
-            <i class="bi bi-box-arrow-in-right"></i> Masuk sebagai Guru
+            <i class="bi bi-box-arrow-in-right"></i> Login sebagai Guru
         </button>
     </form>
 </div>
@@ -172,7 +172,7 @@
         </div>
 
         <button type="submit" class="auth-submit btn-primary-blue">
-            <i class="bi bi-box-arrow-in-right"></i> Masuk sebagai Pegawai
+            <i class="bi bi-box-arrow-in-right"></i> Login sebagai Pegawai
         </button>
     </form>
 </div>

@@ -15,7 +15,7 @@ class Admin extends Authenticatable
       'nama',
       'username',
       'password',
-      'role',
+      'kategori_id',
    ];
 
    protected function nama(): Attribute
@@ -32,11 +32,16 @@ class Admin extends Authenticatable
 
    public function aspirasis()
    {
-      return $this->hasMany(Aspirasi::class);
+      return $this->morphMany(Aspirasi::class, 'responder');
    }
 
    public function isSuperAdmin()
    {
-       return $this->role === 'super_admin';
+       return false;
+   }
+
+   public function kategori()
+   {
+       return $this->belongsTo(Kategori::class);
    }
 }

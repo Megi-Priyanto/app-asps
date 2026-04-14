@@ -24,16 +24,24 @@ use App\Http\Controllers\Guru\LaporanController as GuruLaporanController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\AkunController as AdminAkunController;
-use App\Http\Controllers\Admin\KategoriController;
-use App\Http\Controllers\Admin\LaporanAspirasiController;
-use App\Http\Controllers\Admin\SiswaController as AdminSiswaController;
-use App\Http\Controllers\Admin\PegawaiController as AdminPegawaiController;
-use App\Http\Controllers\Admin\GuruController as AdminGuruController;
-use App\Http\Controllers\Admin\SiswaImportController;
-use App\Http\Controllers\Admin\PegawaiImportController;
-use App\Http\Controllers\Admin\GuruImportController;
+use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
+use App\Http\Controllers\Admin\LaporanAspirasiController as AdminLaporanController;
+
+use App\Http\Controllers\SuperAdmin\AuthController as SuperAuthController;
+use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboardController;
+use App\Http\Controllers\SuperAdmin\AkunController as SuperAkunController;
+use App\Http\Controllers\SuperAdmin\KategoriController as SuperKategoriController;
+use App\Http\Controllers\SuperAdmin\LaporanAspirasiController as SuperLaporanController;
+use App\Http\Controllers\SuperAdmin\TanggapanController as SuperTanggapanController;
+use App\Http\Controllers\SuperAdmin\SiswaController as SuperSiswaController;
+use App\Http\Controllers\SuperAdmin\PegawaiController as SuperPegawaiController;
+use App\Http\Controllers\SuperAdmin\GuruController as SuperGuruController;
+use App\Http\Controllers\SuperAdmin\SiswaImportController;
+use App\Http\Controllers\SuperAdmin\PegawaiImportController;
+use App\Http\Controllers\SuperAdmin\GuruImportController;
+use App\Http\Controllers\SuperAdmin\AdminController as SuperAdminAdminController;
+
 use App\Http\Controllers\UserTanggapanController;
-use App\Http\Controllers\Admin\AdminTanggapanController;
 
 // ─────────────────────────────────────────────
 // Welcome
@@ -131,7 +139,7 @@ Route::prefix('guru')->name('guru.')->group(function () {
 });
 
 // ─────────────────────────────────────────────
-// Admin
+// Admin & Super Admin Area
 // ─────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
 
@@ -141,43 +149,69 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth:admin')->group(function () {
-        Route::get('/dasboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-        Route::view('/dashboard', 'admin.dashboard')->name('dashboard');
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
+
+        // ── Area Admin Biasa ──
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/akun', [AdminAkunController::class, 'index'])->name('akun');
         Route::post('/akun', [AdminAkunController::class, 'updateProfile']);
         Route::post('/akun/password', [AdminAkunController::class, 'updatePassword'])->name('akun.password');
-        Route::resource('kategori', KategoriController::class);
+        
+        Route::resource('kategori', AdminKategoriController::class);
+        Route::get('laporan/cetak', [AdminLaporanController::class, 'cetakPdf'])->name('laporan.cetak');
+        Route::post('laporan/{laporan}/komentar', [AdminLaporanController::class, 'storeKomentar'])->name('laporan.komentar');
+        Route::resource('laporan', AdminLaporanController::class)->only(['index', 'show', 'update']);
+    });
+});
 
-        Route::get('laporan/cetak', [LaporanAspirasiController::class, 'cetakPdf'])->name('laporan.cetak');
-        Route::post('laporan/{laporan}/komentar', [LaporanAspirasiController::class, 'storeKomentar'])->name('laporan.komentar');
-        Route::resource('laporan', LaporanAspirasiController::class)->only(['index', 'show', 'update']);
-        Route::resource('tanggapan-pengguna', AdminTanggapanController::class)->only(['index', 'destroy']);
-        Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [AdminTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
+// ── Area Khusus Super Admin ──
+Route::prefix('superadmin')->name('superadmin.')->group(function () {
+    // Auth Super Admin
+    Route::middleware('guest:superadmin')->group(function () {
+        Route::get('/login', [SuperAuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [SuperAuthController::class, 'login']);
+    });
 
-        // ── Pengguna ──────────────────────────────────────────────────────
-        Route::prefix('pengguna')->name('pengguna.')->middleware('super_admin')->group(function () {
+    Route::middleware(['auth:superadmin'])->group(function () {
+        Route::post('/logout', [SuperAuthController::class, 'logout'])->name('logout');
+        
+        Route::get('/dashboard', [SuperDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/akun', [SuperAkunController::class, 'index'])->name('akun');
+    Route::post('/akun', [SuperAkunController::class, 'updateProfile']);
+    Route::post('/akun/password', [SuperAkunController::class, 'updatePassword'])->name('akun.password');
 
-            // Siswa
-            Route::get('siswa/export/excel', [AdminSiswaController::class, 'exportExcel'])->name('siswa.export.excel');
-            Route::get('siswa/export/pdf', [AdminSiswaController::class, 'exportPdf'])->name('siswa.export.pdf');
-            Route::get('siswa/template', [SiswaImportController::class, 'downloadTemplate'])->name('siswa.template');
-            Route::post('siswa/import',  [SiswaImportController::class, 'import'])->name('siswa.import');
-            Route::resource('siswa', AdminSiswaController::class);
+    // Admin Management
+    Route::resource('admin', SuperAdminAdminController::class);
 
-            // Pegawai
-            Route::get('pegawai/export/excel', [AdminPegawaiController::class, 'exportExcel'])->name('pegawai.export.excel');
-            Route::get('pegawai/export/pdf', [AdminPegawaiController::class, 'exportPdf'])->name('pegawai.export.pdf');
-            Route::get('pegawai/template', [PegawaiImportController::class, 'downloadTemplate'])->name('pegawai.template');
-            Route::post('pegawai/import',  [PegawaiImportController::class, 'import'])->name('pegawai.import');
-            Route::resource('pegawai', AdminPegawaiController::class);
+    Route::resource('kategori', SuperKategoriController::class);
+    Route::get('laporan/cetak', [SuperLaporanController::class, 'cetakPdf'])->name('laporan.cetak');
+    Route::post('laporan/{laporan}/komentar', [SuperLaporanController::class, 'storeKomentar'])->name('laporan.komentar');
+    Route::resource('laporan', SuperLaporanController::class)->only(['index', 'show', 'update']);
+    Route::resource('tanggapan-pengguna', SuperTanggapanController::class)->only(['index', 'destroy', 'toggleStatus']);
+    Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [SuperTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
 
-            // Guru
-            Route::get('guru/export/excel', [AdminGuruController::class, 'exportExcel'])->name('guru.export.excel');
-            Route::get('guru/export/pdf', [AdminGuruController::class, 'exportPdf'])->name('guru.export.pdf');
-            Route::get('guru/template', [GuruImportController::class, 'downloadTemplate'])->name('guru.template');
-            Route::post('guru/import',  [GuruImportController::class, 'import'])->name('guru.import');
-            Route::resource('guru', AdminGuruController::class);
+    // ── Pengguna (Siswa, Pegawai, Guru) ──
+    Route::prefix('pengguna')->name('pengguna.')->group(function () {
+        // Siswa
+        Route::get('siswa/export/excel', [SuperSiswaController::class, 'exportExcel'])->name('siswa.export.excel');
+        Route::get('siswa/export/pdf', [SuperSiswaController::class, 'exportPdf'])->name('siswa.export.pdf');
+        Route::get('siswa/template', [SiswaImportController::class, 'downloadTemplate'])->name('siswa.template');
+        Route::post('siswa/import',  [SiswaImportController::class, 'import'])->name('siswa.import');
+        Route::resource('siswa', SuperSiswaController::class);
+
+        // Pegawai
+        Route::get('pegawai/export/excel', [SuperPegawaiController::class, 'exportExcel'])->name('pegawai.export.excel');
+        Route::get('pegawai/export/pdf', [SuperPegawaiController::class, 'exportPdf'])->name('pegawai.export.pdf');
+        Route::get('pegawai/template', [PegawaiImportController::class, 'downloadTemplate'])->name('pegawai.template');
+        Route::post('pegawai/import',  [PegawaiImportController::class, 'import'])->name('pegawai.import');
+        Route::resource('pegawai', SuperPegawaiController::class);
+
+        // Guru
+        Route::get('guru/export/excel', [SuperGuruController::class, 'exportExcel'])->name('guru.export.excel');
+        Route::get('guru/export/pdf', [SuperGuruController::class, 'exportPdf'])->name('guru.export.pdf');
+        Route::get('guru/template', [GuruImportController::class, 'downloadTemplate'])->name('guru.template');
+        Route::post('guru/import',  [GuruImportController::class, 'import'])->name('guru.import');
+        Route::resource('guru', SuperGuruController::class);
         });
     });
 });

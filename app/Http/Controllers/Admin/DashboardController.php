@@ -38,7 +38,6 @@ class DashboardController extends Controller
             ->groupBy('kategoris.nama_kategori')
             ->get();
 
-        // Mengirimkan data ke view admin.dashboard
         return view('admin.dashboard', compact(
             'totalSiswa',
             'totalLaporan',

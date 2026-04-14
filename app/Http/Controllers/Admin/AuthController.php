@@ -27,7 +27,7 @@ class AuthController extends Controller
 
             return redirect()
                 ->route('admin.dashboard')
-                ->with('success', 'Berhasil login sebagai admin');
+                ->with('success', 'Berhasil login sebagai Admin');
         }
 
         return back()

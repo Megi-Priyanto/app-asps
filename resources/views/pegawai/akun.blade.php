@@ -113,7 +113,7 @@
                         <label class="form-label">Nama Lengkap</label>
                         <input type="text" name="nama"
                                class="form-control @error('nama') is-invalid @enderror"
-                               value="{{ old('nama', $pegawai->nama) }}" required>
+                               value="{{ old('nama', $pegawai->nama) }}" required maxlength="50">
                         @error('nama')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -122,7 +122,7 @@
                         <input type="text" name="jabatan"
                                class="form-control @error('jabatan') is-invalid @enderror"
                                value="{{ old('jabatan', $pegawai->jabatan) }}"
-                               placeholder="Contoh: Staff Tata Usaha">
+                               placeholder="Contoh: Staff Tata Usaha" maxlength="50">
                         @error('jabatan')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -161,7 +161,7 @@
                         <label class="form-label">Password Baru</label>
                         <input type="password" name="password"
                                class="form-control @error('password') is-invalid @enderror"
-                               required placeholder="Minimal 8 karakter">
+                               required placeholder="8-10 karakter" maxlength="10">
                         @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -169,7 +169,7 @@
                         <label class="form-label">Konfirmasi Password Baru</label>
                         <input type="password" name="password_confirmation"
                                class="form-control"
-                               required placeholder="Ulangi password baru">
+                               required placeholder="Ulangi password baru" maxlength="10">
                     </div>
 
                     <div class="divider"></div>

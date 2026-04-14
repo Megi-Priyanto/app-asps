@@ -6,14 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\TanggapanAplikasi;
 
 class AkunController extends Controller
 {
     public function index()
     {
-        // Mengambil data admin yang sedang login menggunakan guard 'admin'
         $admin = Auth::guard('admin')->user();
-        
         return view('admin.akun', compact('admin'));
     }
 
@@ -23,8 +22,8 @@ class AkunController extends Controller
 
         // Validasi input profil
         $request->validate([
-            'nama' => 'required|string',
-            'username' => 'required|string|max:50|unique:admins,username,' . $admin->id,
+            'nama' => 'required|string|max:50',
+            'username' => 'required|string|max:20|unique:admins,username,' . $admin->id,
         ]);
 
         // Update data nama dan username
@@ -41,7 +40,7 @@ class AkunController extends Controller
         // Validasi input password
         $request->validate([
             'password_lama' => 'required',
-            'password_baru' => 'required|min:6|confirmed',
+            'password_baru' => 'required|min:6|max:10|confirmed',
         ]);
 
         $admin = Auth::guard('admin')->user();

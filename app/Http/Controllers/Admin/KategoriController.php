@@ -12,13 +12,13 @@ class KategoriController extends Controller
     {
         // Mengambil data kategori terbaru dengan paginasi 10 data per halaman
         $kategori = Kategori::latest()->paginate(10);
-        return view('admin.kategori.index', compact('kategori'));
+        return view('admin.Kategori.index', compact('kategori'));
     }
 
     public function create()
     {
         // Menampilkan form tambah kategori
-        return view('admin.kategori.create');
+        return view('admin.Kategori.create');
     }
 
     public function store(Request $request)
@@ -38,13 +38,13 @@ class KategoriController extends Controller
     public function show(Kategori $kategori)
     {
         // Menampilkan detail (di gambar diarahkan ke halaman edit)
-        return view('admin.kategori.edit', compact('kategori'));
+        return view('admin.Kategori.edit', compact('kategori'));
     }
 
     public function edit(Kategori $kategori)
     {
         // Menampilkan form edit kategori
-        return view('admin.kategori.edit', compact('kategori'));
+        return view('admin.Kategori.edit', compact('kategori'));
     }
 
     public function update(Request $request, Kategori $kategori)
@@ -66,6 +66,7 @@ class KategoriController extends Controller
         // Menghapus data kategori
         $kategori->delete();
 
-        return back()->with('success', 'Kategori berhasil dihapus');
+        return redirect()->route('admin.kategori.index')
+            ->with('success', 'Kategori berhasil dihapus');
     }
 }

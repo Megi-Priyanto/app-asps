@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Admin;
+use App\Models\SuperAdmin;
 use App\Models\Kategori;
 
 class DatabaseSeeder extends Seeder
@@ -15,11 +16,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Super Admin
-        Admin::create([
+        SuperAdmin::create([
             'nama' => 'Super Administrator',
             'username' => 'superadmin',
             'password' => bcrypt('password'),
-            'role' => 'super_admin',
         ]);
 
         // Admin Biasa
@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Pramu Bakti / TATA USAHA',
             'username' => 'admin',
             'password' => bcrypt('password'),
-            'role' => 'admin',
         ]);
 
         // Kategori

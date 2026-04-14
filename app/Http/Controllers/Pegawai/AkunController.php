@@ -22,8 +22,8 @@ class AkunController extends Controller
         $pegawai = Auth::guard('pegawai')->user();
 
         $request->validate([
-            'nama'    => 'required|string|max:100',
-            'jabatan' => 'nullable|string|max:100',
+            'nama'    => 'required|string|max:50',
+            'jabatan' => 'nullable|string|max:50',
         ]);
 
         $pegawai->update([
@@ -43,9 +43,10 @@ class AkunController extends Controller
 
         $request->validate([
             'password_lama'         => 'required|string',
-            'password'              => 'required|string|min:8|confirmed',
+            'password'              => 'required|string|min:8|max:10|confirmed',
         ], [
             'password.min'       => 'Password baru minimal 8 karakter.',
+            'password.max'       => 'Password baru maksimal 10 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
         ]);
 

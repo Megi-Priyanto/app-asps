@@ -112,8 +112,9 @@ class LaporanAspirasiController extends Controller
         Aspirasi::updateOrCreate(
             ['laporan_id' => $laporan->id], // Cari berdasarkan laporan_id
             [
-                'admin_id' => Auth::guard('admin')->id(),
-                'status'   => $request->status,
+                'responder_id'   => Auth::guard('admin')->id(),
+                'responder_type' => 'admin',
+                'status'         => $request->status,
             ]
         );
 

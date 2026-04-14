@@ -142,7 +142,7 @@ class LaporanPengaduanController extends Controller
         $laporan->load(['siswa', 'aspirasi', 'kategori', 'komentar.sender']);
 
         $laporan->komentar()
-            ->where('sender_type', 'admin')
+            ->whereIn('sender_type', ['admin', 'superadmin'])
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
