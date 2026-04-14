@@ -22,8 +22,8 @@ class AkunController extends Controller
         $guru = Auth::guard('guru')->user();
 
         $request->validate([
-            'nama'    => 'required|string|max:100',
-            'jabatan' => 'nullable|string|max:100',
+            'nama'    => 'required|string|max:50',
+            'jabatan' => 'nullable|string|max:50',
         ]);
 
         $guru->update([

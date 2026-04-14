@@ -106,14 +106,14 @@
 
                     <div class="mb-3">
                         <label class="form-label">NIP</label>
-                        <input type="text" class="form-control" value="{{ $guru->nip }}" readonly>
+                        <input type="number" class="form-control" value="{{ $guru->nip }}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Nama Lengkap</label>
                         <input type="text" name="nama"
                                class="form-control @error('nama') is-invalid @enderror"
-                               value="{{ old('nama', $guru->nama) }}" required>
+                               value="{{ old('nama', $guru->nama) }}" required maxlength="50">
                         @error('nama')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -122,7 +122,7 @@
                         <input type="text" name="jabatan"
                                class="form-control @error('jabatan') is-invalid @enderror"
                                value="{{ old('jabatan', $guru->jabatan) }}"
-                               placeholder="Contoh: Guru Matematika">
+                               placeholder="Contoh: Guru Matematika" maxlength="50">
                         @error('jabatan')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 

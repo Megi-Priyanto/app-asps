@@ -106,14 +106,14 @@
 
                     <div class="mb-3">
                         <label class="form-label">NIS</label>
-                        <input type="text" class="form-control" value="{{ $siswa->nis }}" readonly>
+                        <input type="number" class="form-control" value="{{ $siswa->nis }}" readonly>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Nama Lengkap</label>
                         <input type="text" name="nama"
                                class="form-control @error('nama') is-invalid @enderror"
-                               value="{{ old('nama', $siswa->nama) }}" required>
+                               value="{{ old('nama', $siswa->nama) }}" required maxlength="50">
                         @error('nama')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -122,7 +122,7 @@
                         <input type="text" name="kelas"
                                class="form-control @error('kelas') is-invalid @enderror"
                                value="{{ old('kelas', $siswa->kelas) }}"
-                               placeholder="Contoh: XII RPL 1">
+                               placeholder="Contoh: XII RPL 1" maxlength="20">
                         @error('kelas')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -161,7 +161,7 @@
                         <label class="form-label">Password Baru</label>
                         <input type="password" name="password"
                                class="form-control @error('password') is-invalid @enderror"
-                               required placeholder="Minimal 8 karakter">
+                               required placeholder="8-10 karakter" maxlength="10">
                         @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
@@ -169,7 +169,7 @@
                         <label class="form-label">Konfirmasi Password Baru</label>
                         <input type="password" name="password_confirmation"
                                class="form-control"
-                               required placeholder="Ulangi password baru">
+                               required placeholder="Ulangi password baru" maxlength="10">
                     </div>
 
                     <div class="divider"></div>

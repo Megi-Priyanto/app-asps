@@ -17,8 +17,8 @@
             <div class="card-body">
                 <form action="{{ route('admin.akun') }}" method="POST">
                     @csrf
-                    <x-input name="nama" placeholder="Nama" :value="$admin->nama" />
-                    <x-input name="username" placeholder="Username" :value="$admin->username" />
+                    <x-input name="nama" placeholder="Nama" :value="$admin->nama" maxlength="50" />
+                    <x-input name="username" placeholder="Username" :value="$admin->username" maxlength="20" />
                     <button class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Update Profil</button>
                 </form>
             </div>
@@ -30,8 +30,8 @@
                 <form action="{{ route('admin.akun.password') }}" method="POST">
                     @csrf
                     <x-input type="password" name="password_lama" placeholder="Password Lama" />
-                    <x-input type="password" name="password_baru" placeholder="Password Baru" />
-                    <x-input type="password" name="password_baru_confirmation" placeholder="Konfirmasi Password Baru" />
+                    <x-input type="password" name="password_baru" placeholder="Password Baru" maxlength="10" />
+                    <x-input type="password" name="password_baru_confirmation" placeholder="Konfirmasi Password Baru" maxlength="10" />
                     <button class="btn btn-warning"><i class="bi bi-lock me-1"></i>Ganti Password</button>
                 </form>
             </div>

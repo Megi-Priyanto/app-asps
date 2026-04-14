@@ -46,6 +46,11 @@ return [
             'provider' => 'admins',
         ],
 
+        'superadmin' => [
+            'driver' => 'session',
+            'provider' => 'super_admins',
+        ],
+
         'siswa' => [
             'driver' => 'session',
             'provider' => 'siswas',
@@ -88,6 +93,11 @@ return [
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
+        ],
+
+        'super_admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SuperAdmin::class,
         ],
 
         'siswas' => [

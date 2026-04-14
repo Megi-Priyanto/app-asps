@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('gurus', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('nip')->unique();
-            $table->string('jabatan')->nullable();
+            $table->string('nama', 50);
+            $table->bigInteger('nip')->unique();
+            $table->string('jabatan', 50)->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

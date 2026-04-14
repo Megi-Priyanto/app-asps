@@ -653,7 +653,7 @@
         <a href="{{ route('admin.dashboard') }}"
             data-tooltip="Dashboard"
             data-page-title="Dashboard"
-            class="sidebar-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            class="sidebar-item {{ request()->is('admin/dasboard') || request()->is('admin/dashboard') ? 'active' : '' }}">
             <i class="bi bi-grid-1x2-fill"></i>
             <span class="sidebar-item-text">Dashboard</span>
         </a>
@@ -677,48 +677,6 @@
             <span class="sidebar-item-text">Kategori</span>
         </a>
 
-        <a href="{{ route('admin.tanggapan-pengguna.index') }}"
-            data-tooltip="Tanggapan Pengguna"
-            data-page-title="Tanggapan Pengguna"
-            class="sidebar-item {{ request()->routeIs('admin.tanggapan-pengguna.*') ? 'active' : '' }}">
-            <i class="bi bi-chat-left-quote-fill"></i>
-            <span class="sidebar-item-text">Tanggapan Pengguna</span>
-        </a>
-
-        {{-- Pengguna Dropdown --}}
-        @if(auth('admin')->user()->isSuperAdmin())
-        @php
-            $penggunaActive = request()->routeIs('admin.pengguna.*');
-        @endphp
-        <div class="sidebar-dropdown-wrap" id="penggunaWrap">
-            <a href="#" class="sidebar-item {{ $penggunaActive ? 'active' : '' }}"
-                id="penggunaToggle" data-tooltip="Pengguna" onclick="toggleDropdown(event, 'penggunaMenu', 'penggunaArrow')">
-                <i class="bi bi-people-fill"></i>
-                <span class="sidebar-item-text">Pengguna</span>
-                <i class="bi bi-chevron-down ms-auto sidebar-arrow" id="penggunaArrow" style="font-size:12px;transition:transform 0.2s;{{ $penggunaActive ? 'transform:rotate(180deg);' : '' }}"></i>
-            </a>
-            <div id="penggunaMenu" class="sidebar-submenu" style="{{ $penggunaActive ? '' : 'display:none;' }}">
-                <a href="{{ route('admin.pengguna.siswa.index') }}"
-                    data-page-title="Pengguna - Siswa"
-                    class="sidebar-subitem {{ request()->routeIs('admin.pengguna.siswa.*') ? 'active' : '' }}">
-                    <i class="bi bi-mortarboard"></i>
-                    <span>Siswa</span>
-                </a>
-                <a href="{{ route('admin.pengguna.pegawai.index') }}"
-                    data-page-title="Pengguna - Pegawai"
-                    class="sidebar-subitem {{ request()->routeIs('admin.pengguna.pegawai.*') ? 'active' : '' }}">
-                    <i class="bi bi-person-badge"></i>
-                    <span>Pegawai</span>
-                </a>
-                <a href="{{ route('admin.pengguna.guru.index') }}"
-                    data-page-title="Pengguna - Guru"
-                    class="sidebar-subitem {{ request()->routeIs('admin.pengguna.guru.*') ? 'active' : '' }}">
-                    <i class="bi bi-person-video3"></i>
-                    <span>Guru</span>
-                </a>
-            </div>
-        </div>
-        @endif
 
         <div class="sidebar-section-label">Pengaturan</div>
 
@@ -730,6 +688,7 @@
             <span class="sidebar-item-text">Profile Setting</span>
         </a>
     </nav>
+
 
     <!-- Sidebar Footer -->
     <div class="sidebar-footer">
@@ -764,7 +723,6 @@
                 elseif (request()->routeIs('admin.pengguna.siswa.*')) $pageTitle = 'Pengguna - Siswa';
                 elseif (request()->routeIs('admin.pengguna.pegawai.*')) $pageTitle = 'Pengguna - Pegawai';
                 elseif (request()->routeIs('admin.pengguna.guru.*')) $pageTitle = 'Pengguna - Guru';
-                elseif (request()->routeIs('admin.tanggapan-pengguna.*')) $pageTitle = 'Tanggapan Pengguna';
                 elseif (request()->routeIs('admin.akun')) $pageTitle = 'Profile Setting';
             @endphp
             {{ $pageTitle }}

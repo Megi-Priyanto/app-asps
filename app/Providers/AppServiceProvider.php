@@ -17,10 +17,11 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
 
         \Illuminate\Database\Eloquent\Relations\Relation::enforceMorphMap([
-            'admin'   => 'App\Models\Admin',
-            'siswa'   => 'App\Models\Siswa',
-            'pegawai' => 'App\Models\Pegawai',
-            'guru'    => 'App\Models\Guru', // ← tambah ini
+            'admin'      => 'App\Models\Admin',
+            'superadmin' => 'App\Models\SuperAdmin',
+            'siswa'      => 'App\Models\Siswa',
+            'pegawai'    => 'App\Models\Pegawai',
+            'guru'       => 'App\Models\Guru',
         ]);
 
         // Global Notifikasi Siswa
@@ -30,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
                 $unread = \App\Models\KomentarLaporan::whereHas('laporan', function ($q) use ($siswaId) {
                     $q->where('siswa_id', $siswaId);
                 })
-                    ->where('sender_type', 'admin')
+                    ->whereIn('sender_type', ['admin', 'superadmin'])
                     ->where('is_read', false)
                     ->count();
                 $view->with('notifKomentar', $unread);
@@ -48,6 +49,20 @@ class AppServiceProvider extends ServiceProvider
                     ->where('is_read', false)
                     ->count();
                 $view->with('notifAdmin', $laporanBaru + $unreadKomentar);
+            }
+        });
+
+        // Global Notifikasi Super Admin
+        \Illuminate\Support\Facades\View::composer('layouts.superadmin', function ($view) {
+            if (\Illuminate\Support\Facades\Auth::guard('superadmin')->check()) {
+                $laporanBaru = \App\Models\LaporanPengaduan::whereDoesntHave('aspirasi')
+                    ->orWhereHas('aspirasi', function ($q) {
+                        $q->where('status', 'menunggu');
+                    })->count();
+                $unreadKomentar = \App\Models\KomentarLaporan::where('sender_type', 'siswa')
+                    ->where('is_read', false)
+                    ->count();
+                $view->with('notifSuperAdmin', $laporanBaru + $unreadKomentar);
             }
         });
 
