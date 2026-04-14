@@ -6,45 +6,30 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\LaporanPengaduan;
+use App\Models\Guru;
+use App\Models\Pegawai;
+use App\Models\Admin;
+use App\Models\Kategori;
+use App\Models\TanggapanAplikasi;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Mengambil total keseluruhan data
         $totalSiswa = Siswa::count();
-        $totalLaporan = LaporanPengaduan::count();
-
-        // Menghitung laporan dengan status 'proses' melalui relasi 'aspirasi'
-        $laporanProses = LaporanPengaduan::whereHas('aspirasi', function ($q) {
-            $q->where('status', 'proses');
-        })->count();
-
-        // Menghitung laporan dengan status 'selesai' melalui relasi 'aspirasi'
-        $laporanSelesai = LaporanPengaduan::whereHas('aspirasi', function ($q) {
-            $q->where('status', 'selesai');
-        })->count();
-
-        // Mengambil 5 laporan terbaru beserta relasinya
-        $laporanTerbaru = LaporanPengaduan::with(['siswa', 'kategori', 'aspirasi'])
-            ->latest()
-            ->take(5)
-            ->get();
-
-        // Grafik Donat Kategori
-        $kategoriSebaran = \Illuminate\Support\Facades\DB::table('laporan_pengaduans')
-            ->join('kategoris', 'laporan_pengaduans.kategori_id', '=', 'kategoris.id')
-            ->select('kategoris.nama_kategori as kategori', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
-            ->groupBy('kategoris.nama_kategori')
-            ->get();
+        $totalGuru = Guru::count();
+        $totalPegawai = Pegawai::count();
+        $totalAdmin = Admin::count();
+        $totalKategori = Kategori::count();
+        $totalTanggapan = TanggapanAplikasi::count();
 
         return view('superadmin.dashboard', compact(
             'totalSiswa',
-            'totalLaporan',
-            'laporanProses',
-            'laporanSelesai',
-            'laporanTerbaru',
-            'kategoriSebaran'
+            'totalGuru',
+            'totalPegawai',
+            'totalAdmin',
+            'totalKategori',
+            'totalTanggapan'
         ));
     }
 }
