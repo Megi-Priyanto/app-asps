@@ -31,7 +31,6 @@ use App\Http\Controllers\SuperAdmin\AuthController as SuperAuthController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboardController;
 use App\Http\Controllers\SuperAdmin\AkunController as SuperAkunController;
 use App\Http\Controllers\SuperAdmin\KategoriController as SuperKategoriController;
-use App\Http\Controllers\SuperAdmin\LaporanAspirasiController as SuperLaporanController;
 use App\Http\Controllers\SuperAdmin\TanggapanController as SuperTanggapanController;
 use App\Http\Controllers\SuperAdmin\SiswaController as SuperSiswaController;
 use App\Http\Controllers\SuperAdmin\PegawaiController as SuperPegawaiController;
@@ -157,7 +156,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('/akun', [AdminAkunController::class, 'updateProfile']);
         Route::post('/akun/password', [AdminAkunController::class, 'updatePassword'])->name('akun.password');
         
-        Route::resource('kategori', AdminKategoriController::class);
         Route::get('laporan/cetak', [AdminLaporanController::class, 'cetakPdf'])->name('laporan.cetak');
         Route::post('laporan/{laporan}/komentar', [AdminLaporanController::class, 'storeKomentar'])->name('laporan.komentar');
         Route::resource('laporan', AdminLaporanController::class)->only(['index', 'show', 'update']);
@@ -184,9 +182,6 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::resource('admin', SuperAdminAdminController::class);
 
     Route::resource('kategori', SuperKategoriController::class);
-    Route::get('laporan/cetak', [SuperLaporanController::class, 'cetakPdf'])->name('laporan.cetak');
-    Route::post('laporan/{laporan}/komentar', [SuperLaporanController::class, 'storeKomentar'])->name('laporan.komentar');
-    Route::resource('laporan', SuperLaporanController::class)->only(['index', 'show', 'update']);
     Route::resource('tanggapan-pengguna', SuperTanggapanController::class)->only(['index', 'destroy', 'toggleStatus']);
     Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [SuperTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
 

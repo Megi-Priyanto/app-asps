@@ -78,7 +78,7 @@
         </div>
 
         <button type="submit" class="auth-submit btn-primary-blue">
-            <i class="bi bi-box-arrow-in-right"></i> Loginsebagai Siswa
+            <i class="bi bi-box-arrow-in-right"></i> Login sebagai Siswa
         </button>
     </form>
 </div>

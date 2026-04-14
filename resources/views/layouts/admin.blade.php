@@ -366,11 +366,11 @@
     .topbar-title-area { flex: 1; min-width: 0; }
     .topbar-page-label { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 2px; }
     .topbar-page-title {
-        font-size: 17px;
-        font-weight: 800;
+        font-size: 1.15rem;
+        font-weight: 700;
         color: var(--text-primary);
-        letter-spacing: -0.3px;
-        line-height: 1;
+        letter-spacing: -0.2px;
+        line-height: 1.4;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -669,13 +669,6 @@
             @endif
         </a>
 
-        <a href="{{ route('admin.kategori.index') }}"
-            data-tooltip="Kategori"
-            data-page-title="Kategori"
-            class="sidebar-item {{ request()->routeIs('admin.kategori.*') ? 'active' : '' }}">
-            <i class="bi bi-tags-fill"></i>
-            <span class="sidebar-item-text">Kategori</span>
-        </a>
 
 
         <div class="sidebar-section-label">Pengaturan</div>
@@ -719,7 +712,6 @@
             @php
                 $pageTitle = 'Dashboard';
                 if (request()->routeIs('admin.laporan.*')) $pageTitle = 'Laporan & Aspirasi';
-                elseif (request()->routeIs('admin.kategori.*')) $pageTitle = 'Kategori';
                 elseif (request()->routeIs('admin.pengguna.siswa.*')) $pageTitle = 'Pengguna - Siswa';
                 elseif (request()->routeIs('admin.pengguna.pegawai.*')) $pageTitle = 'Pengguna - Pegawai';
                 elseif (request()->routeIs('admin.pengguna.guru.*')) $pageTitle = 'Pengguna - Guru';

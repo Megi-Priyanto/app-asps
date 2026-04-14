@@ -366,11 +366,11 @@
     .topbar-title-area { flex: 1; min-width: 0; }
     .topbar-page-label { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-bottom: 2px; }
     .topbar-page-title {
-        font-size: 17px;
-        font-weight: 800;
+        font-size: 1.15rem;
+        font-weight: 700;
         color: var(--text-primary);
-        letter-spacing: -0.3px;
-        line-height: 1;
+        letter-spacing: -0.2px;
+        line-height: 1.4;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -658,16 +658,6 @@
             <span class="sidebar-item-text">Dashboard</span>
         </a>
 
-        <a href="{{ route('superadmin.laporan.index') }}"
-            data-tooltip="Laporan & Aspirasi"
-            data-page-title="Laporan & Aspirasi"
-            class="sidebar-item {{ request()->routeIs('superadmin.laporan.*') ? 'active' : '' }}">
-            <i class="bi bi-file-earmark-text-fill"></i>
-            <span class="sidebar-item-text">Laporan & Aspirasi</span>
-            @if(isset($notifSuperAdmin) && $notifSuperAdmin > 0)
-                <span class="sidebar-badge">{{ $notifSuperAdmin }}</span>
-            @endif
-        </a>
 
         <a href="{{ route('superadmin.kategori.index') }}"
             data-tooltip="Kategori"
@@ -767,12 +757,6 @@
 
     <!-- Right -->
     <div class="topbar-right">
-        <a href="{{ route('superadmin.laporan.index') }}" class="topbar-icon-btn" title="Notifikasi">
-            <i class="bi bi-bell"></i>
-            @if(isset($notifSuperAdmin) && $notifSuperAdmin > 0)
-                <span class="topbar-notif-badge"></span>
-            @endif
-        </a>
         <div class="topbar-divider"></div>
         @auth('superadmin')
         <a href="{{ route('superadmin.akun') }}" class="topbar-user-pill">
