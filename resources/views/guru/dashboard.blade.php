@@ -155,8 +155,12 @@
         <h2>Halo, {{ Auth::guard('guru')->user()->nama }}</h2>
         <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;·&nbsp; {{ Auth::guard('guru')->user()->jabatan ?? 'Guru' }}</p>
     </div>
-    <div class="welcome-avatar">
-        {{ strtoupper(substr(Auth::guard('guru')->user()->nama, 0, 2)) }}
+    <div class="welcome-avatar" style="overflow:hidden;">
+        @if(Auth::guard('guru')->user()->foto)
+            <img src="{{ asset('storage/' . Auth::guard('guru')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
+        @else
+            {{ strtoupper(substr(Auth::guard('guru')->user()->nama, 0, 2)) }}
+        @endif
     </div>
 </div>
 

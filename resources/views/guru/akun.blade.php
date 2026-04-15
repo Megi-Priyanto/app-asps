@@ -92,17 +92,25 @@
             </div>
             <div class="card-body">
                 <div class="profile-banner">
-                    <div class="profile-avatar">
-                        {{ strtoupper(substr($guru->nama, 0, 2)) }}
+                    <div class="profile-avatar" id="avatarPreviewContainer">
+                        @if($guru->foto)
+                            <img src="{{ asset('storage/' . $guru->foto) }}" alt="Avatar" id="avatarPreview" style="width:100%; height:100%; object-fit:cover; border-radius:16px;">
+                        @else
+                            <span id="initialsFallback">{{ strtoupper(substr($guru->nama, 0, 2)) }}</span>
+                        @endif
                     </div>
                     <div>
                         <div class="profile-name">{{ $guru->nama }}</div>
                         <div class="profile-role">Guru · {{ $guru->jabatan ?? 'Tenaga Pengajar' }}</div>
+                        <label for="foto" class="btn btn-sm" style="background:rgba(255,255,255,0.2); color:white; font-size:11px; padding:4px 10px; margin-top:8px; border:1px solid rgba(255,255,255,0.4);">
+                            <i class="bi bi-camera-fill me-1"></i> Ubah Foto
+                        </label>
                     </div>
                 </div>
 
-                <form action="{{ route('guru.akun.update') }}" method="POST">
+                <form action="{{ route('guru.akun.update') }}" method="POST" enctype="multipart/form-data">
                     @csrf @method('PUT')
+                    <input type="file" name="foto" id="foto" class="d-none" accept="image/*" onchange="previewImage(this)">
 
                     <div class="mb-3">
                         <label class="form-label">NIP</label>
@@ -189,3 +197,34 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function previewImage(input) {
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const container = document.getElementById('avatarPreviewContainer');
+                let img = document.getElementById('avatarPreview');
+                const fallback = document.getElementById('initialsFallback');
+                
+                if (!img) {
+                    img = document.createElement('img');
+                    img.id = 'avatarPreview';
+                    img.style.width = '100%';
+                    img.style.height = '100%';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '16px';
+                    container.appendChild(img);
+                }
+                
+                if (fallback) fallback.classList.add('d-none');
+                img.src = e.target.result;
+                img.classList.remove('d-none');
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+@endpush

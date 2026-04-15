@@ -11,7 +11,7 @@ class Pegawai extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['nama', 'username', 'jabatan', 'password'];
+    protected $fillable = ['nama', 'username', 'jabatan', 'password', 'foto'];
 
     protected $hidden = ['password', 'remember_token'];
 

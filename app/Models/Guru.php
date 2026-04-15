@@ -11,7 +11,7 @@ class Guru extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['nama', 'nip', 'jabatan', 'password'];
+    protected $fillable = ['nama', 'nip', 'jabatan', 'password', 'foto'];
 
     protected $hidden = ['password', 'remember_token'];
 
