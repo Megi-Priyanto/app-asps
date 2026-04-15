@@ -42,6 +42,15 @@ use App\Http\Controllers\SuperAdmin\AdminController as SuperAdminAdminController
 
 use App\Http\Controllers\UserTanggapanController;
 
+// Inventaris
+use App\Http\Controllers\Admin\InventarisController;
+use App\Http\Controllers\Admin\PeminjamanBarangController as AdminPeminjamanBarangController;
+use App\Http\Controllers\Admin\PerbaikanBarangController;
+use App\Http\Controllers\Guru\PeminjamanBarangController as GuruPeminjamanBarangController;
+use App\Http\Controllers\Siswa\PeminjamanBarangController as SiswaPeminjamanBarangController;
+use App\Http\Controllers\Pegawai\PeminjamanBarangController as PegawaiPeminjamanBarangController;
+use App\Http\Controllers\SuperAdmin\LaporanInventarisController;
+
 // ─────────────────────────────────────────────
 // Welcome
 // ─────────────────────────────────────────────
@@ -80,6 +89,11 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
         Route::resource('laporan', LaporanPengaduanController::class)->except(['edit', 'update']);
         Route::get('tanggapan', [UserTanggapanController::class, 'index'])->name('tanggapan.index');
         Route::post('tanggapan', [UserTanggapanController::class, 'store'])->name('tanggapan.store');
+
+        // ── Peminjaman Barang ──
+        Route::get('peminjaman-barang', [SiswaPeminjamanBarangController::class, 'index'])->name('peminjaman-barang.index');
+        Route::get('peminjaman-barang/create', [SiswaPeminjamanBarangController::class, 'create'])->name('peminjaman-barang.create');
+        Route::post('peminjaman-barang', [SiswaPeminjamanBarangController::class, 'store'])->name('peminjaman-barang.store');
     });
 });
 
@@ -107,6 +121,11 @@ Route::prefix('pegawai')->name('pegawai.')->group(function () {
         Route::resource('laporan', PegawaiLaporanController::class)->except(['edit', 'update']);
         Route::get('tanggapan', [UserTanggapanController::class, 'index'])->name('tanggapan.index');
         Route::post('tanggapan', [UserTanggapanController::class, 'store'])->name('tanggapan.store');
+
+        // ── Peminjaman Barang ──
+        Route::get('peminjaman-barang', [PegawaiPeminjamanBarangController::class, 'index'])->name('peminjaman-barang.index');
+        Route::get('peminjaman-barang/create', [PegawaiPeminjamanBarangController::class, 'create'])->name('peminjaman-barang.create');
+        Route::post('peminjaman-barang', [PegawaiPeminjamanBarangController::class, 'store'])->name('peminjaman-barang.store');
     });
 });
 
@@ -134,6 +153,11 @@ Route::prefix('guru')->name('guru.')->group(function () {
         Route::resource('laporan', GuruLaporanController::class)->except(['edit', 'update']);
         Route::get('tanggapan', [UserTanggapanController::class, 'index'])->name('tanggapan.index');
         Route::post('tanggapan', [UserTanggapanController::class, 'store'])->name('tanggapan.store');
+
+        // ── Peminjaman Barang ──
+        Route::get('peminjaman-barang', [GuruPeminjamanBarangController::class, 'index'])->name('peminjaman-barang.index');
+        Route::get('peminjaman-barang/create', [GuruPeminjamanBarangController::class, 'create'])->name('peminjaman-barang.create');
+        Route::post('peminjaman-barang', [GuruPeminjamanBarangController::class, 'store'])->name('peminjaman-barang.store');
     });
 });
 
@@ -159,6 +183,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('laporan/cetak', [AdminLaporanController::class, 'cetakPdf'])->name('laporan.cetak');
         Route::post('laporan/{laporan}/komentar', [AdminLaporanController::class, 'storeKomentar'])->name('laporan.komentar');
         Route::resource('laporan', AdminLaporanController::class)->only(['index', 'show', 'update']);
+
+        // ── Inventaris & Peminjaman Barang ──
+        Route::resource('inventaris', InventarisController::class);
+        Route::get('peminjaman-barang', [AdminPeminjamanBarangController::class, 'index'])->name('peminjaman-barang.index');
+        Route::get('peminjaman-barang/{peminjamanBarang}', [AdminPeminjamanBarangController::class, 'show'])->name('peminjaman-barang.show');
+        Route::post('peminjaman-barang/{peminjamanBarang}/acc', [AdminPeminjamanBarangController::class, 'acc'])->name('peminjaman-barang.acc');
+        Route::post('peminjaman-barang/{peminjamanBarang}/tolak', [AdminPeminjamanBarangController::class, 'tolak'])->name('peminjaman-barang.tolak');
+        Route::post('peminjaman-barang/{peminjamanBarang}/kembalikan', [AdminPeminjamanBarangController::class, 'kembalikan'])->name('peminjaman-barang.kembalikan');
+        Route::get('perbaikan-barang', [PerbaikanBarangController::class, 'index'])->name('perbaikan-barang.index');
+        Route::get('perbaikan-barang/{perbaikanBarang}', [PerbaikanBarangController::class, 'show'])->name('perbaikan-barang.show');
+        Route::patch('perbaikan-barang/{perbaikanBarang}/update-status', [PerbaikanBarangController::class, 'updateStatus'])->name('perbaikan-barang.update-status');
     });
 });
 
@@ -182,6 +217,7 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::resource('admin', SuperAdminAdminController::class);
 
     Route::resource('kategori', SuperKategoriController::class);
+    Route::resource('kategori-barang', App\Http\Controllers\SuperAdmin\KategoriBarangController::class)->except(['create', 'edit', 'show']);
     Route::resource('tanggapan-pengguna', SuperTanggapanController::class)->only(['index', 'destroy', 'toggleStatus']);
     Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [SuperTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
 
@@ -208,5 +244,8 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
         Route::post('guru/import',  [GuruImportController::class, 'import'])->name('guru.import');
         Route::resource('guru', SuperGuruController::class);
         });
+
+        // ── Laporan Inventaris ──
+        Route::get('inventaris', [LaporanInventarisController::class, 'index'])->name('inventaris.index');
     });
 });

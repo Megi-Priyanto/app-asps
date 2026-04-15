@@ -675,7 +675,35 @@
 
 
 
+
+        <div class="sidebar-section-label">Sarpras</div>
+
+        <a href="{{ route('admin.inventaris.index') }}"
+            data-tooltip="Inventaris Barang"
+            data-page-title="Inventaris Barang"
+            class="sidebar-item {{ request()->routeIs('admin.inventaris.*') ? 'active' : '' }}">
+            <i class="bi bi-archive-fill"></i>
+            <span class="sidebar-item-text">Inventaris Barang</span>
+        </a>
+
+        <a href="{{ route('admin.peminjaman-barang.index') }}"
+            data-tooltip="Peminjaman"
+            data-page-title="Peminjaman Barang"
+            class="sidebar-item {{ request()->routeIs('admin.peminjaman-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-box-seam-fill"></i>
+            <span class="sidebar-item-text">Peminjaman Barang</span>
+        </a>
+
+        <a href="{{ route('admin.perbaikan-barang.index') }}"
+            data-tooltip="Perbaikan"
+            data-page-title="Perbaikan Barang"
+            class="sidebar-item {{ request()->routeIs('admin.perbaikan-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-wrench-adjustable-circle-fill"></i>
+            <span class="sidebar-item-text">Perbaikan Barang</span>
+        </a>
+
         <div class="sidebar-section-label">Pengaturan</div>
+
 
         <a href="{{ route('admin.akun') }}"
             data-tooltip="Profile"

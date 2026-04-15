@@ -500,6 +500,11 @@
                     <i class="bi bi-chat-left-text-fill"></i> Tanggapan
                 </a>
             </li>
+            <li class="nav-link-item">
+                <a href="{{ route('siswa.peminjaman-barang.index') }}" class="{{ request()->routeIs('siswa.peminjaman-barang.*') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam-fill"></i> Peminjaman
+                </a>
+            </li>
         </ul>
         @endauth
 
@@ -594,6 +599,9 @@
         </a>
         <a href="{{ route('siswa.tanggapan.index') }}" class="nav-mobile-item">
             <i class="bi bi-chat-left-text-fill"></i> Tanggapan Aplikasi
+        </a>
+        <a href="{{ route('siswa.peminjaman-barang.index') }}" class="nav-mobile-item {{ request()->routeIs('siswa.peminjaman-barang.*') ? 'primary':'' }}">
+            <i class="bi bi-box-seam-fill"></i> Peminjaman Barang
         </a>
         <a href="{{ route('siswa.laporan.create') }}" class="nav-mobile-item primary">
             <i class="bi bi-plus-circle-fill"></i> Buat Laporan

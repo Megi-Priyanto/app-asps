@@ -184,6 +184,11 @@
                     <i class="bi bi-chat-left-text-fill"></i> Tanggapan
                 </a>
             </li>
+            <li class="nav-link-item">
+                <a href="{{ route('guru.peminjaman-barang.index') }}" class="{{ request()->routeIs('guru.peminjaman-barang.*') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam-fill"></i> Peminjaman
+                </a>
+            </li>
         </ul>
 
         <div class="nav-right">
@@ -258,6 +263,9 @@
     </a>
     <a href="{{ route('guru.tanggapan.index') }}" class="nav-mobile-item">
         <i class="bi bi-chat-left-text-fill"></i> Tanggapan Aplikasi
+    </a>
+    <a href="{{ route('guru.peminjaman-barang.index') }}" class="nav-mobile-item {{ request()->routeIs('guru.peminjaman-barang.*') ? 'primary':'' }}">
+        <i class="bi bi-box-seam-fill"></i> Peminjaman Barang
     </a>
     <a href="{{ route('guru.akun') }}" class="nav-mobile-item">
         <i class="bi bi-person-circle"></i> Akun Saya
