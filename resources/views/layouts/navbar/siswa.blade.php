@@ -524,7 +524,11 @@
                 <div class="nav-user-dropdown">
                     <button class="nav-user-trigger" id="navUserTrigger">
                         <div class="nav-user-avatar">
-                            {{ strtoupper(substr(auth('siswa')->user()->nama, 0, 2)) }}
+                            @if(auth('siswa')->user()->foto)
+                                <img src="{{ asset('storage/' . auth('siswa')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:9px;">
+                            @else
+                                {{ strtoupper(substr(auth('siswa')->user()->nama, 0, 2)) }}
+                            @endif
                         </div>
                         <span class="nav-user-name">{{ auth('siswa')->user()->nama }}</span>
                         <i class="bi bi-chevron-down nav-user-chevron"></i>
@@ -569,8 +573,12 @@
     @endguest
     @auth('siswa')
         <div style="padding: 10px 14px 8px; display:flex; align-items:center; gap:10px;">
-            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#2563EB,#60A5FA);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;">
-                {{ strtoupper(substr(auth('siswa')->user()->nama, 0, 2)) }}
+            <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#2563EB,#60A5FA);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:13px;overflow:hidden;">
+                @if(auth('siswa')->user()->foto)
+                    <img src="{{ asset('storage/' . auth('siswa')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
+                @else
+                    {{ strtoupper(substr(auth('siswa')->user()->nama, 0, 2)) }}
+                @endif
             </div>
             <div>
                 <div style="font-size:13px;font-weight:700;color:#0F172A;">{{ auth('siswa')->user()->nama }}</div>

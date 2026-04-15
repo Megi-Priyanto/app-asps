@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use App\Models\TanggapanAplikasi;
 
 class AkunController extends Controller
@@ -24,13 +25,30 @@ class AkunController extends Controller
         $request->validate([
             'nama' => 'required|string|max:50',
             'username' => 'required|string|max:20|unique:admins,username,' . $admin->id,
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Update data nama dan username
-        $admin->update([
+        $data = [
             'nama' => $request->nama,
             'username' => $request->username,
-        ]);
+        ];
+
+        // Handle Upload Foto
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama jika ada
+            if ($admin->foto) {
+                Storage::disk('public')->delete($admin->foto);
+            }
+
+            // Simpan foto baru
+            $file = $request->file('foto');
+            $filename = time() . '_' . $admin->username . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('profiles', $filename, 'public');
+            $data['foto'] = $path;
+        }
+
+        // Update data
+        $admin->update($data);
 
         return back()->with('success', 'Profil berhasil diperbarui');
     }

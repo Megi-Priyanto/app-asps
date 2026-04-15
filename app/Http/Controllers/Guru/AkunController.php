@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AkunController extends Controller
 {
@@ -24,12 +25,26 @@ class AkunController extends Controller
         $request->validate([
             'nama'    => 'required|string|max:50',
             'jabatan' => 'nullable|string|max:50',
+            'foto'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $guru->update([
+        $data = [
             'nama'    => $request->input('nama'),
             'jabatan' => $request->input('jabatan'),
-        ]);
+        ];
+
+        // Handle Upload Foto
+        if ($request->hasFile('foto')) {
+            if ($guru->foto) {
+                Storage::disk('public')->delete($guru->foto);
+            }
+            $file = $request->file('foto');
+            $filename = time() . '_' . $guru->nip . '.' . $file->getClientOriginalExtension();
+            $path = $file->storeAs('profiles', $filename, 'public');
+            $data['foto'] = $path;
+        }
+
+        $guru->update($data);
 
         return redirect()
             ->route('guru.akun')
@@ -53,7 +68,7 @@ class AkunController extends Controller
             return back()->withErrors(['password_lama' => 'Password lama tidak sesuai.']);
         }
 
-        $guru->update(['password' => $request->password]);
+        $guru->update(['password' => Hash::make($request->password)]);
 
         return redirect()
             ->route('guru.akun')

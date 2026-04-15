@@ -637,7 +637,11 @@
     @auth('admin')
     <div class="sidebar-user-block">
         <div class="sidebar-user-avatar">
-            {{ strtoupper(substr(auth('admin')->user()->nama, 0, 2)) }}
+            @if(auth('admin')->user()->foto)
+                <img src="{{ asset('storage/' . auth('admin')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
+            @else
+                {{ strtoupper(substr(auth('admin')->user()->nama, 0, 2)) }}
+            @endif
         </div>
         <div class="sidebar-user-info">
             <div class="sidebar-user-name">{{ auth('admin')->user()->nama }}</div>
@@ -733,7 +737,11 @@
         @auth('admin')
         <a href="{{ route('admin.akun') }}" class="topbar-user-pill">
             <div class="topbar-user-avatar">
-                {{ strtoupper(substr(auth('admin')->user()->nama, 0, 2)) }}
+                @if(auth('admin')->user()->foto)
+                    <img src="{{ asset('storage/' . auth('admin')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border:none;">
+                @else
+                    {{ strtoupper(substr(auth('admin')->user()->nama, 0, 2)) }}
+                @endif
             </div>
             <div>
                 <div class="topbar-user-info-name">{{ auth('admin')->user()->nama }}</div>

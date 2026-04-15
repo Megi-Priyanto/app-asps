@@ -11,7 +11,7 @@ class Siswa extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['nis', 'nama', 'kelas', 'password'];
+    protected $fillable = ['nis', 'nama', 'kelas', 'password', 'foto'];
 
     protected $hidden = ['password', 'remember_token'];
 
