@@ -671,6 +671,22 @@
             <span class="sidebar-item-text">Kategori</span>
         </a>
 
+        <a href="{{ route('superadmin.inventaris.index') }}"
+            data-tooltip="Inventaris Barang"
+            data-page-title="Laporan Inventaris"
+            class="sidebar-item {{ request()->routeIs('superadmin.inventaris.*') ? 'active' : '' }}">
+            <i class="bi bi-archive-fill"></i>
+            <span class="sidebar-item-text">Laporan Inventaris</span>
+        </a>
+
+        <a href="{{ route('superadmin.kategori-barang.index') }}"
+            data-tooltip="Kategori Barang"
+            data-page-title="Kategori Barang"
+            class="sidebar-item {{ request()->routeIs('superadmin.kategori-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-box-seam-fill"></i>
+            <span class="sidebar-item-text">Kategori Barang</span>
+        </a>
+
         <a href="{{ route('superadmin.tanggapan-pengguna.index') }}"
             data-tooltip="Tanggapan Pengguna"
             data-page-title="Tanggapan Pengguna"
