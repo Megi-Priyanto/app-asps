@@ -1,6 +1,6 @@
 @extends('layouts.superadmin')
 
-@section('title', 'Kategori')
+@section('title', 'Kategori Aspirasi')
 
 @section('content')
 
@@ -10,7 +10,7 @@
 
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
-        <span>Daftar Kategori</span>
+        <span>Daftar Kategori Aspirasi</span>
         <a href="{{ route('superadmin.kategori.create') }}" class="btn btn-sm btn-primary">
             <i class="bi bi-plus-lg me-1"></i>Tambah Kategori
         </a>

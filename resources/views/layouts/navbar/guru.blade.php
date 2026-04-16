@@ -163,7 +163,7 @@
                 <i class="bi bi-shield-check"></i>
             </div>
             <div class="nav-brand-text">
-                Apss
+                Asps
                 <span class="nav-brand-sub">Portal Guru</span>
             </div>
         </a>
@@ -180,13 +180,13 @@
                 </a>
             </li>
             <li class="nav-link-item">
-                <a href="{{ route('guru.tanggapan.index') }}" class="{{ request()->routeIs('guru.tanggapan.*') ? 'active' : '' }}">
-                    <i class="bi bi-chat-left-text-fill"></i> Tanggapan
-                </a>
-            </li>
-            <li class="nav-link-item">
                 <a href="{{ route('guru.peminjaman-barang.index') }}" class="{{ request()->routeIs('guru.peminjaman-barang.*') ? 'active' : '' }}">
-                    <i class="bi bi-box-seam-fill"></i> Peminjaman
+                    <i class="bi bi-box-seam-fill"></i> Buat Peminjaman
+                </a>
+            </li> 
+            <li class="nav-link-item">
+                <a href="{{ route('guru.tanggapan.index') }}" class="{{ request()->routeIs('guru.tanggapan.*') ? 'active' : '' }}">
+                    <i class="bi bi-chat-left-text-fill"></i> Buat Tanggapan
                 </a>
             </li>
         </ul>

@@ -128,7 +128,7 @@
         <div class="auth-left-content">
             <a href="{{ route('welcome') }}" class="auth-brand">
                 <div class="auth-brand-icon"><i class="bi bi-shield-check"></i></div>
-                <div class="auth-brand-text">Apss<span class="auth-brand-sub">Sarana Sekolah</span></div>
+                <div class="auth-brand-text">Asps<span class="auth-brand-sub">Sarana Sekolah</span></div>
             </a>
             <div class="auth-left-hero">
                 <div class="auth-left-badge"><i class="bi bi-stars"></i> Platform Pengaduan Digital</div>

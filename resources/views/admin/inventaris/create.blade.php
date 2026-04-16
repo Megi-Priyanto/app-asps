@@ -4,16 +4,6 @@
 
 @section('content')
 
-<div class="d-flex align-items-center gap-3 mb-4">
-    <a href="{{ route('admin.inventaris.index') }}" class="btn btn-sm" style="background:#F1F5F9;border:1px solid #E8EDF5;color:#64748B;border-radius:10px;">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
-    <div>
-        <h5 class="mb-0 fw-bold">Tambah Barang Inventaris</h5>
-        <div style="font-size:12px;color:#94A3B8;">Daftarkan barang baru ke sistem inventaris</div>
-    </div>
-</div>
-
 <div class="card" style="max-width:780px;">
     <div class="card-header">Form Data Barang</div>
     <div class="card-body p-4">
@@ -29,7 +19,7 @@
             <div class="row g-3">
                 {{-- Kode Barang --}}
                 <div class="col-md-4">
-                    <label class="form-label">Kode Barang <span class="text-danger">*</span></label>
+                    <label class="form-label">Kode Barang <span class="text-danger"></span></label>
                     <input type="text" name="kode_barang" class="form-control @error('kode_barang') is-invalid @enderror"
                         value="{{ old('kode_barang') }}" placeholder="Contoh: LCD-001">
                     @error('kode_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -37,7 +27,7 @@
 
                 {{-- Nama Barang --}}
                 <div class="col-md-8">
-                    <label class="form-label">Nama Barang <span class="text-danger">*</span></label>
+                    <label class="form-label">Nama Barang <span class="text-danger"></span></label>
                     <input type="text" name="nama_barang" class="form-control @error('nama_barang') is-invalid @enderror"
                         value="{{ old('nama_barang') }}" placeholder="Contoh: LCD Proyektor Epson">
                     @error('nama_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -45,7 +35,7 @@
 
                 {{-- Kategori --}}
                 <div class="col-md-6">
-                    <label class="form-label">Kategori <span class="text-danger">*</span></label>
+                    <label class="form-label">Kategori <span class="text-danger"></span></label>
                     <select name="kategori_barang_id" class="form-select @error('kategori_barang_id') is-invalid @enderror">
                         <option value="">-- Pilih Kategori --</option>
                         @foreach($kategoris as $k)
@@ -66,7 +56,7 @@
 
                 {{-- Stok --}}
                 <div class="col-12">
-                    <label class="form-label fw-semibold">Jumlah Stok Awal <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">Jumlah Stok Awal <span class="text-danger"></span></label>
                     <div class="row g-2">
                         <div class="col-md-4">
                             <label class="form-label text-success" style="font-size:12px;">Kondisi Baik</label>
@@ -95,13 +85,13 @@
 
                 {{-- Satuan + Tanggal --}}
                 <div class="col-md-4">
-                    <label class="form-label">Satuan <span class="text-danger">*</span></label>
+                    <label class="form-label">Satuan <span class="text-danger"></span></label>
                     <input type="text" name="satuan" class="form-control @error('satuan') is-invalid @enderror"
                         value="{{ old('satuan') }}" placeholder="Buah / Unit / Set">
                     @error('satuan')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Tanggal Pengadaan <span class="text-danger">*</span></label>
+                    <label class="form-label">Tanggal Pengadaan <span class="text-danger"></span></label>
                     <input type="date" name="tanggal_pengadaan" class="form-control @error('tanggal_pengadaan') is-invalid @enderror"
                         value="{{ old('tanggal_pengadaan') }}">
                     @error('tanggal_pengadaan')<div class="invalid-feedback">{{ $message }}</div>@enderror

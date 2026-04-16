@@ -4,16 +4,6 @@
 
 @section('content')
 
-<div class="d-flex align-items-center gap-3 mb-4">
-    <a href="{{ route('admin.inventaris.index') }}" class="btn btn-sm" style="background:#F1F5F9;border:1px solid #E8EDF5;color:#64748B;border-radius:10px;">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
-    <div>
-        <h5 class="mb-0 fw-bold">Edit Barang: {{ $inventari->nama_barang }}</h5>
-        <div style="font-size:12px;color:#94A3B8;">Kode: {{ $inventari->kode_barang }}</div>
-    </div>
-</div>
-
 <div class="card" style="max-width:780px;">
     <div class="card-header">Form Edit Data Barang</div>
     <div class="card-body p-4">
@@ -28,21 +18,21 @@
 
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label">Kode Barang <span class="text-danger">*</span></label>
+                    <label class="form-label">Kode Barang <span class="text-danger"></span></label>
                     <input type="text" name="kode_barang" class="form-control @error('kode_barang') is-invalid @enderror"
                         value="{{ old('kode_barang', $inventari->kode_barang) }}">
                     @error('kode_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
                 <div class="col-md-8">
-                    <label class="form-label">Nama Barang <span class="text-danger">*</span></label>
+                    <label class="form-label">Nama Barang <span class="text-danger"></span></label>
                     <input type="text" name="nama_barang" class="form-control @error('nama_barang') is-invalid @enderror"
                         value="{{ old('nama_barang', $inventari->nama_barang) }}">
                     @error('nama_barang')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Kategori <span class="text-danger">*</span></label>
+                    <label class="form-label">Kategori <span class="text-danger"></span></label>
                     <select name="kategori_barang_id" class="form-select">
                         <option value="">-- Pilih Kategori --</option>
                         @foreach($kategoris as $k)
@@ -87,11 +77,11 @@
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Satuan <span class="text-danger">*</span></label>
+                    <label class="form-label">Satuan <span class="text-danger"></span></label>
                     <input type="text" name="satuan" class="form-control" value="{{ old('satuan', $inventari->satuan) }}">
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label">Tanggal Pengadaan <span class="text-danger">*</span></label>
+                    <label class="form-label">Tanggal Pengadaan <span class="text-danger"></span></label>
                     <input type="date" name="tanggal_pengadaan" class="form-control" value="{{ old('tanggal_pengadaan', $inventari->tanggal_pengadaan?->format('Y-m-d')) }}">
                 </div>
                 <div class="col-md-4">

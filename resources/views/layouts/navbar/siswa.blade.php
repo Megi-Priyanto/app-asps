@@ -591,7 +591,7 @@
                 <i class="bi bi-shield-check"></i>
             </div>
             <div class="nav-brand-text">
-                Apss
+                Asps
                 <span class="nav-brand-sub">Sarana Sekolah</span>
             </div>
         </a>
@@ -610,13 +610,13 @@
                 </a>
             </li>
             <li class="nav-link-item">
-                <a href="{{ route('siswa.tanggapan.index') }}" class="{{ request()->routeIs('siswa.tanggapan.*') ? 'active' : '' }}">
-                    <i class="bi bi-chat-left-text-fill"></i> Tanggapan
+                <a href="{{ route('siswa.peminjaman-barang.index') }}" class="{{ request()->routeIs('siswa.peminjaman-barang.*') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam-fill"></i> Buat Peminjaman
                 </a>
             </li>
             <li class="nav-link-item">
-                <a href="{{ route('siswa.peminjaman-barang.index') }}" class="{{ request()->routeIs('siswa.peminjaman-barang.*') ? 'active' : '' }}">
-                    <i class="bi bi-box-seam-fill"></i> Peminjaman
+                <a href="{{ route('siswa.tanggapan.index') }}" class="{{ request()->routeIs('siswa.tanggapan.*') ? 'active' : '' }}">
+                    <i class="bi bi-chat-left-text-fill"></i> Buat Tanggapan
                 </a>
             </li>
         </ul>

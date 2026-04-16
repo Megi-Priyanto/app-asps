@@ -4,16 +4,6 @@
 
 @section('content')
 
-<div class="d-flex align-items-center gap-3 mb-4">
-    <a href="{{ route('admin.peminjaman-barang.index') }}" class="btn btn-sm" style="background:#F1F5F9;border:1px solid #E8EDF5;color:#64748B;border-radius:10px;">
-        <i class="bi bi-arrow-left me-1"></i>Kembali
-    </a>
-    <div>
-        <h5 class="mb-0 fw-bold">Detail Peminjaman</h5>
-        <div style="font-size:12px;color:#94A3B8;">{{ $peminjamanBarang->nomor_transaksi }}</div>
-    </div>
-</div>
-
 @if(session('success'))
     <div class="alert alert-success mb-3"><i class="bi bi-check-circle me-2"></i>{{ session('success') }}</div>
 @endif

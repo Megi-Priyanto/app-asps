@@ -1,11 +1,11 @@
 @extends('layouts.superadmin')
 
-@section('title', 'Tambah Kategori')
+@section('title', 'Tambah Kategori Aspirasi')
 
 @section('content')
 
 <div class="card" style="max-width: 480px;">
-    <div class="card-header">Tambah Kategori Baru</div>
+    <div class="card-header">Tambah Kategori Aspirasi Baru</div>
     <div class="card-body">
         <form method="POST" action="{{ route('superadmin.kategori.store') }}">
             @csrf

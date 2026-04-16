@@ -424,7 +424,32 @@
         font-size: 12px;
     }
     .topbar-user-info-name { font-size: 13px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
-    .topbar-user-info-role { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+    
+    .topbar-user-dropdown { position: relative; }
+    .topbar-user-dropdown-menu {
+        position: absolute; top: calc(100% + 10px); right: 0; min-width: 200px;
+        background: white; border: 1px solid #E8EDF5; border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+        padding: 8px; opacity: 0; visibility: hidden; transform: translateY(-8px);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1050; text-align: left;
+    }
+    .topbar-user-dropdown-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .topbar-dropdown-header { padding: 10px 12px 8px; border-bottom: 1px solid #F1F5F9; margin-bottom: 6px; }
+    .topbar-dropdown-name { font-size: 13px; font-weight: 700; color: #0F172A; }
+    .topbar-dropdown-role { font-size: 11px; color: #94A3B8; font-weight: 500; margin-top: 1px; }
+    .topbar-dropdown-item {
+        display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 9px;
+        font-size: 13.5px; font-weight: 600; color: #374151; text-decoration: none; transition: all 0.15s;
+        background: none; border: none; width: 100%; cursor: pointer; text-align: left; font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .topbar-dropdown-item:hover { background: #F8FAFC; color: #0F172A; text-decoration: none; }
+    .topbar-dropdown-item i { font-size: 15px; width: 18px; text-align: center; color: #94A3B8; flex-shrink: 0; }
+    .topbar-dropdown-item:hover i { color: var(--primary); }
+    .topbar-dropdown-item.danger { color: #DC2626; }
+    .topbar-dropdown-item.danger:hover { background: #FEF2F2; color: #DC2626; }
+    .topbar-dropdown-item.danger i { color: #FCA5A5; }
+    .topbar-dropdown-item.danger:hover i { color: #DC2626; }
+    .topbar-dropdown-divider { height: 1px; background: #F1F5F9; margin: 6px 0; }
 
     /* ===== CONTENT ===== */
     .admin-content {
@@ -624,7 +649,7 @@
                 <i class="bi bi-shield-lock-fill"></i>
             </div>
             <div class="sidebar-brand-text">
-                Apss
+                Asps
                 <span class="sidebar-brand-sub">Super Manager</span>
             </div>
         </div>
@@ -633,22 +658,6 @@
         </button>
     </div>
 
-    <!-- User Info -->
-    @auth('superadmin')
-    <div class="sidebar-user-block">
-        <div class="sidebar-user-avatar">
-            @if(auth('superadmin')->user()->foto)
-                <img src="{{ asset('storage/' . auth('superadmin')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">
-            @else
-                {{ strtoupper(substr(auth('superadmin')->user()->nama, 0, 2)) }}
-            @endif
-        </div>
-        <div class="sidebar-user-info">
-            <div class="sidebar-user-name">{{ auth('superadmin')->user()->nama }}</div>
-            <div class="sidebar-user-role">Super Admin</div>
-        </div>
-    </div>
-    @endauth
 
     <!-- Navigation -->
     <nav class="sidebar-nav">
@@ -664,19 +673,11 @@
 
 
         <a href="{{ route('superadmin.kategori.index') }}"
-            data-tooltip="Kategori"
-            data-page-title="Kategori"
+            data-tooltip="Kategori Aspirasi"
+            data-page-title="Kategori Aspirasi"
             class="sidebar-item {{ request()->routeIs('superadmin.kategori.*') ? 'active' : '' }}">
             <i class="bi bi-tags-fill"></i>
-            <span class="sidebar-item-text">Kategori</span>
-        </a>
-
-        <a href="{{ route('superadmin.inventaris.index') }}"
-            data-tooltip="Inventaris Barang"
-            data-page-title="Laporan Inventaris"
-            class="sidebar-item {{ request()->routeIs('superadmin.inventaris.*') ? 'active' : '' }}">
-            <i class="bi bi-archive-fill"></i>
-            <span class="sidebar-item-text">Laporan Inventaris</span>
+            <span class="sidebar-item-text">Kategori Aspirasi</span>
         </a>
 
         <a href="{{ route('superadmin.kategori-barang.index') }}"
@@ -745,16 +746,7 @@
         </a>
     </nav>
 
-    <!-- Sidebar Footer -->
-    <div class="sidebar-footer">
-        <form action="{{ route('superadmin.logout') }}" method="POST" style="margin:0;">
-            @csrf
-            <button type="submit" class="sidebar-logout-btn" title="Keluar">
-                <i class="bi bi-box-arrow-left"></i>
-                <span class="sidebar-logout-text">Keluar</span>
-            </button>
-        </form>
-    </div>
+
 </aside>
 
 <!-- Mobile Overlay -->
@@ -779,19 +771,38 @@
     <div class="topbar-right">
         <div class="topbar-divider"></div>
         @auth('superadmin')
-        <a href="{{ route('superadmin.akun') }}" class="topbar-user-pill">
-            <div class="topbar-user-avatar">
-                @if(auth('superadmin')->user()->foto)
-                    <img src="{{ asset('storage/' . auth('superadmin')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border:none;">
-                @else
-                    {{ strtoupper(substr(auth('superadmin')->user()->nama, 0, 2)) }}
-                @endif
+        <div class="topbar-user-dropdown" id="superadminUserDropdown">
+            <button class="topbar-user-pill" id="superadminUserTrigger" style="border:1px solid var(--border); outline:none; font-family:'Plus Jakarta Sans',sans-serif;">
+                <div class="topbar-user-avatar">
+                    @if(auth('superadmin')->user()->foto)
+                        <img src="{{ asset('storage/' . auth('superadmin')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover; border:none;">
+                    @else
+                        {{ strtoupper(substr(auth('superadmin')->user()->nama, 0, 2)) }}
+                    @endif
+                </div>
+                <span class="topbar-user-info-name">{{ auth('superadmin')->user()->nama }}</span>
+                <i class="bi bi-chevron-down" style="font-size:12px; color:var(--text-muted); margin-left:2px; transition: 0.2s;"></i>
+            </button>
+            <div class="topbar-user-dropdown-menu" id="superadminUserMenu">
+                <div class="topbar-dropdown-header">
+                    <div class="topbar-dropdown-name">{{ auth('superadmin')->user()->nama }}</div>
+                    <div class="topbar-dropdown-role">Super Admin</div>
+                </div>
+                <a href="{{ route('superadmin.dashboard') }}" class="topbar-dropdown-item">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+                <a href="{{ route('superadmin.akun') }}" class="topbar-dropdown-item">
+                    <i class="bi bi-person-circle"></i> Akun Saya
+                </a>
+                <div class="topbar-dropdown-divider"></div>
+                <form action="{{ route('superadmin.logout') }}" method="POST" style="margin:0;">
+                    @csrf
+                    <button type="submit" class="topbar-dropdown-item danger">
+                        <i class="bi bi-box-arrow-right"></i> Keluar
+                    </button>
+                </form>
             </div>
-            <div>
-                <div class="topbar-user-info-name">{{ auth('superadmin')->user()->nama }}</div>
-                <div class="topbar-user-info-role">Super Admin</div>
-            </div>
-        </a>
+        </div>
         @endauth
     </div>
 </header>
@@ -850,6 +861,24 @@
             menu.style.display = 'none';
             arrow.style.transform = 'rotate(0deg)';
         }
+    }
+
+    // User dropdown Topbar
+    const superadminUserTrigger = document.getElementById('superadminUserTrigger');
+    const superadminUserMenu = document.getElementById('superadminUserMenu');
+    if (superadminUserTrigger && superadminUserMenu) {
+        superadminUserTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = superadminUserMenu.classList.contains('open');
+            superadminUserMenu.classList.toggle('open', !isOpen);
+            superadminUserTrigger.querySelector('.bi-chevron-down').style.transform = isOpen ? '' : 'rotate(180deg)';
+        });
+        document.addEventListener('click', (e) => {
+            if (!superadminUserTrigger.contains(e.target) && !superadminUserMenu.contains(e.target)) {
+                superadminUserMenu.classList.remove('open');
+                superadminUserTrigger.querySelector('.bi-chevron-down').style.transform = '';
+            }
+        });
     }
 </script>
 
