@@ -102,7 +102,7 @@
                     <div class="detail-label">Foto Bukti</div>
                     <div class="detail-val">
                         @if($laporan->foto)
-                            <img src="{{ asset('uploads/laporan/'.$laporan->foto) }}"
+                            <img src="{{ asset('storage/'.$laporan->foto) }}"
                                  alt="Bukti" class="img-fluid rounded"
                                  style="max-height:200px; border:1px solid #E2E8F0;">
                         @else

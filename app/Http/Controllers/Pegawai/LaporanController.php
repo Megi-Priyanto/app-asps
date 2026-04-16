@@ -84,9 +84,7 @@ class LaporanController extends Controller
 
         $fotoName = null;
         if ($request->hasFile('foto')) {
-            $foto     = $request->file('foto');
-            $fotoName = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('uploads/laporan'), $fotoName);
+            $fotoName = $request->file('foto')->store('laporan', 'public');
         }
 
         /** @var \App\Models\Pegawai $user */

@@ -43,21 +43,27 @@ class PeminjamanBarangController extends Controller
             'keperluan'               => 'required|string|max:500',
         ]);
 
-        $barang = Barang::findOrFail($validated['barang_id']);
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($validated) {
+                $barang = Barang::lockForUpdate()->findOrFail($validated['barang_id']);
 
-        if (!$barang->canBeBorrowed($validated['jumlah_pinjam'])) {
-            return back()->withErrors(['jumlah_pinjam' => "Stok tersedia hanya {$barang->stok_tersedia} {$barang->satuan}."])->withInput();
+                if (!$barang->canBeBorrowed($validated['jumlah_pinjam'])) {
+                    throw new \Exception("Stok tersedia hanya {$barang->stok_tersedia} {$barang->satuan}.");
+                }
+
+                $pegawai = Auth::guard('pegawai')->user();
+
+                PeminjamanBarang::create([
+                    ...$validated,
+                    'nomor_transaksi' => PeminjamanBarang::generateNomorTransaksi(),
+                    'borrower_type'   => \App\Models\Pegawai::class,
+                    'borrower_id'     => $pegawai->id,
+                    'status'          => 'Menunggu',
+                ]);
+            });
+        } catch (\Exception $e) {
+            return back()->withErrors(['jumlah_pinjam' => $e->getMessage()])->withInput();
         }
-
-        $pegawai = Auth::guard('pegawai')->user();
-
-        PeminjamanBarang::create([
-            ...$validated,
-            'nomor_transaksi' => PeminjamanBarang::generateNomorTransaksi(),
-            'borrower_type'   => \App\Models\Pegawai::class,
-            'borrower_id'     => $pegawai->id,
-            'status'          => 'Menunggu',
-        ]);
 
         return redirect()->route('pegawai.peminjaman-barang.index')
             ->with('success', 'Permintaan peminjaman berhasil dikirim. Tunggu persetujuan Petugas Sarpras.');

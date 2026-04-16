@@ -235,6 +235,120 @@
         text-decoration: none;
     }
 
+    /* Notif Dropdown */
+    .nav-notif-dropdown {
+        position: relative;
+    }
+    
+    .nav-notif-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: -10px;
+        width: 320px;
+        background: white;
+        border: 1px solid #E8EDF5;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+        padding: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 200;
+        overflow: hidden;
+    }
+    .nav-notif-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .nav-notif-header {
+        padding: 14px 16px;
+        border-bottom: 1px solid #F1F5F9;
+        font-size: 14px;
+        font-weight: 700;
+        color: #0F172A;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-notif-badge {
+        background: #EF4444;
+        color: white;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 6px;
+    }
+    .nav-notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        text-decoration: none;
+        border-bottom: 1px solid #F8FAFC;
+        transition: all 0.2s;
+    }
+    .nav-notif-item:hover {
+        background: #F8FAFC;
+    }
+    .nav-notif-item:last-child {
+        border-bottom: none;
+    }
+    .nav-notif-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #EFF6FF;
+        color: #2563EB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+    .nav-notif-text {
+        font-size: 13.5px;
+        color: #374151;
+        line-height: 1.4;
+    }
+    .nav-notif-text strong {
+        color: #0F172A;
+        font-weight: 700;
+    }
+    .nav-notif-time {
+        font-size: 11px;
+        color: #94A3B8;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+    .nav-notif-empty {
+        padding: 30px 20px;
+        text-align: center;
+        color: #94A3B8;
+        font-size: 13px;
+    }
+    .nav-notif-empty i {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 8px;
+        color: #CBD5E1;
+    }
+    .nav-notif-footer {
+        padding: 10px;
+        text-align: center;
+        background: #F8FAFC;
+        border-top: 1px solid #F1F5F9;
+    }
+    .nav-notif-footer a {
+        font-size: 13px;
+        font-weight: 600;
+        color: #2563EB;
+        text-decoration: none;
+    }
+    .nav-notif-footer a:hover {
+        text-decoration: underline;
+    }
+
     /* User dropdown */
     .nav-user-dropdown {
         position: relative;
@@ -517,13 +631,54 @@
             @endguest
 
             @auth('siswa')
-                <!-- Notifikasi -->
-                <a href="{{ route('siswa.dashboard') }}" class="nav-notif-btn" title="Notifikasi">
-                    <i class="bi bi-bell-fill"></i>
-                    @if(isset($notifKomentar) && $notifKomentar > 0)
-                        <span class="nav-notif-dot"></span>
-                    @endif
-                </a>
+                <!-- Notifikasi Dropdown -->
+                <div class="nav-notif-dropdown">
+                    <button class="nav-notif-btn" id="navNotifTrigger" title="Notifikasi">
+                        <i class="bi bi-bell-fill"></i>
+                        @if(isset($notifKomentar) && $notifKomentar > 0)
+                            <span class="nav-notif-dot"></span>
+                        @endif
+                    </button>
+                    
+                    <div class="nav-notif-menu" id="navNotifMenu">
+                        <div class="nav-notif-header">
+                            Notifikasi
+                            @if(isset($notifKomentar) && $notifKomentar > 0)
+                                <span class="nav-notif-badge">{{ $notifKomentar }} Baru</span>
+                            @endif
+                        </div>
+                        
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            @if(isset($notifKomentarList) && $notifKomentarList->count() > 0)
+                                @foreach($notifKomentarList as $notif)
+                                    <a href="{{ route('siswa.laporan.show', $notif->laporan_id) }}" class="nav-notif-item">
+                                        <div class="nav-notif-icon">
+                                            <i class="bi bi-chat-dots-fill"></i>
+                                        </div>
+                                        <div>
+                                            <div class="nav-notif-text">
+                                                <strong>Admin</strong> merespon laporan Anda tentang 
+                                                <strong>{{ optional($notif->laporan->kategori)->nama_kategori ?? 'Fasilitas' }}</strong>
+                                            </div>
+                                            <div class="nav-notif-time">
+                                                {{ $notif->created_at->diffForHumans() }}
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            @else
+                                <div class="nav-notif-empty">
+                                    <i class="bi bi-bell-slash"></i>
+                                    Belum ada notifikasi baru
+                                </div>
+                            @endif
+                        </div>
+                        
+                        <div class="nav-notif-footer">
+                            <a href="{{ route('siswa.laporan.index') }}">Buka Semua Laporan</a>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- User Dropdown -->
                 <div class="nav-user-dropdown">
@@ -649,10 +804,36 @@
             const isOpen = dropdownMenu.classList.contains('open');
             dropdownMenu.classList.toggle('open', !isOpen);
             userTrigger.classList.toggle('open', !isOpen);
+            
+            // Close notif dropdown if open
+            if(notifMenu) notifMenu.classList.remove('open');
         });
         document.addEventListener('click', function() {
             dropdownMenu.classList.remove('open');
             userTrigger.classList.remove('open');
+        });
+    }
+
+    // Notif dropdown
+    const notifTrigger = document.getElementById('navNotifTrigger');
+    const notifMenu    = document.getElementById('navNotifMenu');
+
+    if (notifTrigger && notifMenu) {
+        notifTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = notifMenu.classList.contains('open');
+            notifMenu.classList.toggle('open', !isOpen);
+            
+            // Close user dropdown if open
+            if(dropdownMenu) dropdownMenu.classList.remove('open');
+            if(userTrigger) userTrigger.classList.remove('open');
+        });
+        document.addEventListener('click', function() {
+            notifMenu.classList.remove('open');
+        });
+        notifMenu.addEventListener('click', function(e) {
+            e.stopPropagation(); // prevent closing when clicking inside
         });
     }
 
