@@ -25,16 +25,21 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         // Global Notifikasi Siswa
-        \Illuminate\Support\Facades\View::composer('layouts.siswa', function ($view) {
+        \Illuminate\Support\Facades\View::composer(['layouts.siswa', 'layouts.navbar.siswa'], function ($view) {
             if (\Illuminate\Support\Facades\Auth::guard('siswa')->check()) {
                 $siswaId = \Illuminate\Support\Facades\Auth::guard('siswa')->id();
-                $unread = \App\Models\KomentarLaporan::whereHas('laporan', function ($q) use ($siswaId) {
+                
+                $query = \App\Models\KomentarLaporan::whereHas('laporan', function ($q) use ($siswaId) {
                     $q->where('siswa_id', $siswaId);
                 })
-                    ->whereIn('sender_type', ['admin', 'superadmin'])
-                    ->where('is_read', false)
-                    ->count();
+                ->whereIn('sender_type', ['admin', 'superadmin'])
+                ->where('is_read', false);
+
+                $unread = $query->count();
+                $recentNotifs = $query->with('laporan.kategori')->latest()->take(5)->get();
+
                 $view->with('notifKomentar', $unread);
+                $view->with('notifKomentarList', $recentNotifs);
             }
         });
 

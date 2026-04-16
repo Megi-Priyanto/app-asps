@@ -53,11 +53,25 @@ class PeminjamanBarangController extends Controller
             return back()->with('error', 'Peminjaman ini tidak dalam status Menunggu.');
         }
 
-        $peminjamanBarang->update([
-            'status'       => 'Sedang Dipinjam',
-            'admin_id'     => Auth::id(),
-            'catatan_admin'=> $request->catatan_admin,
-        ]);
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($request, $peminjamanBarang) {
+                // Lock row Peminjaman dan row Barang agar aman dari race condition
+                $peminjamanBarang = PeminjamanBarang::lockForUpdate()->find($peminjamanBarang->id);
+                $barang = Barang::lockForUpdate()->find($peminjamanBarang->barang_id);
+
+                if (!$barang->canBeBorrowed($peminjamanBarang->jumlah_pinjam)) {
+                    throw new \Exception('STOK HABIS! Tidak bisa menyetujui peminjaman ini karena stok baru saja diambil pengguna lain. Mohon tolak pengajuan ini.');
+                }
+
+                $peminjamanBarang->update([
+                    'status'       => 'Sedang Dipinjam',
+                    'admin_id'     => Auth::id(),
+                    'catatan_admin'=> $request->catatan_admin,
+                ]);
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
 
         return back()->with('success', "Peminjaman #{$peminjamanBarang->nomor_transaksi} telah disetujui.");
     }
@@ -103,29 +117,38 @@ class PeminjamanBarangController extends Controller
         $barang = $peminjamanBarang->barang;
 
         if ($request->kondisi_barang !== 'Baik') {
-            // Kurangi stok baik, tambah stok rusak
-            $barang->jumlah_baik = max(0, $barang->jumlah_baik - $peminjamanBarang->jumlah_pinjam);
+            try {
+                \Illuminate\Support\Facades\DB::transaction(function () use ($request, $peminjamanBarang, $barang) {
+                    // Lock barang update
+                    $barang = Barang::lockForUpdate()->find($barang->id);
+                    
+                    // Kurangi stok baik, tambah stok rusak
+                    $barang->jumlah_baik = max(0, $barang->jumlah_baik - $peminjamanBarang->jumlah_pinjam);
 
-            if ($request->kondisi_barang === 'Rusak Ringan') {
-                $barang->jumlah_rusak_ringan += $peminjamanBarang->jumlah_pinjam;
-            } else {
-                $barang->jumlah_rusak_berat += $peminjamanBarang->jumlah_pinjam;
+                    if ($request->kondisi_barang === 'Rusak Ringan') {
+                        $barang->jumlah_rusak_ringan += $peminjamanBarang->jumlah_pinjam;
+                    } else {
+                        $barang->jumlah_rusak_berat += $peminjamanBarang->jumlah_pinjam;
+                    }
+                    $barang->kondisi = $barang->kondisi_dominan;
+                    $barang->save();
+
+                    // Otomatis buat catatan perbaikan
+                    PerbaikanBarang::create([
+                        'nomor_perbaikan'      => PerbaikanBarang::generateNomor(),
+                        'barang_id'            => $barang->id,
+                        'peminjaman_id'        => $peminjamanBarang->id,
+                        'jumlah_rusak'         => $peminjamanBarang->jumlah_pinjam,
+                        'tingkat_kerusakan'    => $request->kondisi_barang,
+                        'keterangan_kerusakan' => "Dikembalikan dalam kondisi {$request->kondisi_barang} oleh {$peminjamanBarang->borrower_name}",
+                        'tanggal_masuk'        => now()->toDateString(),
+                        'status'               => 'Menunggu',
+                        'admin_id'             => Auth::id(),
+                    ]);
+                });
+            } catch (\Exception $e) {
+                return back()->with('error', 'Terjadi kesalahan sistem saat memproses pengembalian: ' . $e->getMessage());
             }
-            $barang->kondisi = $barang->kondisi_dominan;
-            $barang->save();
-
-            // Otomatis buat catatan perbaikan
-            PerbaikanBarang::create([
-                'nomor_perbaikan'      => PerbaikanBarang::generateNomor(),
-                'barang_id'            => $barang->id,
-                'peminjaman_id'        => $peminjamanBarang->id,
-                'jumlah_rusak'         => $peminjamanBarang->jumlah_pinjam,
-                'tingkat_kerusakan'    => $request->kondisi_barang,
-                'keterangan_kerusakan' => "Dikembalikan dalam kondisi {$request->kondisi_barang} oleh {$peminjamanBarang->borrower_name}",
-                'tanggal_masuk'        => now()->toDateString(),
-                'status'               => 'Menunggu',
-                'admin_id'             => Auth::id(),
-            ]);
 
             return back()->with('warning',
                 "Barang dikembalikan kondisi {$request->kondisi_barang}. Catatan perbaikan otomatis dibuat.");

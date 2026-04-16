@@ -116,9 +116,7 @@ class LaporanPengaduanController extends Controller
 
         $fotoName = null;
         if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $fotoName = time() . '_' . $foto->getClientOriginalName();
-            $foto->move(public_path('uploads/laporan'), $fotoName);
+            $fotoName = $request->file('foto')->store('laporan', 'public');
         }
 
         LaporanPengaduan::create([
@@ -134,11 +132,9 @@ class LaporanPengaduanController extends Controller
             ->with('success', 'Laporan berhasil dikirim');
     }
 
-    /**
-     * Detail laporan.
-     */
     public function show(LaporanPengaduan $laporan)
     {
+        abort_if($laporan->siswa_id !== Auth::guard('siswa')->id(), 403, 'Akses ditolak. Bukan laporan Anda.');
         $laporan->load(['siswa', 'aspirasi', 'kategori', 'komentar.sender']);
 
         $laporan->komentar()
@@ -149,11 +145,9 @@ class LaporanPengaduanController extends Controller
         return view('siswa.laporan.show', ['laporan' => $laporan]);
     }
 
-    /**
-     * Hapus laporan.
-     */
     public function destroy(LaporanPengaduan $laporan)
     {
+        abort_if($laporan->siswa_id !== Auth::guard('siswa')->id(), 403, 'Akses ditolak.');
         $laporan->delete();
 
         return redirect()
@@ -161,11 +155,9 @@ class LaporanPengaduanController extends Controller
             ->with('success', 'Laporan berhasil dihapus');
     }
 
-    /**
-     * Simpan feedback kepuasan.
-     */
     public function feedback(Request $request, Aspirasi $aspirasi)
     {
+        abort_if($aspirasi->laporan->siswa_id !== Auth::guard('siswa')->id(), 403, 'Akses ditolak.');
         $rules = ['feedback' => 'required|integer|min:1|max:5'];
 
         if (in_array((int) $request->feedback, [1, 2])) {
@@ -188,11 +180,9 @@ class LaporanPengaduanController extends Controller
             ->with('success', 'Terima kasih atas feedback Anda.');
     }
 
-    /**
-     * Simpan komentar siswa pada laporan.
-     */
     public function storeKomentar(Request $request, LaporanPengaduan $laporan)
     {
+        abort_if($laporan->siswa_id !== Auth::guard('siswa')->id(), 403, 'Akses ditolak.');
         $request->validate(['pesan' => 'required|string|max:1000']);
 
         KomentarLaporan::create([
