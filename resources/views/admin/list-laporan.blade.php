@@ -1,4 +1,4 @@
-<div class="card">
+﻿<div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
         <span>Laporan Terbaru</span>
         <a href="{{ route('admin.laporan.index') }}" class="btn btn-sm btn-secondary">Lihat Semua</a>
@@ -27,7 +27,7 @@
                             </span>
                         </td>
                         <td><span style="font-weight:600;">{{ $item->reporter?->nama ?? $item->siswa?->nama ?? 'Tidak Diketahui' }}</span></td>
-                        <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                        <td>{{ $item->kategoriAspirasi->nama_kategori ?? '-' }}</td>
                         <td>
                             @if($item->aspirasi?->status === 'selesai')
                                 <span class="badge bg-success">Selesai</span>

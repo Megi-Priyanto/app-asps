@@ -26,16 +26,16 @@ class DashboardController extends Controller
         })->count();
 
         // Mengambil 5 laporan terbaru beserta relasinya
-        $laporanTerbaru = LaporanPengaduan::with(['siswa', 'kategori', 'aspirasi'])
+        $laporanTerbaru = LaporanPengaduan::with(['siswa', 'kategoriAspirasi', 'aspirasi'])
             ->latest()
             ->take(5)
             ->get();
 
         // Grafik Donat Kategori
         $kategoriSebaran = \Illuminate\Support\Facades\DB::table('laporan_pengaduans')
-            ->join('kategoris', 'laporan_pengaduans.kategori_id', '=', 'kategoris.id')
-            ->select('kategoris.nama_kategori as kategori', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
-            ->groupBy('kategoris.nama_kategori')
+            ->join('kategori_aspirasis', 'laporan_pengaduans.kategori_aspirasi_id', '=', 'kategori_aspirasis.id')
+            ->select('kategori_aspirasis.nama_kategori as kategori', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+            ->groupBy('kategori_aspirasis.nama_kategori')
             ->get();
 
         return view('admin.dashboard', compact(

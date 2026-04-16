@@ -38,16 +38,16 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Tugaskan Kategori</label>
-                <select name="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
-                    <option value="" selected disabled> Pilih Kategori... </option>
-                    @foreach($kategoris as $kategori)
-                        <option value="{{ $kategori->id }}" {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
-                            {{ $kategori->nama_kategori }}
+                <label class="form-label">Tugaskan Lokasi</label>
+                <select name="lokasi_id" class="form-select @error('lokasi_id') is-invalid @enderror" required>
+                    <option value="" selected disabled> Pilih Lokasi... </option>
+                    @foreach($lokasis as $lokasi)
+                        <option value="{{ $lokasi->id }}" {{ old('lokasi_id') == $lokasi->id ? 'selected' : '' }}>
+                            {{ $lokasi->nama_lokasi }}
                         </option>
                     @endforeach
                 </select>
-                @error('kategori_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                @error('lokasi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
             </div>
 
             <div class="mb-3">

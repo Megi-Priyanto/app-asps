@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aspirasi;
-use App\Models\Kategori;
+use App\Models\KategoriAspirasi;
 use App\Models\KomentarLaporan;
 use App\Models\LaporanPengaduan;
 use Illuminate\Http\Request;
@@ -30,7 +30,7 @@ class LaporanController extends Controller
             'selesai'  => $allLaporan->filter(fn($l) => $l->aspirasi && $l->aspirasi->status === 'selesai')->count(),
         ];
 
-        $query = $user->laporan()->with(['kategori', 'aspirasi']);
+        $query = $user->laporan()->with(['kategoriAspirasi', 'aspirasi']);
 
         if ($request->filled('search')) {
             $query->where('ket', 'like', '%' . $request->search . '%');
@@ -54,7 +54,7 @@ class LaporanController extends Controller
         $query->orderBy('created_at', $sort === 'terlama' ? 'asc' : 'desc');
 
         $laporan  = $query->paginate(10)->withQueryString();
-        $kategori = Kategori::all();
+        $kategori = KategoriAspirasi::all();
 
         $kepuasan = [1 => 'Tidak Puas', 2 => 'Kurang Puas', 3 => 'Cukup Puas', 4 => 'Puas', 5 => 'Sangat Puas'];
         $laporan->getCollection()->transform(function ($item) use ($kepuasan) {
@@ -69,14 +69,14 @@ class LaporanController extends Controller
 
     public function create()
     {
-        $kategori = Kategori::all();
+        $kategori = KategoriAspirasi::all();
         return view('guru.laporan.create', compact('kategori'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required|exists:kategoris,id',
+            'kategori_aspirasi_id' => 'required|exists:kategori_aspirasis,id',
             'ket'         => 'required|string',
             'lokasi'      => 'required|string|max:255',
             'foto'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -92,7 +92,7 @@ class LaporanController extends Controller
 
         // Gunakan relasi create() agar morph type mengikuti morph map ('guru')
         $user->laporan()->create([
-            'kategori_id' => $request->kategori_id,
+            'kategori_aspirasi_id' => $request->kategori_aspirasi_id,
             'ket'         => $request->ket,
             'lokasi'      => $request->lokasi,
             'foto'        => $fotoName,
@@ -108,7 +108,7 @@ class LaporanController extends Controller
             abort(403);
         }
 
-        $laporan->load(['aspirasi', 'kategori', 'komentar.sender']);
+        $laporan->load(['aspirasi', 'kategoriAspirasi', 'komentar.sender']);
         $laporan->komentar()->where('sender_type', 'admin')->where('is_read', false)->update(['is_read' => true]);
         return view('guru.laporan.show', compact('laporan'));
     }

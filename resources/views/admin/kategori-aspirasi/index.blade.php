@@ -1,4 +1,4 @@
-@extends('layouts.superadmin')
+@extends('layouts.admin')
 
 @section('title', 'Kategori Aspirasi')
 
@@ -11,7 +11,7 @@
 <div class="card">
     <div class="card-header d-flex align-items-center justify-content-between">
         <span>Daftar Kategori Aspirasi</span>
-        <a href="{{ route('superadmin.kategori.create') }}" class="btn btn-sm btn-primary">
+        <a href="{{ route('admin.kategori-aspirasi.create') }}" class="btn btn-sm btn-primary">
             <i class="bi bi-plus-lg me-1"></i>Tambah Kategori
         </a>
     </div>
@@ -32,8 +32,8 @@
                             <td><span style="font-weight:600;">{{ $item->nama_kategori }}</span></td>
                             <td class="text-end">
                                 <div class="d-flex justify-content-end gap-1">
-                                    <a href="{{ route('superadmin.kategori.edit', $item->id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                                    <form action="{{ route('superadmin.kategori.destroy', $item->id) }}" method="POST" class="m-0">
+                                    <a href="{{ route('admin.kategori-aspirasi.edit', $item->id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                                    <form action="{{ route('admin.kategori-aspirasi.destroy', $item->id) }}" method="POST" class="m-0">
                                         @csrf @method('DELETE')
                                         <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus kategori ini?')">Hapus</button>
                                     </form>

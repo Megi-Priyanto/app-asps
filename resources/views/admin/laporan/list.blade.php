@@ -1,4 +1,4 @@
-<table class="table">
+﻿<table class="table">
     <thead>
         <tr>
             <th>No</th>
@@ -23,7 +23,7 @@
                 <td><span style="font-weight:600;">{{ $item->reporter?->nama ?? $item->siswa?->nama ?? 'Tidak Diketahui' }}</span></td>
                 <td>
                     <span style="background:#EFF6FF; color:#2563EB; font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:5px;">
-                        {{ $item->kategori->nama_kategori ?? '-' }}
+                        {{ $item->kategoriAspirasi->nama_kategori ?? '-' }}
                     </span>
                 </td>
                 <td style="color:#64748B; max-width:220px;">{{ Str::limit($item->ket, 55) }}</td>

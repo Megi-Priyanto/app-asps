@@ -8,22 +8,24 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Tabel admins (dengan kategori_id & panjang kolom final)
+        // Tabel admins (dengan lokasi_id & foto final)
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->onDelete('set null');
+            $table->foreignId('lokasi_id')->nullable()->constrained('lokasis')->nullOnDelete();
             $table->string('nama', 50);
             $table->string('username', 20)->unique();
+            $table->string('foto')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
 
-        // Tabel super_admins (dengan panjang kolom final)
+        // Tabel super_admins (dengan foto final)
         Schema::create('super_admins', function (Blueprint $table) {
             $table->id();
             $table->string('nama', 50);
             $table->string('username', 20)->unique();
+            $table->string('foto')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

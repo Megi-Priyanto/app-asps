@@ -38,7 +38,57 @@ class PeminjamanBarangController extends Controller
         ));
     }
 
+    public function create()
+    {
+        $barangs = Barang::with('kategoriBarang')
+            ->where('is_pinjaman', true)
+            ->get()
+            ->filter(fn($b) => $b->stok_tersedia > 0);
+
+        return view('admin.peminjaman.create', compact('barangs'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'barang_id'               => 'required|exists:barangs,id',
+            'jumlah_pinjam'           => 'required|integer|min:1',
+            'tanggal_pinjam'          => 'required|date',
+            'tanggal_kembali_rencana' => 'required|date|after:tanggal_pinjam',
+            'keperluan'               => 'required|string|max:500',
+            'nama_peminjam'           => 'required|string|max:100',
+            'peran_peminjam'          => 'required|in:Siswa,Guru,Pegawai',
+            'detail_peminjam'         => 'required|string|max:100',
+        ]);
+
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($validated) {
+                $barang = Barang::lockForUpdate()->findOrFail($validated['barang_id']);
+
+                if (!$barang->canBeBorrowed($validated['jumlah_pinjam'])) {
+                    throw new \Exception("Stok tersedia hanya {$barang->stok_tersedia} {$barang->satuan}.");
+                }
+
+                $admin = Auth::guard('admin')->user();
+
+                PeminjamanBarang::create([
+                    ...$validated,
+                    'nomor_transaksi' => PeminjamanBarang::generateNomorTransaksi(),
+                    'borrower_type'   => \App\Models\Admin::class,
+                    'borrower_id'     => $admin->id,
+                    'status'          => 'Menunggu',
+                ]);
+            });
+        } catch (\Exception $e) {
+            return back()->withErrors(['jumlah_pinjam' => $e->getMessage()])->withInput();
+        }
+
+        return redirect()->route('admin.peminjaman-barang.index')
+            ->with('success', 'Permintaan peminjaman berhasil dikirim. Anda dapat menyetujuinya langsung di tabel.');
+    }
+
     public function show(PeminjamanBarang $peminjamanBarang)
+
     {
         $peminjamanBarang->load('barang.kategoriBarang', 'admin', 'perbaikanBarang');
         return view('admin.peminjaman.show', compact('peminjamanBarang'));

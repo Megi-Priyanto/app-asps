@@ -1,4 +1,4 @@
-@extends('layouts.superadmin')
+@extends('layouts.admin')
 
 @section('title', 'Edit Kategori Aspirasi')
 
@@ -7,7 +7,7 @@
 <div class="card" style="max-width: 480px;">
     <div class="card-header">Edit Kategori Aspirasi</div>
     <div class="card-body">
-        <form method="POST" action="{{ route('superadmin.kategori.update', $kategori->id) }}">
+        <form method="POST" action="{{ route('admin.kategori-aspirasi.update', $kategori->id) }}">
             @csrf @method('PUT')
             <div class="mb-3">
                 <label class="form-label">Nama Kategori</label>

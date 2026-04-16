@@ -68,4 +68,17 @@ class PeminjamanBarangController extends Controller
         return redirect()->route('guru.peminjaman-barang.index')
             ->with('success', 'Permintaan peminjaman berhasil dikirim. Tunggu persetujuan Petugas Sarpras.');
     }
+
+    public function show(PeminjamanBarang $peminjamanBarang)
+    {
+        $guru = Auth::guard('guru')->user();
+
+        if ($peminjamanBarang->borrower_type !== \App\Models\Guru::class
+            || $peminjamanBarang->borrower_id !== $guru->id) {
+            abort(403);
+        }
+
+        $peminjamanBarang->load('barang.kategoriBarang');
+        return view('guru.peminjaman.show', compact('peminjamanBarang'));
+    }
 }

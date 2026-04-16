@@ -121,6 +121,8 @@
     .admin-sidebar.collapsed .sidebar-brand { justify-content: center; padding: 0; }
     .admin-sidebar.collapsed .sidebar-brand-left { width: 100%; justify-content: center; gap: 0; }
     .admin-sidebar.collapsed .sidebar-toggle-btn { display: none; } 
+    .admin-sidebar.collapsed .sidebar-brand-icon { cursor: pointer; transition: all var(--transition); }
+    .admin-sidebar.collapsed .sidebar-brand-icon:hover { transform: scale(1.05); box-shadow: 0 6px 14px rgba(37,99,235,0.3); } 
 
     /* Toggle Btn */
     .sidebar-toggle-btn {
@@ -672,20 +674,12 @@
         </a>
 
 
-        <a href="{{ route('superadmin.kategori.index') }}"
-            data-tooltip="Kategori Aspirasi"
-            data-page-title="Kategori Aspirasi"
-            class="sidebar-item {{ request()->routeIs('superadmin.kategori.*') ? 'active' : '' }}">
-            <i class="bi bi-tags-fill"></i>
-            <span class="sidebar-item-text">Kategori Aspirasi</span>
-        </a>
-
-        <a href="{{ route('superadmin.kategori-barang.index') }}"
-            data-tooltip="Kategori Barang"
-            data-page-title="Kategori Barang"
-            class="sidebar-item {{ request()->routeIs('superadmin.kategori-barang.*') ? 'active' : '' }}">
-            <i class="bi bi-box-seam-fill"></i>
-            <span class="sidebar-item-text">Kategori Barang</span>
+        <a href="{{ route('superadmin.lokasi.index') }}"
+            data-tooltip="Lokasi Penugasan"
+            data-page-title="Lokasi Penugasan"
+            class="sidebar-item {{ request()->routeIs('superadmin.lokasi.*') ? 'active' : '' }}">
+            <i class="bi bi-geo-alt-fill"></i>
+            <span class="sidebar-item-text">Lokasi Penugasan</span>
         </a>
 
         <a href="{{ route('superadmin.tanggapan-pengguna.index') }}"
@@ -842,6 +836,14 @@
     if (localStorage.getItem('admin_sidebar_collapsed') === 'true') {
         adminSidebar.classList.add('collapsed');
         body.classList.add('sidebar-collapsed');
+    }
+
+    // Toggle saat collapsed menggunakan logo
+    const brandIcon = document.querySelector('.sidebar-brand-icon');
+    if (brandIcon) {
+        brandIcon.addEventListener('click', () => {
+            if (adminSidebar.classList.contains('collapsed')) toggleSidebar();
+        });
     }
 
     if(sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', toggleSidebar);

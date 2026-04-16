@@ -38,16 +38,16 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Kategori Laporan</label>
-                        <select name="kategori_id" class="form-select @error('kategori_id') is-invalid @enderror" required>
+                        <label class="form-label">Kategori Aspirasi</label>
+                        <select name="kategori_aspirasi_id" class="form-select @error('kategori_aspirasi_id') is-invalid @enderror" required>
                             <option value="">-- Pilih Kategori --</option>
                             @foreach($kategori as $kat)
-                                <option value="{{ $kat->id }}" {{ old('kategori_id') == $kat->id ? 'selected' : '' }}>
+                                <option value="{{ $kat->id }}" {{ old('kategori_aspirasi_id') == $kat->id ? 'selected' : '' }}>
                                     {{ $kat->nama_kategori }}
                                 </option>
                             @endforeach
                         </select>
-                        @error('kategori_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        @error('kategori_aspirasi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
                     <div class="mb-3">

@@ -1,4 +1,4 @@
-<table class="table">
+﻿<table class="table">
     <thead>
         <tr>
             <th>#</th>
@@ -16,16 +16,16 @@
                     <div style="font-weight:600; color:#0F172A; margin-bottom:3px;">{{ Str::limit($item->ket, 60) }}</div>
                     <small style="color:#94A3B8;">
                         <i class="bi bi-calendar3 me-1"></i>{{ $item->created_at->format('d M Y') }}
-                        &nbsp;·&nbsp;
+                        &nbsp;Â·&nbsp;
                         <i class="bi bi-geo-alt me-1"></i>{{ $item->lokasi }}
                         @if($item->feedback)
-                            &nbsp;·&nbsp; Feedback: {{ $item->feedback }}
+                            &nbsp;Â·&nbsp; Feedback: {{ $item->feedback }}
                         @endif
                     </small>
                 </td>
                 <td>
                     <span style="background:#EFF6FF; color:#2563EB; font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:5px;">
-                        {{ $item->kategori->nama_kategori ?? '-' }}
+                        {{ $item->kategoriAspirasi->nama_kategori ?? '-' }}
                     </span>
                 </td>
                 <td>

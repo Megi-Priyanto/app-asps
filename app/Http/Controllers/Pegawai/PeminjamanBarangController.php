@@ -68,4 +68,17 @@ class PeminjamanBarangController extends Controller
         return redirect()->route('pegawai.peminjaman-barang.index')
             ->with('success', 'Permintaan peminjaman berhasil dikirim. Tunggu persetujuan Petugas Sarpras.');
     }
+
+    public function show(PeminjamanBarang $peminjamanBarang)
+    {
+        $pegawai = Auth::guard('pegawai')->user();
+
+        if ($peminjamanBarang->borrower_type !== \App\Models\Pegawai::class
+            || $peminjamanBarang->borrower_id !== $pegawai->id) {
+            abort(403);
+        }
+
+        $peminjamanBarang->load('barang.kategoriBarang');
+        return view('pegawai.peminjaman.show', compact('peminjamanBarang'));
+    }
 }

@@ -113,9 +113,6 @@
                 <i class="bi bi-box-seam empty-icon"></i>
                 <h3>Belum ada permintaan peminjaman</h3>
                 <p>Kamu belum pernah membuat permintaan peminjaman barang.</p>
-                <a href="{{ route('pegawai.peminjaman-barang.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-lg me-1"></i>Buat Sekarang
-                </a>
             </div>
         @else
             <table class="table">
@@ -128,6 +125,7 @@
                         <th>Tgl Pinjam</th>
                         <th>Rencana Kembali</th>
                         <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -146,8 +144,8 @@
                         <td><code style="font-size:11.5px;color:#2563EB;background:#EFF6FF;padding:3px 7px;border-radius:4px;">{{ $p->nomor_transaksi }}</code></td>
                         <td><div style="font-weight:600;color:var(--text-primary);">{{ $p->barang->nama_barang ?? '-' }}</div></td>
                         <td style="color:var(--text-secondary);">{{ $p->jumlah_pinjam }} {{ $p->barang->satuan ?? '' }}</td>
-                        <td style="font-size:12.5px;color:var(--text-secondary);">{{ $p->tanggal_pinjam?->format('d M Y') }}</td>
-                        <td style="font-size:12.5px;color:var(--text-secondary);">{{ $p->tanggal_kembali_rencana?->format('d M Y') }}
+                        <td style="font-size:12.5px;color:var(--text-secondary);">{{ $p->tanggal_pinjam?->format('d M Y, H:i') }}</td>
+                        <td style="font-size:12.5px;color:var(--text-secondary);">{{ $p->tanggal_kembali_rencana?->format('d M Y, H:i') }}
                             @if($p->terlambat)<br><small class="text-danger" style="font-weight:600;display:block;margin-top:2px;">Terlambat {{ $p->hari_terlambat }} hari</small>@endif
                         </td>
                         <td>
@@ -155,6 +153,9 @@
                             @if($p->status === 'Ditolak' && $p->catatan_admin)
                                 <br><small class="text-muted" style="display:block;margin-top:4px;font-size:11px;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{{ $p->catatan_admin }}">{{ $p->catatan_admin }}</small>
                             @endif
+                        </td>
+                        <td>
+                            <a href="{{ route('pegawai.peminjaman-barang.show', $p) }}" class="btn btn-sm" style="background:#EFF6FF;color:#2563EB;border:none;border-radius:6px;padding:5px 12px;font-size:12px;font-weight:600;"><i class="bi bi-eye me-1"></i>Detail</a>
                         </td>
                     </tr>
                     @endforeach

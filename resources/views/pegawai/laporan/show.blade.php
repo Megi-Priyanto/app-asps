@@ -1,4 +1,4 @@
-@extends('layouts.pegawai')
+﻿@extends('layouts.pegawai')
 
 @section('title', 'Detail Laporan')
 
@@ -61,7 +61,7 @@
                     <div class="detail-label">Kategori</div>
                     <div class="detail-val">
                         <span style="background:#EFF6FF; color:#2563EB; font-size:12px; font-weight:600; padding:3px 10px; border-radius:5px;">
-                            {{ $laporan->kategori->nama_kategori ?? '-' }}
+                            {{ $laporan->kategoriAspirasi->nama_kategori ?? '-' }}
                         </span>
                     </div>
                 </div>
@@ -183,7 +183,7 @@
                         <p style="font-size:13.5px; color:#64748B; margin-bottom:14px;">Bagaimana kepuasan Anda terhadap penanganan laporan ini?</p>
 
                         <div class="d-flex flex-wrap gap-2 mb-3">
-                            @foreach([1=>'😞 Tidak Puas', 2=>'😐 Kurang Puas', 3=>'🙂 Cukup Puas', 4=>'😊 Puas', 5=>'🤩 Sangat Puas'] as $val => $label)
+                            @foreach([1=>'ðŸ˜ž Tidak Puas', 2=>'ðŸ˜ Kurang Puas', 3=>'ðŸ™‚ Cukup Puas', 4=>'ðŸ˜Š Puas', 5=>'ðŸ¤© Sangat Puas'] as $val => $label)
                                 <label style="cursor:pointer;">
                                     <input type="radio" name="feedback" value="{{ $val }}" class="feedback-radio d-none" {{ old('feedback') == $val ? 'checked' : '' }}>
                                     <span class="feedback-opt" style="display:inline-block; padding:7px 14px; border-radius:20px; font-size:13px; font-weight:600; border:1.5px solid #E2E8F0; color:#64748B; transition:all 0.15s; user-select:none;">{{ $label }}</span>

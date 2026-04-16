@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LaporanPengaduan;
-use App\Models\Kategori;
+use App\Models\KategoriAspirasi;
 use App\Models\Aspirasi;
 use Illuminate\Support\Facades\Auth;
 use App\Models\KomentarLaporan;
@@ -38,8 +38,7 @@ class LaporanPengaduanController extends Controller
             )->count(),
         ];
 
-        // Query laporan dengan filter
-        $query = $siswa->laporan()->with(['kategori', 'aspirasi']);
+        $query = $siswa->laporan()->with(['kategoriAspirasi', 'aspirasi']);
 
         // Filter: search keterangan
         if ($request->filled('search')) {
@@ -88,7 +87,7 @@ class LaporanPengaduanController extends Controller
         });
 
         // Ambil semua kategori untuk dropdown filter
-        $kategori = Kategori::all();
+        $kategori = KategoriAspirasi::all();
 
         return view('siswa.laporan.index', compact('laporan', 'stats', 'kategori'));
     }
@@ -98,7 +97,7 @@ class LaporanPengaduanController extends Controller
      */
     public function create()
     {
-        $kategori = Kategori::all();
+        $kategori = KategoriAspirasi::all();
         return view('siswa.laporan.create', compact('kategori'));
     }
 
@@ -108,7 +107,7 @@ class LaporanPengaduanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required|exists:kategoris,id',
+            'kategori_aspirasi_id' => 'required|exists:kategori_aspirasis,id',
             'ket'         => 'required|string',
             'lokasi'      => 'required|string|max:255',
             'foto'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -121,7 +120,7 @@ class LaporanPengaduanController extends Controller
 
         LaporanPengaduan::create([
             'siswa_id'    => Auth::guard('siswa')->user()->id,
-            'kategori_id' => $request->kategori_id,
+            'kategori_aspirasi_id' => $request->kategori_aspirasi_id,
             'ket'         => $request->ket,
             'lokasi'      => $request->lokasi,
             'foto'        => $fotoName,
@@ -135,7 +134,7 @@ class LaporanPengaduanController extends Controller
     public function show(LaporanPengaduan $laporan)
     {
         abort_if($laporan->siswa_id !== Auth::guard('siswa')->id(), 403, 'Akses ditolak. Bukan laporan Anda.');
-        $laporan->load(['siswa', 'aspirasi', 'kategori', 'komentar.sender']);
+        $laporan->load(['siswa', 'aspirasi', 'kategoriAspirasi', 'komentar.sender']);
 
         $laporan->komentar()
             ->whereIn('sender_type', ['admin', 'superadmin'])

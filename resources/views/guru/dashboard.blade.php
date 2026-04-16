@@ -1,4 +1,4 @@
-@extends('layouts.guru')
+﻿@extends('layouts.guru')
 
 @section('title', 'Dashboard Guru')
 
@@ -153,7 +153,7 @@
 <div class="welcome-banner">
     <div>
         <h2>Halo, {{ Auth::guard('guru')->user()->nama }}</h2>
-        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;·&nbsp; {{ Auth::guard('guru')->user()->jabatan ?? 'Guru' }}</p>
+        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;Â·&nbsp; {{ Auth::guard('guru')->user()->jabatan ?? 'Guru' }}</p>
     </div>
     <div class="welcome-avatar" style="overflow:hidden;">
         @if(Auth::guard('guru')->user()->foto)
@@ -192,7 +192,7 @@
     <div class="card">
         <div class="card-header">
             <span><i class="bi bi-clock-history me-2" style="color:#2563EB;"></i>Laporan Terbaru</span>
-            <a href="{{ route('guru.laporan.index') }}" class="header-link">Lihat semua →</a>
+            <a href="{{ route('guru.laporan.index') }}" class="header-link">Lihat semua â†’</a>
         </div>
         <div class="card-body">
             @forelse ($laporanTerbaru as $item)
@@ -210,7 +210,7 @@
                             <span class="badge badge-{{ $status }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            {{ $item->kategori->nama_kategori ?? '-' }} · {{ $item->created_at->diffForHumans() }}
+                            {{ $item->kategoriAspirasi->nama_kategori ?? '-' }} Â· {{ $item->created_at->diffForHumans() }}
                         </div>
                     </div>
                     <a href="{{ route('guru.laporan.show', $item->id) }}" class="btn btn-sm"
