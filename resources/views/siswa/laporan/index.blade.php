@@ -1,4 +1,4 @@
-@extends('layouts.siswa')
+﻿@extends('layouts.siswa')
 
 @section('title', 'Riwayat Laporan Pengaduan')
 
@@ -289,7 +289,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="color:var(--text-secondary);">{{ $item->kategori->nama_kategori ?? '-' }}</span>
+                                <span style="color:var(--text-secondary);">{{ $item->kategoriAspirasi->nama_kategori ?? '-' }}</span>
                             </td>
                             <td style="max-width:140px;">
                                 <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;color:var(--text-secondary);">
@@ -305,7 +305,7 @@
                                     @if ($item->feedback)
                                         <div class="stars">
                                             @for ($s = 1; $s <= 5; $s++)
-                                                {{ $s <= ($item->aspirasi->feedback) ? '★' : '☆' }}
+                                                {{ $s <= ($item->aspirasi->feedback) ? 'â˜…' : 'â˜†' }}
                                             @endfor
                                         </div>
                                         <div style="font-size:11px;color:var(--text-muted);">{{ $item->feedback }}</div>
@@ -316,7 +316,7 @@
                                         </a>
                                     @endif
                                 @else
-                                    <span style="font-size:12px;color:var(--text-muted);">—</span>
+                                    <span style="font-size:12px;color:var(--text-muted);">â€”</span>
                                 @endif
                             </td>
                             <td style="white-space:nowrap;">

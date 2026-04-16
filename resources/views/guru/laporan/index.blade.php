@@ -1,4 +1,4 @@
-@extends('layouts.guru')
+﻿@extends('layouts.guru')
 
 @section('title', 'Laporan Pengaduan - Guru')
 
@@ -239,7 +239,7 @@
                                 </div>
                             </td>
                             <td>
-                                <span style="color:var(--text-secondary);">{{ $item->kategori->nama_kategori ?? '-' }}</span>
+                                <span style="color:var(--text-secondary);">{{ $item->kategoriAspirasi->nama_kategori ?? '-' }}</span>
                             </td>
                             <td style="max-width:140px;">
                                 <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;color:var(--text-secondary);">

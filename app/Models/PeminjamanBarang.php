@@ -23,6 +23,9 @@ class PeminjamanBarang extends Model
         'kondisi_barang',
         'admin_id',
         'catatan_admin',
+        'nama_peminjam',
+        'peran_peminjam',
+        'detail_peminjam',
     ];
 
     protected $casts = [
@@ -111,6 +114,7 @@ class PeminjamanBarang extends Model
     public function getBorrowerRoleAttribute(): string
     {
         return match ($this->borrower_type) {
+            'App\Models\Admin'   => 'Admin',
             'App\Models\Guru'    => 'Guru',
             'App\Models\Siswa'   => 'Siswa',
             'App\Models\Pegawai' => 'Pegawai',

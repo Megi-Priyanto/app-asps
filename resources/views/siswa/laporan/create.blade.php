@@ -37,7 +37,7 @@
                     @csrf
 
                     <div class="mb-3">
-                        <x-select label="Kategori Laporan" name="kategori_id" :options="$kategori" label-field="nama_kategori" />
+                        <x-select label="Kategori Aspirasi" name="kategori_aspirasi_id" :options="$kategori" label-field="nama_kategori" />
                     </div>
 
                     <div class="mb-3">

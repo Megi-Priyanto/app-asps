@@ -121,6 +121,8 @@
     .admin-sidebar.collapsed .sidebar-brand { justify-content: center; padding: 0; }
     .admin-sidebar.collapsed .sidebar-brand-left { width: 100%; justify-content: center; gap: 0; }
     .admin-sidebar.collapsed .sidebar-toggle-btn { display: none; } /* Hide toggle btn in collapsed for better centering of brand icon */
+    .admin-sidebar.collapsed .sidebar-brand-icon { cursor: pointer; transition: all var(--transition); }
+    .admin-sidebar.collapsed .sidebar-brand-icon:hover { transform: scale(1.05); box-shadow: 0 6px 14px rgba(37,99,235,0.3); }
 
     /* Toggle Btn */
     .sidebar-toggle-btn {
@@ -682,10 +684,26 @@
             @endif
         </a>
 
+        <a href="{{ route('admin.kategori-aspirasi.index') }}"
+            data-tooltip="Kategori Aspirasi"
+            data-page-title="Kategori Aspirasi"
+            class="sidebar-item {{ request()->routeIs('admin.kategori-aspirasi.*') ? 'active' : '' }}">
+            <i class="bi bi-tags-fill"></i>
+            <span class="sidebar-item-text">Kategori Aspirasi</span>
+        </a>
+
 
 
 
         <div class="sidebar-section-label">Sarpras</div>
+
+        <a href="{{ route('admin.kategori-barang.index') }}"
+            data-tooltip="Kategori Barang"
+            data-page-title="Kategori Barang"
+            class="sidebar-item {{ request()->routeIs('admin.kategori-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-tags-fill"></i>
+            <span class="sidebar-item-text">Kategori Barang</span>
+        </a>
 
         <a href="{{ route('admin.inventaris.index') }}"
             data-tooltip="Inventaris Barang"

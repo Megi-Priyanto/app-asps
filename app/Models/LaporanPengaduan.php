@@ -13,7 +13,7 @@ class LaporanPengaduan extends Model
         'siswa_id',
         'reporter_type',
         'reporter_id',
-        'kategori_id',
+        'kategori_aspirasi_id',
         'ket',
         'lokasi',
         'foto',
@@ -31,9 +31,9 @@ class LaporanPengaduan extends Model
         return $this->morphTo();
     }
 
-    public function kategori()
+    public function kategoriAspirasi()
     {
-        return $this->belongsTo(Kategori::class);
+        return $this->belongsTo(KategoriAspirasi::class);
     }
 
     public function aspirasi()

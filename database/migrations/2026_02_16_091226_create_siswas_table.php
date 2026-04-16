@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('nama', 50);
             $table->string('kelas', 20);
             $table->string('password');
+            $table->string('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

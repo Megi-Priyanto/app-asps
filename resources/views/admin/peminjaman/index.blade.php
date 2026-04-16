@@ -56,6 +56,7 @@
             <div class="col-md-4 d-flex gap-2">
                 <button type="submit" class="btn btn-primary btn-sm px-3"><i class="bi bi-funnel me-1"></i>Filter</button>
                 <a href="{{ route('admin.peminjaman-barang.index') }}" class="btn btn-sm" style="background:#F1F5F9;color:#64748B;border:1px solid #E8EDF5;">Reset</a>
+                <a href="{{ route('admin.peminjaman-barang.create') }}" class="btn btn-primary btn-sm ms-auto"><i class="bi bi-plus-lg me-1"></i>Buat Peminjaman</a>
             </div>
         </form>
     </div>
@@ -113,9 +114,9 @@
                         <small class="text-muted">{{ $p->barang->kode_barang ?? '' }}</small>
                     </td>
                     <td>{{ $p->jumlah_pinjam }} {{ $p->barang->satuan ?? '' }}</td>
-                    <td style="font-size:12.5px;">{{ $p->tanggal_pinjam?->format('d M Y') }}</td>
+                    <td style="font-size:12.5px;">{{ $p->tanggal_pinjam?->format('d M Y, H:i') }}</td>
                     <td style="font-size:12.5px;">
-                        {{ $p->tanggal_kembali_rencana?->format('d M Y') }}
+                        {{ $p->tanggal_kembali_rencana?->format('d M Y, H:i') }}
                         @if($p->terlambat)
                             <br><small class="text-danger"><i class="bi bi-clock me-1"></i>{{ $p->hari_terlambat }} hari terlambat</small>
                         @endif

@@ -1,4 +1,4 @@
-<div class="card">
+﻿<div class="card">
     <div class="card-header"><i class="bi bi-file-earmark-text-fill me-2" style="color:#2563EB;"></i>Detail Laporan</div>
     <div class="card-body p-0">
         <table class="table table-borderless mb-0" style="font-size:13.5px;">
@@ -29,7 +29,7 @@
             <tr style="background:#FAFBFF;">
                 <td style="padding:14px 20px; color:#64748B; font-weight:600;">Kategori</td>
                 <td style="padding:14px 20px; border-left:1px solid #F1F5F9;">
-                    <span style="background:#EFF6FF; color:#2563EB; font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px;">{{ $laporan->kategori->nama_kategori }}</span>
+                    <span style="background:#EFF6FF; color:#2563EB; font-size:12px; font-weight:600; padding:4px 10px; border-radius:6px;">{{ $laporan->kategoriAspirasi->nama_kategori }}</span>
                 </td>
             </tr>
             <tr>

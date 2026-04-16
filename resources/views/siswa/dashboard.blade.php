@@ -1,4 +1,4 @@
-@extends('layouts.siswa')
+﻿@extends('layouts.siswa')
 
 @section('title', 'Dashboard Siswa')
 
@@ -173,7 +173,7 @@
 <div class="welcome-banner">
     <div>
         <h2>Halo, {{ Auth::guard('siswa')->user()->nama }}</h2>
-        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;·&nbsp; Siswa</p>
+        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;Â·&nbsp; Siswa</p>
     </div>
     <div class="welcome-avatar" style="overflow:hidden;">
         @if(Auth::guard('siswa')->user()->foto)
@@ -212,7 +212,7 @@
     <div class="card">
         <div class="card-header">
             <span><i class="bi bi-clock-history me-2" style="color:#2563EB;"></i>Aktivitas Terbaru</span>
-            <a href="{{ route('siswa.laporan.index') }}" class="header-link">Lihat semua →</a>
+            <a href="{{ route('siswa.laporan.index') }}" class="header-link">Lihat semua â†’</a>
         </div>
         <div class="card-body">
             @forelse ($laporanTerbaru as $item)
@@ -230,7 +230,7 @@
                             <span class="badge badge-{{ $status }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            {{ $item->kategori->nama ?? '-' }} · {{ $item->created_at->diffForHumans() }}
+                            {{ $item->kategoriAspirasi->nama ?? '-' }} Â· {{ $item->created_at->diffForHumans() }}
                         </div>
                     </div>
                     <a href="{{ route('siswa.laporan.show', $item->id) }}" class="btn btn-sm"
@@ -257,7 +257,7 @@
             @endphp
             <div class="tip-card">
                 <div class="tip-icon">
-                    @if ($pct >= 60) 🏆 @elseif ($pct >= 30) 👍 @else 💡 @endif
+                    @if ($pct >= 60) ðŸ† @elseif ($pct >= 30) ðŸ‘ @else ðŸ’¡ @endif
                 </div>
                 <div>
                     <div class="tip-title">

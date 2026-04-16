@@ -9,7 +9,7 @@ use App\Models\LaporanPengaduan;
 use App\Models\Guru;
 use App\Models\Pegawai;
 use App\Models\Admin;
-use App\Models\Kategori;
+use App\Models\Lokasi;
 use App\Models\TanggapanAplikasi;
 
 class DashboardController extends Controller
@@ -20,7 +20,7 @@ class DashboardController extends Controller
         $totalGuru = Guru::count();
         $totalPegawai = Pegawai::count();
         $totalAdmin = Admin::count();
-        $totalKategori = Kategori::count();
+        $totalLokasi = Lokasi::count();
         $totalTanggapan = TanggapanAplikasi::count();
 
         return view('superadmin.dashboard', compact(
@@ -28,7 +28,7 @@ class DashboardController extends Controller
             'totalGuru',
             'totalPegawai',
             'totalAdmin',
-            'totalKategori',
+            'totalLokasi',
             'totalTanggapan'
         ));
     }

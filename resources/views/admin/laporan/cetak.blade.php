@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -219,7 +219,7 @@
                     <td>{{ $item->created_at->format('d/m/Y') }}<br><small style="color:#666;">{{ $item->created_at->format('H:i') }}</small></td>
                     <td>{{ ucfirst($item->reporter_type ?? 'siswa') }}</td>
                     <td>{{ $item->reporter?->nama ?? $item->siswa?->nama ?? '-' }}</td>
-                    <td>{{ $item->kategori->nama_kategori ?? '-' }}</td>
+                    <td>{{ $item->kategoriAspirasi->nama_kategori ?? '-' }}</td>
                     <td>{{ $item->ket }}</td>
                     <td>{{ $item->lokasi ?? '-' }}</td>
                     <td class="text-center">

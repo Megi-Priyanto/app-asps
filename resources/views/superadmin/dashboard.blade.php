@@ -48,10 +48,10 @@
 <div class="row g-3 mb-4">
     <div class="col-sm-6 col-md-4">
         <div class="stat-card">
-            <div class="stat-icon yellow"><i class="bi bi-tags-fill"></i></div>
+            <div class="stat-icon yellow"><i class="bi bi-geo-alt-fill"></i></div>
             <div>
-                <div class="stat-label">Total Kategori</div>
-                <div class="stat-value">{{ $totalKategori ?? 0 }}</div>
+                <div class="stat-label">Total Lokasi</div>
+                <div class="stat-value">{{ $totalLokasi ?? 0 }}</div>
             </div>
         </div>
     </div>

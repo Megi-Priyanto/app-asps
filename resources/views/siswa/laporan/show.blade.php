@@ -1,4 +1,4 @@
-@extends('layouts.siswa')
+﻿@extends('layouts.siswa')
 
 @section('title', 'Detail Laporan')
 
@@ -44,7 +44,7 @@
                 <div class="detail-row">
                     <div class="detail-label">Kategori</div>
                     <div class="detail-val">
-                        <span style="background:#EFF6FF; color:#2563EB; font-size:12px; font-weight:600; padding:3px 10px; border-radius:5px;">{{ $laporan->kategori->nama_kategori ?? '-' }}</span>
+                        <span style="background:#EFF6FF; color:#2563EB; font-size:12px; font-weight:600; padding:3px 10px; border-radius:5px;">{{ $laporan->kategoriAspirasi->nama_kategori ?? '-' }}</span>
                     </div>
                 </div>
                 <div class="detail-row">

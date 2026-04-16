@@ -16,7 +16,7 @@ class Admin extends Authenticatable
       'username',
       'foto',
       'password',
-      'kategori_id',
+      'lokasi_id',
    ];
 
    protected function nama(): Attribute
@@ -41,8 +41,8 @@ class Admin extends Authenticatable
        return false;
    }
 
-   public function kategori()
+   public function lokasi()
    {
-       return $this->belongsTo(Kategori::class);
+       return $this->belongsTo(Lokasi::class);
    }
 }

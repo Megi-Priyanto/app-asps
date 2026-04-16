@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\SuperAdmin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\KategoriBarang;
@@ -11,7 +11,12 @@ class KategoriBarangController extends Controller
     public function index()
     {
         $kategoris = KategoriBarang::latest()->paginate(10);
-        return view('superadmin.kategori-barang.index', compact('kategoris'));
+        return view('admin.kategori-barang.index', compact('kategoris'));
+    }
+
+    public function create()
+    {
+        return view('admin.kategori-barang.create');
     }
 
     public function store(Request $request)
@@ -23,8 +28,13 @@ class KategoriBarangController extends Controller
 
         KategoriBarang::create($request->all());
 
-        return redirect()->route('superadmin.kategori-barang.index')
+        return redirect()->route('admin.kategori-barang.index')
             ->with('success', 'Kategori Barang berhasil ditambahkan.');
+    }
+
+    public function edit(KategoriBarang $kategoriBarang)
+    {
+        return view('admin.kategori-barang.edit', compact('kategoriBarang'));
     }
 
     public function update(Request $request, KategoriBarang $kategoriBarang)
@@ -36,7 +46,7 @@ class KategoriBarangController extends Controller
 
         $kategoriBarang->update($request->all());
 
-        return redirect()->route('superadmin.kategori-barang.index')
+        return redirect()->route('admin.kategori-barang.index')
             ->with('success', 'Kategori Barang berhasil diperbarui.');
     }
 
@@ -44,13 +54,13 @@ class KategoriBarangController extends Controller
     {
         // Pastikan tidak ada barang yang terkait dengan kategori ini sebelum dihapus
         if ($kategoriBarang->barangs()->count() > 0) {
-            return redirect()->route('superadmin.kategori-barang.index')
+            return redirect()->route('admin.kategori-barang.index')
                 ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh beberapa barang.');
         }
 
         $kategoriBarang->delete();
 
-        return redirect()->route('superadmin.kategori-barang.index')
+        return redirect()->route('admin.kategori-barang.index')
             ->with('success', 'Kategori Barang berhasil dihapus.');
     }
 }

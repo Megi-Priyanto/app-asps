@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('reporter_type')->nullable();
             $table->unsignedBigInteger('reporter_id')->nullable();
             $table->index(['reporter_type', 'reporter_id'], 'laporan_pengaduans_reporter_type_reporter_id_index');
-            $table->foreignId('kategori_id')->constrained('kategoris')->cascadeOnDelete();
+            $table->foreignId('kategori_aspirasi_id')->constrained('kategori_aspirasis')->cascadeOnDelete();
             $table->text('ket');
             $table->string('lokasi');
             $table->string('foto')->nullable();
