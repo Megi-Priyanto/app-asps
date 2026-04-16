@@ -104,7 +104,7 @@
                     <th>Kondisi</th>
                     <th>Stok</th>
                     <th>Pinjaman</th>
-                    <th class="text-center">Aksi</th>
+                    <th width="160" class="text-end text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,7 +114,7 @@
                     <td>
                         <div style="font-weight:600;color:#0F172A;">{{ $barang->nama_barang }}</div>
                         @if($barang->gambar)
-                            <small class="text-muted"><i class="bi bi-image me-1"></i>Ada foto</small>
+                            <small class="text-muted">Ada foto</small>
                         @endif
                     </td>
                     <td>{{ $barang->kategoriBarang->nama_kategori ?? '-' }}</td>
@@ -151,13 +151,13 @@
                             <span class="inv-badge inv-badge-default">Tidak</span>
                         @endif
                     </td>
-                    <td class="text-center">
-                        <div class="d-flex gap-1 justify-content-center">
-                            <a href="{{ route('admin.inventaris.show', $barang) }}" class="btn btn-sm inv-btn-detail" title="Detail"><i class="bi bi-eye"></i></a>
-                            <a href="{{ route('admin.inventaris.edit', $barang) }}" class="btn btn-sm inv-btn-edit" title="Edit"><i class="bi bi-pencil"></i></a>
-                            <form method="POST" action="{{ route('admin.inventaris.destroy', $barang) }}" onsubmit="return confirm('Hapus barang ini?')">
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-1">
+                            <a href="{{ route('admin.inventaris.show', $barang) }}" class="btn btn-sm btn-secondary">Detail</a>
+                            <a href="{{ route('admin.inventaris.edit', $barang) }}" class="btn btn-sm btn-secondary">Edit</a>
+                            <form method="POST" action="{{ route('admin.inventaris.destroy', $barang) }}" onsubmit="return confirm('Hapus barang ini?')" class="m-0">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-sm inv-btn-hapus" title="Hapus"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                             </form>
                         </div>
                     </td>

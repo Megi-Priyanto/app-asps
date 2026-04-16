@@ -49,7 +49,6 @@ use App\Http\Controllers\Admin\PerbaikanBarangController;
 use App\Http\Controllers\Guru\PeminjamanBarangController as GuruPeminjamanBarangController;
 use App\Http\Controllers\Siswa\PeminjamanBarangController as SiswaPeminjamanBarangController;
 use App\Http\Controllers\Pegawai\PeminjamanBarangController as PegawaiPeminjamanBarangController;
-use App\Http\Controllers\SuperAdmin\LaporanInventarisController;
 
 // ─────────────────────────────────────────────
 // Welcome
@@ -245,7 +244,5 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
         Route::resource('guru', SuperGuruController::class);
         });
 
-        // ── Laporan Inventaris ──
-        Route::get('inventaris', [LaporanInventarisController::class, 'index'])->name('inventaris.index');
     });
 });

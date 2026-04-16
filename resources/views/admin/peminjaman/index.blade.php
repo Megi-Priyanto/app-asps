@@ -86,7 +86,7 @@
                     <th>Tgl Pinjam</th>
                     <th>Rencana Kembali</th>
                     <th>Status</th>
-                    <th class="text-center">Aksi</th>
+                    <th width="160" class="text-end text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -121,23 +121,23 @@
                         @endif
                     </td>
                     <td><span class="pmj-badge {{ $statusClass }}">{{ $p->status }}</span></td>
-                    <td>
-                        <div class="d-flex gap-1 justify-content-center flex-wrap">
-                            <a href="{{ route('admin.peminjaman-barang.show', $p) }}" class="btn btn-sm inv-btn-detail" title="Detail"><i class="bi bi-eye"></i></a>
+                    <td class="text-end">
+                        <div class="d-flex justify-content-end gap-1 flex-wrap">
+                            <a href="{{ route('admin.peminjaman-barang.show', $p) }}" class="btn btn-sm btn-secondary">Detail</a>
 
                             @if($p->status === 'Menunggu')
                                 {{-- Tombol ACC --}}
-                                <form method="POST" action="{{ route('admin.peminjaman-barang.acc', $p) }}">
+                                <form method="POST" action="{{ route('admin.peminjaman-barang.acc', $p) }}" class="m-0">
                                     @csrf
-                                    <button type="submit" class="btn btn-sm" style="background:#ECFDF5;color:#065F46;border:none;border-radius:8px;width:32px;height:32px;" title="Setujui"><i class="bi bi-check-lg"></i></button>
+                                    <button type="submit" class="btn btn-sm btn-success">Setujui</button>
                                 </form>
                                 {{-- Tombol Tolak --}}
-                                <button type="button" class="btn btn-sm inv-btn-hapus" data-bs-toggle="modal" data-bs-target="#tolakModal{{ $p->id }}" title="Tolak"><i class="bi bi-x-lg"></i></button>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#tolakModal{{ $p->id }}">Tolak</button>
                             @endif
 
                             @if(in_array($p->status, ['Sedang Dipinjam','Terlambat','Disetujui']))
                                 {{-- Tombol Kembalikan --}}
-                                <button type="button" class="btn btn-sm" style="background:#EFF6FF;color:#2563EB;border:none;border-radius:8px;width:32px;height:32px;" data-bs-toggle="modal" data-bs-target="#kembaliModal{{ $p->id }}" title="Proses Pengembalian"><i class="bi bi-arrow-return-left"></i></button>
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#kembaliModal{{ $p->id }}">Kembalikan</button>
                             @endif
                         </div>
 

@@ -145,7 +145,7 @@
                 <i class="bi bi-shield-check"></i>
             </div>
             <div class="nav-brand-text">
-                Apss
+                Asps
                 <span class="nav-brand-sub">Portal Pegawai</span>
             </div>
         </a>
@@ -162,13 +162,13 @@
                 </a>
             </li>
             <li class="nav-link-item">
-                <a href="{{ route('pegawai.tanggapan.index') }}" class="{{ request()->routeIs('pegawai.tanggapan.*') ? 'active' : '' }}">
-                    <i class="bi bi-chat-left-text-fill"></i> Tanggapan
+                <a href="{{ route('pegawai.peminjaman-barang.index') }}" class="{{ request()->routeIs('pegawai.peminjaman-barang.*') ? 'active' : '' }}">
+                    <i class="bi bi-box-seam-fill"></i> Buat Peminjaman
                 </a>
             </li>
             <li class="nav-link-item">
-                <a href="{{ route('pegawai.peminjaman-barang.index') }}" class="{{ request()->routeIs('pegawai.peminjaman-barang.*') ? 'active' : '' }}">
-                    <i class="bi bi-box-seam-fill"></i> Peminjaman
+                <a href="{{ route('pegawai.tanggapan.index') }}" class="{{ request()->routeIs('pegawai.tanggapan.*') ? 'active' : '' }}">
+                    <i class="bi bi-chat-left-text-fill"></i> Buat Tanggapan
                 </a>
             </li>
         </ul>
