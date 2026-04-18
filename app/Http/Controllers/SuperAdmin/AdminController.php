@@ -38,7 +38,7 @@ class AdminController extends Controller
         $request->validate([
             'nama' => 'required|string|max:50',
             'username' => 'required|string|max:20|unique:admins,username',
-            'password' => 'required|string|min:8|max:10|confirmed',
+            'password' => 'required|string|min:8|confirmed',
             'lokasi_id' => 'required|exists:lokasis,id',
         ]);
 
@@ -86,7 +86,7 @@ class AdminController extends Controller
                 'max:20',
                 Rule::unique('admins', 'username')->ignore($admin->id),
             ],
-            'password' => 'nullable|string|min:8|max:10|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'lokasi_id' => 'required|exists:lokasis,id',
         ]);
 

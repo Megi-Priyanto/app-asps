@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Barang;
 use App\Models\KategoriBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class InventarisController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Barang::with('kategoriBarang');
+        $admin = Auth::guard('admin')->user();
+
+        $query = Barang::with('kategoriBarang')
+            ->where('lokasi_id', $admin->lokasi_id);
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
@@ -32,10 +36,11 @@ class InventarisController extends Controller
         $barangs   = $query->latest()->paginate(12)->withQueryString();
         $kategoris = KategoriBarang::all();
 
-        $totalBarang    = Barang::count();
-        $barangBaik     = Barang::where('kondisi', 'Baik')->count();
-        $barangRusak    = Barang::where('kondisi', '!=', 'Baik')->count();
-        $barangPinjaman = Barang::where('is_pinjaman', true)->count();
+        $statsBase      = Barang::where('lokasi_id', $admin->lokasi_id);
+        $totalBarang    = (clone $statsBase)->count();
+        $barangBaik     = (clone $statsBase)->where('kondisi', 'Baik')->count();
+        $barangRusak    = (clone $statsBase)->where('kondisi', '!=', 'Baik')->count();
+        $barangPinjaman = (clone $statsBase)->where('is_pinjaman', true)->count();
 
         return view('admin.inventaris.index', compact(
             'barangs', 'kategoris',
@@ -70,6 +75,7 @@ class InventarisController extends Controller
         $validated['is_pinjaman'] = $request->boolean('is_pinjaman');
         $validated['jumlah']      = $validated['jumlah_baik'] + $validated['jumlah_rusak_ringan'] + $validated['jumlah_rusak_berat'];
         $validated['kondisi']     = $this->tentukanKondisi($validated);
+        $validated['lokasi_id']   = Auth::guard('admin')->user()->lokasi_id;
 
         if ($request->hasFile('gambar')) {
             $validated['gambar'] = $request->file('gambar')->store('barangs', 'public');
@@ -83,18 +89,21 @@ class InventarisController extends Controller
 
     public function show(Barang $inventari)
     {
+        abort_if($inventari->lokasi_id !== Auth::guard('admin')->user()->lokasi_id, 403, 'Barang ini bukan milik lokasi Anda.');
         $inventari->load('kategoriBarang', 'peminjamanBarangs.borrower', 'perbaikanBarangs');
         return view('admin.inventaris.show', compact('inventari'));
     }
 
     public function edit(Barang $inventari)
     {
+        abort_if($inventari->lokasi_id !== Auth::guard('admin')->user()->lokasi_id, 403, 'Barang ini bukan milik lokasi Anda.');
         $kategoris = KategoriBarang::all();
         return view('admin.inventaris.edit', compact('inventari', 'kategoris'));
     }
 
     public function update(Request $request, Barang $inventari)
     {
+        abort_if($inventari->lokasi_id !== Auth::guard('admin')->user()->lokasi_id, 403, 'Barang ini bukan milik lokasi Anda.');
         $validated = $request->validate([
             'kode_barang'       => 'required|string|max:50|unique:barangs,kode_barang,' . $inventari->id,
             'nama_barang'       => 'required|string|max:150',
@@ -114,6 +123,7 @@ class InventarisController extends Controller
         $validated['is_pinjaman'] = $request->boolean('is_pinjaman');
         $validated['jumlah']      = $validated['jumlah_baik'] + $validated['jumlah_rusak_ringan'] + $validated['jumlah_rusak_berat'];
         $validated['kondisi']     = $this->tentukanKondisi($validated);
+        $validated['lokasi_id']   = Auth::guard('admin')->user()->lokasi_id;
 
         if ($request->hasFile('gambar')) {
             if ($inventari->gambar) Storage::disk('public')->delete($inventari->gambar);
@@ -128,6 +138,7 @@ class InventarisController extends Controller
 
     public function destroy(Barang $inventari)
     {
+        abort_if($inventari->lokasi_id !== Auth::guard('admin')->user()->lokasi_id, 403, 'Barang ini bukan milik lokasi Anda.');
         if ($inventari->gambar) Storage::disk('public')->delete($inventari->gambar);
         $inventari->delete();
 

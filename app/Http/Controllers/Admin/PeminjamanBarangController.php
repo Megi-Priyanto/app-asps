@@ -115,7 +115,7 @@ class PeminjamanBarangController extends Controller
 
                 $peminjamanBarang->update([
                     'status'       => 'Sedang Dipinjam',
-                    'admin_id'     => Auth::id(),
+                    'admin_id'     => Auth::guard('admin')->id(),
                     'catatan_admin'=> $request->catatan_admin,
                 ]);
             });
@@ -139,7 +139,7 @@ class PeminjamanBarangController extends Controller
 
         $peminjamanBarang->update([
             'status'        => 'Ditolak',
-            'admin_id'      => Auth::id(),
+            'admin_id'      => Auth::guard('admin')->id(),
             'catatan_admin' => $request->catatan_admin,
         ]);
 
@@ -157,21 +157,23 @@ class PeminjamanBarangController extends Controller
 
         $request->validate(['kondisi_barang' => 'required|in:Baik,Rusak Ringan,Rusak Berat']);
 
-        $peminjamanBarang->update([
-            'tanggal_kembali_aktual' => now(),
-            'status'                 => 'Sudah Dikembalikan',
-            'kondisi_barang'         => $request->kondisi_barang,
-            'admin_id'               => Auth::id(),
-        ]);
-
         $barang = $peminjamanBarang->barang;
 
-        if ($request->kondisi_barang !== 'Baik') {
-            try {
-                \Illuminate\Support\Facades\DB::transaction(function () use ($request, $peminjamanBarang, $barang) {
-                    // Lock barang update
-                    $barang = Barang::lockForUpdate()->find($barang->id);
-                    
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($request, $peminjamanBarang, $barang) {
+                // Lock row PeminjamanBarang dan Barang
+                $peminjamanBarang = PeminjamanBarang::lockForUpdate()->find($peminjamanBarang->id);
+                $barang = Barang::lockForUpdate()->find($barang->id);
+
+                // Update status peminjaman
+                $peminjamanBarang->update([
+                    'tanggal_kembali_aktual' => now(),
+                    'status'                 => 'Sudah Dikembalikan',
+                    'kondisi_barang'         => $request->kondisi_barang,
+                    'admin_id'               => Auth::guard('admin')->id(),
+                ]);
+
+                if ($request->kondisi_barang !== 'Baik') {
                     // Kurangi stok baik, tambah stok rusak
                     $barang->jumlah_baik = max(0, $barang->jumlah_baik - $peminjamanBarang->jumlah_pinjam);
 
@@ -193,15 +195,16 @@ class PeminjamanBarangController extends Controller
                         'keterangan_kerusakan' => "Dikembalikan dalam kondisi {$request->kondisi_barang} oleh {$peminjamanBarang->borrower_name}",
                         'tanggal_masuk'        => now()->toDateString(),
                         'status'               => 'Menunggu',
-                        'admin_id'             => Auth::id(),
+                        'admin_id'             => Auth::guard('admin')->id(),
                     ]);
-                });
-            } catch (\Exception $e) {
-                return back()->with('error', 'Terjadi kesalahan sistem saat memproses pengembalian: ' . $e->getMessage());
-            }
+                }
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan sistem saat memproses pengembalian: ' . $e->getMessage());
+        }
 
-            return back()->with('warning',
-                "Barang dikembalikan kondisi {$request->kondisi_barang}. Catatan perbaikan otomatis dibuat.");
+        if ($request->kondisi_barang !== 'Baik') {
+            return back()->with('warning', "Barang dikembalikan kondisi {$request->kondisi_barang}. Catatan perbaikan otomatis dibuat.");
         }
 
         return back()->with('success', 'Barang berhasil dikembalikan dalam kondisi Baik.');

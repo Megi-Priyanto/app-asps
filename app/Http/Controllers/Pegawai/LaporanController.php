@@ -36,7 +36,7 @@ class LaporanController extends Controller
             $query->where('ket', 'like', '%' . $request->search . '%');
         }
         if ($request->filled('kategori')) {
-            $query->where('kategori_id', $request->kategori);
+            $query->where('kategori_aspirasi_id', $request->kategori);
         }
         if ($request->filled('status')) {
             $status = $request->status;

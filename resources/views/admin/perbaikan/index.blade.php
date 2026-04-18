@@ -104,7 +104,7 @@
                                         <h6 class="modal-title fw-bold">Update Status Perbaikan</h6>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                     </div>
-                                    <form method="POST" action="{{ route('admin.perbaikan-barang.update-status', $p) }}">
+                                    <form method="POST" action="{{ route('admin.perbaikan-barang.update-status', $p) }}" enctype="multipart/form-data">
                                         @csrf @method('PATCH')
                                         <div class="modal-body">
                                             <div class="mb-3">
@@ -118,8 +118,9 @@
                                             <div class="mb-3" id="selesaiFields{{ $p->id }}" style="display:none;">
                                                 <label class="form-label">Tanggal Selesai</label>
                                                 <input type="date" name="tanggal_selesai" class="form-control" value="{{ date('Y-m-d') }}">
-                                                <label class="form-label mt-2">Biaya Perbaikan (Rp)</label>
-                                                <input type="number" name="biaya_perbaikan" class="form-control" placeholder="0" min="0">
+                                                <label class="form-label mt-2">Foto Nota / Kuitansi (Opsional)</label>
+                                                <input type="file" name="foto_nota" class="form-control" accept="image/*">
+                                                <small class="text-muted" style="font-size: 11px;">Unggah jika perbaikan memiliki nota biaya.</small>
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Catatan</label>

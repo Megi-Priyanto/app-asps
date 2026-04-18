@@ -19,6 +19,7 @@ class PerbaikanBarang extends Model
         'tanggal_selesai',
         'status',
         'catatan_perbaikan',
+        'foto_nota',
         'biaya_perbaikan',
         'admin_id',
     ];

@@ -12,4 +12,9 @@ class Lokasi extends Model
     {
         return $this->hasMany(Admin::class);
     }
+
+    public function barangs()
+    {
+        return $this->hasMany(Barang::class);
+    }
 }

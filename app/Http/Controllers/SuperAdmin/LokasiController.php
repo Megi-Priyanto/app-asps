@@ -55,9 +55,9 @@ class LokasiController extends Controller
 
     public function destroy(Lokasi $lokasi)
     {
-        if ($lokasi->admins()->count() > 0) {
+        if ($lokasi->admins()->count() > 0 || $lokasi->barangs()->count() > 0) {
             return redirect()->route('superadmin.lokasi.index')
-                ->with('error', 'Lokasi tidak dapat dihapus karena masih menugaskan Admin. Silakan pindahkan admin terlebih dahulu.');
+                ->with('error', 'Lokasi tidak dapat dihapus karena masih digunakan oleh Admin atau memiliki Barang terkait.');
         }
 
         $lokasi->delete();

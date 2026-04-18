@@ -690,6 +690,24 @@
             <span class="sidebar-item-text">Tanggapan Pengguna</span>
         </a>
 
+        <div class="sidebar-section-label">Sarpras</div>
+
+        <a href="{{ route('superadmin.laporan-barang.index') }}"
+            data-tooltip="Laporan Barang"
+            data-page-title="Laporan Data Barang"
+            class="sidebar-item {{ request()->routeIs('superadmin.laporan-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-clipboard-data-fill"></i>
+            <span class="sidebar-item-text">Laporan Barang</span>
+        </a>
+
+        <a href="{{ route('superadmin.perbaikan-barang.index') }}"
+            data-tooltip="Perbaikan Barang"
+            data-page-title="Perbaikan & Biaya"
+            class="sidebar-item {{ request()->routeIs('superadmin.perbaikan-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-tools"></i>
+            <span class="sidebar-item-text">Perbaikan & Biaya</span>
+        </a>
+
         {{-- Pengguna Dropdown --}}
         @php
             $penggunaActive = request()->routeIs('superadmin.pengguna.*');
