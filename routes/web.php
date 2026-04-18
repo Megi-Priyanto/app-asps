@@ -27,6 +27,7 @@ use App\Http\Controllers\Admin\AkunController as AdminAkunController;
 use App\Http\Controllers\Admin\KategoriAspirasiController;
 use App\Http\Controllers\Admin\LaporanAspirasiController as AdminLaporanController;
 use App\Http\Controllers\Admin\KategoriBarangController as AdminKategoriBarangController;
+use App\Http\Controllers\Admin\LaporanBarangController as AdminLaporanBarangController;
 
 use App\Http\Controllers\SuperAdmin\AuthController as SuperAuthController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperDashboardController;
@@ -40,6 +41,7 @@ use App\Http\Controllers\SuperAdmin\SiswaImportController;
 use App\Http\Controllers\SuperAdmin\PegawaiImportController;
 use App\Http\Controllers\SuperAdmin\GuruImportController;
 use App\Http\Controllers\SuperAdmin\AdminController as SuperAdminAdminController;
+use App\Http\Controllers\SuperAdmin\LaporanBarangController as SuperLaporanBarangController;
 
 use App\Http\Controllers\UserTanggapanController;
 
@@ -80,7 +82,7 @@ Route::prefix('siswa')->name('siswa.')->group(function () {
     });
 
     Route::middleware('auth:siswa')->group(function () {
-        Route::get('/dasboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::singleton('/akun', AkunController::class)->except('show');
         Route::put('/akun/password', [AkunController::class, 'updatePassword'])->name('akun.password');
@@ -201,6 +203,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('perbaikan-barang', [PerbaikanBarangController::class, 'index'])->name('perbaikan-barang.index');
         Route::get('perbaikan-barang/{perbaikanBarang}', [PerbaikanBarangController::class, 'show'])->name('perbaikan-barang.show');
         Route::patch('perbaikan-barang/{perbaikanBarang}/update-status', [PerbaikanBarangController::class, 'updateStatus'])->name('perbaikan-barang.update-status');
+
+        // ── Laporan Barang ──
+        Route::get('laporan-barang', [AdminLaporanBarangController::class, 'index'])->name('laporan-barang.index');
+        Route::get('laporan-barang/cetak', [AdminLaporanBarangController::class, 'cetak'])->name('laporan-barang.cetak');
     });
 });
 
@@ -228,6 +234,15 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::resource('admin', SuperAdminAdminController::class);
 
     Route::resource('lokasi', SuperLokasiController::class);
+
+    // ── Laporan Barang ──
+    Route::get('laporan-barang', [SuperLaporanBarangController::class, 'index'])->name('laporan-barang.index');
+    Route::get('laporan-barang/cetak', [SuperLaporanBarangController::class, 'cetak'])->name('laporan-barang.cetak');
+
+    // ── Perbaikan Barang (Manajemen Biaya) ──
+    Route::get('perbaikan-barang', [\App\Http\Controllers\SuperAdmin\PerbaikanBarangController::class, 'index'])->name('perbaikan-barang.index');
+    Route::patch('perbaikan-barang/{perbaikanBarang}/biaya', [\App\Http\Controllers\SuperAdmin\PerbaikanBarangController::class, 'updateBiaya'])->name('perbaikan-barang.update-biaya');
+    Route::get('perbaikan-barang/cetak', [\App\Http\Controllers\SuperAdmin\PerbaikanBarangController::class, 'cetakPdf'])->name('perbaikan-barang.cetak');
     Route::resource('tanggapan-pengguna', SuperTanggapanController::class)->only(['index', 'destroy', 'toggleStatus']);
     Route::post('tanggapan-pengguna/{tanggapan}/toggle-status', [SuperTanggapanController::class, 'toggleStatus'])->name('tanggapan-pengguna.toggle-status');
 

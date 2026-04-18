@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Barang extends Model
 {
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'kode_barang', 'nama_barang', 'kategori_barang_id', 'lokasi_id',
+        'lokasi_simpan', 'jumlah_baik', 'jumlah_rusak_ringan', 'jumlah_rusak_berat',
+        'jumlah', 'satuan', 'kondisi', 'tanggal_pengadaan', 'sumber',
+        'is_pinjaman', 'keterangan', 'gambar'
+    ];
 
     protected $casts = [
         'tanggal_pengadaan' => 'date',
@@ -22,6 +27,11 @@ class Barang extends Model
     public function kategoriBarang(): BelongsTo
     {
         return $this->belongsTo(KategoriBarang::class, 'kategori_barang_id');
+    }
+
+    public function lokasi(): BelongsTo
+    {
+        return $this->belongsTo(Lokasi::class);
     }
 
     public function peminjamanBarangs(): HasMany

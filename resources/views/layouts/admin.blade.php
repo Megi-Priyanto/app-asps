@@ -729,6 +729,14 @@
             <span class="sidebar-item-text">Perbaikan Barang</span>
         </a>
 
+        <a href="{{ route('admin.laporan-barang.index') }}"
+            data-tooltip="Laporan Barang"
+            data-page-title="Laporan Data Barang"
+            class="sidebar-item {{ request()->routeIs('admin.laporan-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-clipboard-data-fill"></i>
+            <span class="sidebar-item-text">Laporan Barang</span>
+        </a>
+
         <div class="sidebar-section-label">Pengaturan</div>
 
 

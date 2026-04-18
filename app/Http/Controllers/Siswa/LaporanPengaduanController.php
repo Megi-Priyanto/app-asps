@@ -47,15 +47,16 @@ class LaporanPengaduanController extends Controller
 
         // Filter: kategori
         if ($request->filled('kategori')) {
-            $query->where('kategori_id', $request->kategori);
+            $query->where('kategori_aspirasi_id', $request->kategori);
         }
 
-        // Filter: status (via aspirasi)
         if ($request->filled('status')) {
             $status = $request->status;
             if ($status === 'menunggu') {
-                $query->whereDoesntHave('aspirasi')
-                    ->orWhereHas('aspirasi', fn($q) => $q->where('status', 'menunggu'));
+                $query->where(function ($q) {
+                    $q->whereDoesntHave('aspirasi')
+                      ->orWhereHas('aspirasi', fn($sub) => $sub->where('status', 'menunggu'));
+                });
             } else {
                 $query->whereHas('aspirasi', fn($q) => $q->where('status', $status));
             }
@@ -118,12 +119,13 @@ class LaporanPengaduanController extends Controller
             $fotoName = $request->file('foto')->store('laporan', 'public');
         }
 
-        LaporanPengaduan::create([
-            'siswa_id'    => Auth::guard('siswa')->user()->id,
+        $siswa = Auth::guard('siswa')->user();
+        $siswa->laporanSebagaiReporter()->create([
+            'siswa_id'             => $siswa->id, // Pertahankan untuk kompatibilitas filter yang lama
             'kategori_aspirasi_id' => $request->kategori_aspirasi_id,
-            'ket'         => $request->ket,
-            'lokasi'      => $request->lokasi,
-            'foto'        => $fotoName,
+            'ket'                  => $request->ket,
+            'lokasi'               => $request->lokasi,
+            'foto'                 => $fotoName,
         ]);
 
         return redirect()
