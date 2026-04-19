@@ -1,11 +1,11 @@
-﻿@extends('layouts.guru')
+@extends('layouts.guru')
 
 @section('title', 'Dashboard Guru')
 
 @push('css')
 <style>
     :root {
-        --primary: #2563EB; --primary-light: #EFF6FF;
+        --primary: #0EA5E9; --primary-light: #F0F9FF;
         --body-bg: #F8FAFC; --card-bg: #fff;
         --border: #E2E8F0; --text-primary: #0F172A;
         --text-secondary: #64748B; --text-muted: #94A3B8;
@@ -16,7 +16,7 @@
 
     /* ===== WELCOME BANNER ===== */
     .welcome-banner {
-        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+        background: linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%);
         border-radius: var(--radius);
         padding: 22px 28px;
         margin-bottom: 24px;
@@ -28,28 +28,40 @@
     .welcome-banner h2 { font-size: 20px; font-weight: 800; margin: 0 0 4px; }
     .welcome-banner p  { font-size: 13px; opacity: .8; margin: 0; }
     .welcome-avatar {
-        width: 52px; height: 52px; border-radius: 50%;
+        width: 52px; height: 52px;
+        border-radius: 50%;
         background: rgba(255,255,255,0.22);
         display: flex; align-items: center; justify-content: center;
-        font-size: 20px; font-weight: 800; flex-shrink: 0;
+        font-size: 20px; font-weight: 800;
+        flex-shrink: 0;
     }
+
+    /* ===== SECTION LABEL ===== */
     .section-label {
         font-size: 11px; font-weight: 700; color: var(--text-muted);
-        text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px;
+        text-transform: uppercase; letter-spacing: .6px;
+        margin-bottom: 12px;
     }
 
     /* ===== STAT CARDS ===== */
     .stat-cards {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 16px; margin-bottom: 28px;
+        gap: 16px;
+        margin-bottom: 28px;
     }
-    @media (max-width: 768px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 992px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 480px) { .stat-cards { grid-template-columns: 1fr; } }
+
     .stat-card {
-        background: var(--card-bg); border: 1px solid var(--border);
-        border-radius: var(--radius); box-shadow: var(--shadow);
-        padding: 20px 22px; display: flex; align-items: center; gap: 16px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 20px 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
         transition: transform .18s, box-shadow .18s;
     }
     .stat-card:hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
@@ -58,20 +70,23 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 22px; flex-shrink: 0;
     }
-    .stat-icon.green  { background: #ECFDF5; color: #059669; }
+    .stat-icon.blue   { background: #F0F9FF; color: #0EA5E9; }
     .stat-icon.yellow { background: #FFFBEB; color: #D97706; }
     .stat-icon.orange { background: #FFF7ED; color: #EA580C; }
-    .stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
+    .stat-icon.green  { background: #F0FDF4; color: #16A34A; }
     .stat-value { font-size: 28px; font-weight: 800; color: var(--text-primary); line-height: 1; margin-bottom: 4px; }
     .stat-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
 
-    /* ===== 2 KOLOM ===== */
+    /* ===== GRID 2 KOLOM ===== */
     .two-col {
-        display: grid; grid-template-columns: 1fr 1fr;
-        gap: 20px; margin-bottom: 28px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 28px;
     }
     @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
 
+    /* ===== CARD ===== */
     .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
     .card-header {
         background: transparent; border-bottom: 1px solid var(--border);
@@ -85,67 +100,71 @@
     /* ===== AKTIVITAS ===== */
     .activity-item {
         display: flex; align-items: flex-start; gap: 12px;
-        padding: 11px 0; border-bottom: 1px solid #F8FAFC;
+        padding: 12px 0; border-bottom: 1px solid #F8FAFC;
     }
     .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
     .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
     .dot-green  { background: #10B981; }
     .dot-yellow { background: #F59E0B; }
-    .dot-blue   { background: #3B82F6; }
+    .dot-blue   { background: #0EA5E9; }
     .dot-gray   { background: #CBD5E1; }
-    .activity-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .activity-title { font-size: 13.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
     .activity-meta  { font-size: 12px; color: var(--text-secondary); }
-    .activity-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; }
+    .activity-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 32px 0; }
 
     /* ===== BADGE ===== */
-    .badge { font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 6px; display: inline-block; }
-    .badge-menunggu { background: #FFFBEB; color: #B45309; }
-    .badge-proses   { background: #FFF7ED; color: #C2410C; }
-    .badge-selesai  { background: #ECFDF5; color: #059669; }
+    .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; text-transform: uppercase; letter-spacing: 0.3px; }
+    .badge-menunggu  { background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7; }
+    .badge-proses    { background: #F0F9FF; color: #0369A1; border: 1px solid #E0F2FE; }
+    .badge-selesai   { background: #ECFDF5; color: #059669; border: 1px solid #D1FAE5; }
 
     /* ===== PROGRESS ===== */
-    .progress-row { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
-    .progress-row strong { font-weight: 700; }
-    .progress-bar { height: 7px; background: #F1F5F9; border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+    .progress-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .progress-row strong { font-weight: 700; color: var(--text-primary); }
+    .progress-bar { height: 8px; background: #F1F5F9; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
     .progress-fill { height: 100%; border-radius: 4px; transition: width .6s ease; }
     .progress-fill.green  { background: var(--success); }
-    .progress-fill.orange { background: #F97316; }
+    .progress-fill.blue   { background: var(--primary); }
     .progress-fill.yellow { background: var(--warning); }
 
     /* ===== TIP CARD ===== */
     .tip-card {
-        background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px;
-        padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;
+        background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+        border: 1px solid #BEE3F8; border-radius: 14px;
+        padding: 16px 20px; display: flex; gap: 14px; align-items: center;
+        margin-bottom: 20px;
     }
-    .tip-card .tip-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
-    .tip-card .tip-title { font-size: 13px; font-weight: 700; color: #1D4ED8; margin-bottom: 3px; }
-    .tip-card .tip-desc  { font-size: 12px; color: #3B82F6; line-height: 1.5; margin: 0; }
+    .tip-icon { font-size: 24px; flex-shrink: 0; }
+    .tip-title { font-size: 14px; font-weight: 700; color: #0369A1; margin-bottom: 2px; }
+    .tip-desc  { font-size: 12.5px; color: #0EA5E9; line-height: 1.5; margin: 0; opacity: 0.9; }
 
     /* ===== QUICK ACTION ===== */
     .quick-btn {
-        display: flex; align-items: center; gap: 10px; width: 100%;
-        background: var(--card-bg); border: 1px solid var(--border);
-        border-radius: 8px; padding: 10px 14px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 13px; font-weight: 600; color: #374151;
+        display: flex; align-items: center; gap: 12px; width: 100%;
+        background: #fff; border: 1px solid var(--border);
+        border-radius: 12px; padding: 14px 18px;
+        font-size: 14px; font-weight: 700; color: var(--text-primary);
         cursor: pointer; text-decoration: none;
-        transition: background .15s, box-shadow .15s; margin-bottom: 8px;
+        transition: all 0.2s;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .quick-btn:last-child { margin-bottom: 0; }
-    .quick-btn:hover { background: #F8FAFC; box-shadow: 0 2px 8px rgba(0,0,0,0.06); color: #374151; }
-    .quick-btn i { opacity: .6; font-size: 15px; }
-    .side-stack { display: flex; flex-direction: column; gap: 16px; }
-    .alert { border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; padding: 12px 16px; }
-    .alert-success { background: #ECFDF5; color: #065F46; }
+    .quick-btn:hover { background: #fdfdfd; border-color: #BAE6FD; transform: translateX(5px); color: var(--primary); }
+    .quick-btn i { font-size: 18px; opacity: 0.8; }
+
+    .side-stack { display: flex; flex-direction: column; gap: 20px; }
+    .alert { border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; padding: 14px 20px; }
+    .alert-success { background: #ECFDF5; color: #065F46; box-shadow: 0 2px 10px rgba(16,185,129,0.1); }
 </style>
 @endpush
 
 @section('content')
 
 @if (session('success'))
-    <div class="alert alert-success mb-4 d-flex align-items-center gap-2">
+    <div class="alert alert-success mb-4 d-flex align-items-center gap-3">
         <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
-        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" style="font-size:12px;"></button>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
@@ -153,9 +172,9 @@
 <div class="welcome-banner">
     <div>
         <h2>Halo, {{ Auth::guard('guru')->user()->nama }}</h2>
-        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;Â·&nbsp; {{ Auth::guard('guru')->user()->jabatan ?? 'Guru' }}</p>
+        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;•&nbsp; Bapak/Ibu Guru</p>
     </div>
-    <div class="welcome-avatar" style="overflow:hidden;">
+    <div class="welcome-avatar" style="overflow:hidden; border:2px solid rgba(255,255,255,0.3);">
         @if(Auth::guard('guru')->user()->foto)
             <img src="{{ asset('storage/' . Auth::guard('guru')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
         @else
@@ -165,63 +184,76 @@
 </div>
 
 {{-- ===== STAT CARDS ===== --}}
-<div class="section-label">Ringkasan Laporan</div>
+<div class="section-label">Ringkasan Laporan Saya</div>
 <div class="stat-cards">
     <div class="stat-card">
-        <div class="stat-icon blue"><i class="bi bi-folder2-open"></i></div>
-        <div><div class="stat-value">{{ $stats['total'] }}</div><div class="stat-label">Total Laporan</div></div>
+        <div class="stat-icon blue"><i class="bi bi-file-earmark-text"></i></div>
+        <div>
+            <div class="stat-value">{{ $stats['total'] }}</div>
+            <div class="stat-label">Total</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon yellow"><i class="bi bi-hourglass-split"></i></div>
-        <div><div class="stat-value">{{ $stats['menunggu'] }}</div><div class="stat-label">Menunggu</div></div>
+        <div class="stat-icon yellow"><i class="bi bi-clock-history"></i></div>
+        <div>
+            <div class="stat-value">{{ $stats['menunggu'] }}</div>
+            <div class="stat-label">Menunggu</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon orange"><i class="bi bi-arrow-repeat"></i></div>
-        <div><div class="stat-value">{{ $stats['proses'] }}</div><div class="stat-label">Diproses</div></div>
+        <div class="stat-icon orange"><i class="bi bi-gear-fill"></i></div>
+        <div>
+            <div class="stat-value">{{ $stats['proses'] }}</div>
+            <div class="stat-label">Diproses</div>
+        </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon blue"><i class="bi bi-check-circle-fill"></i></div>
-        <div><div class="stat-value">{{ $stats['selesai'] }}</div><div class="stat-label">Selesai</div></div>
+        <div class="stat-icon green"><i class="bi bi-patch-check-fill"></i></div>
+        <div>
+            <div class="stat-value">{{ $stats['selesai'] }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
     </div>
 </div>
 
-{{-- ===== 2 KOLOM ===== --}}
+{{-- ===== 2 KOLOM: AKTIVITAS + PANEL KANAN ===== --}}
 <div class="two-col">
 
     {{-- Aktivitas Terbaru --}}
     <div class="card">
         <div class="card-header">
-            <span><i class="bi bi-clock-history me-2" style="color:#2563EB;"></i>Laporan Terbaru</span>
-            <a href="{{ route('guru.laporan.index') }}" class="header-link">Lihat semua â†’</a>
+            <span><i class="bi bi-activity me-2" style="color:var(--primary);"></i>Laporan Terbaru Bapak/Ibu</span>
+            <a href="{{ route('guru.laporan.index') }}" class="header-link">Semua &rarr;</a>
         </div>
         <div class="card-body">
             @forelse ($laporanTerbaru as $item)
                 @php
                     $status = $item->status ?? 'menunggu';
-                    $dotClass = $status === 'selesai' ? 'dot-green' : ($status === 'proses' ? 'dot-yellow' : 'dot-blue');
+                    $dotClass = match($status) {
+                        'selesai' => 'dot-green',
+                        'proses' => 'dot-yellow',
+                        default => 'dot-blue'
+                    };
+                    $badgeClass = 'badge-' . $status;
                 @endphp
                 <div class="activity-item">
                     <div class="activity-dot {{ $dotClass }}"></div>
-                    <div style="flex:1;min-width:0">
-                        <div class="activity-title d-flex align-items-center gap-2 flex-wrap">
-                            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px">
-                                {{ Str::limit($item->ket, 45) }}
+                    <div style="flex:1; min-width:0">
+                        <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                            <span class="activity-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                {{ Str::limit($item->ket, 60) }}
                             </span>
-                            <span class="badge badge-{{ $status }}">{{ ucfirst($status) }}</span>
+                            <span class="badge {{ $badgeClass }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            {{ $item->kategoriAspirasi->nama_kategori ?? '-' }} Â· {{ $item->created_at->diffForHumans() }}
+                            <i class="bi bi-tag me-1"></i> {{ $item->kategori->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->translatedFormat('d M Y') }}
                         </div>
                     </div>
-                    <a href="{{ route('guru.laporan.show', $item->id) }}" class="btn btn-sm"
-                       style="font-size:11px;color:#2563EB;font-weight:600;white-space:nowrap;padding:3px 8px;border:1px solid #BFDBFE;border-radius:6px;background:#EFF6FF;text-decoration:none">
-                        Detail
-                    </a>
                 </div>
             @empty
                 <div class="activity-empty">
-                    <i class="bi bi-inbox" style="font-size:28px;display:block;margin-bottom:8px;color:#CBD5E1;"></i>
-                    Belum ada laporan.
+                    <i class="bi bi-clipboard-x" style="font-size:32px; display:block; margin-bottom:10px; opacity:0.3;"></i>
+                    Bapak/Ibu belum memiliki riwayat laporan.
                 </div>
             @endforelse
         </div>
@@ -230,55 +262,68 @@
     {{-- Panel Kanan --}}
     <div class="side-stack">
 
+        {{-- Progress Laporan --}}
+        <div class="card">
+            <div class="card-header">
+                <span><i class="bi bi-graph-up-arrow me-2" style="color:var(--success);"></i>Progres Penyelesaian</span>
+            </div>
+            <div class="card-body">
+                @php
+                    $total = $stats['total'] > 0 ? $stats['total'] : 1;
+                    $pctSelesai = round(($stats['selesai'] / $total) * 100);
+                    $pctProses = round(($stats['proses'] / $total) * 100);
+                    $pctMenunggu = round(($stats['menunggu'] / $total) * 100);
+                @endphp
+
+                <div class="progress-row">
+                    <span>Sudah Tuntas</span>
+                    <strong>{{ $stats['selesai'] }} / {{ $stats['total'] ?: 0 }}</strong>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill green" style="width: {{ $pctSelesai }}%"></div>
+                </div>
+
+                <div class="progress-row">
+                    <span>Sedang Tindak Lanjut</span>
+                    <strong>{{ $stats['proses'] }} / {{ $stats['total'] ?: 0 }}</strong>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill blue" style="width: {{ $pctProses }}%"></div>
+                </div>
+
+                <div class="progress-row">
+                    <span>Antrian</span>
+                    <strong>{{ $stats['menunggu'] }} / {{ $stats['total'] ?: 0 }}</strong>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill yellow" style="width: {{ $pctMenunggu }}%"></div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Aksi Cepat --}}
+        <div>
+            <div class="section-label">Aksi Cepat Guru</div>
+            <a href="{{ route('guru.laporan.create') }}" class="quick-btn">
+                <i class="bi bi-pencil-fill" style="color:var(--primary);"></i>
+                <span>Tulis Laporan Aspirasi</span>
+            </a>
+            <a href="{{ route('guru.laporan.index') }}" class="quick-btn">
+                <i class="bi bi-journal-text" style="color:var(--warning);"></i>
+                <span>Lihat Laporan Saya</span>
+            </a>
+            <a href="{{ route('guru.peminjaman.index') }}" class="quick-btn">
+                <i class="bi bi-box-seam" style="color:var(--success);"></i>
+                <span>Layanan Pinjam Barang</span>
+            </a>
+        </div>
+
+        {{-- Tip Card --}}
         <div class="tip-card">
-            <div class="tip-icon"></div>
+            <div class="tip-icon">✨</div>
             <div>
-                <div class="tip-title">Selamat Datang, {{ Auth::guard('guru')->user()->nama }}!</div>
-                <p class="tip-desc">Pantau laporan pengaduan dan berikan tanggapan untuk membantu siswa dan komunitas sekolah.</p>
-            </div>
-        </div>
-
-        @if ($stats['total'] > 0)
-        <div class="card">
-            <div class="card-header"><i class="bi bi-bar-chart-fill me-2" style="color:#2563EB;"></i>Progres Laporan</div>
-            <div class="card-body">
-                <div class="progress-row">
-                    <span>Selesai</span>
-                    <strong>{{ $stats['selesai'] }} / {{ $stats['total'] }}</strong>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill green"
-                         style="width:{{ $stats['total'] ? round($stats['selesai']/$stats['total']*100) : 0 }}%"></div>
-                </div>
-                <div class="progress-row">
-                    <span>Diproses</span>
-                    <strong>{{ $stats['proses'] }} / {{ $stats['total'] }}</strong>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill orange"
-                         style="width:{{ $stats['total'] ? round($stats['proses']/$stats['total']*100) : 0 }}%"></div>
-                </div>
-                <div class="progress-row">
-                    <span>Menunggu</span>
-                    <strong>{{ $stats['menunggu'] }} / {{ $stats['total'] }}</strong>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill yellow"
-                         style="width:{{ $stats['total'] ? round($stats['menunggu']/$stats['total']*100) : 0 }}%"></div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <div class="card">
-            <div class="card-header"><i class="bi bi-lightning-charge-fill me-2" style="color:#F59E0B;"></i>Aksi Cepat</div>
-            <div class="card-body">
-                <a href="{{ route('guru.laporan.create') }}" class="quick-btn">
-                    <i class="bi bi-plus-circle"></i> Buat Laporan Baru
-                </a>
-                <a href="{{ route('guru.laporan.index') }}" class="quick-btn">
-                    <i class="bi bi-list-ul"></i> Riwayat Semua Laporan
-                </a>
+                <div class="tip-title">Layanan Guru</div>
+                <p class="tip-desc">Laporkan kendala fasilitas di ruang kelas untuk kenyamanan mengajar.</p>
             </div>
         </div>
 

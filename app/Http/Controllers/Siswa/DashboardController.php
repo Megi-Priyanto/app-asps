@@ -17,13 +17,16 @@ class DashboardController extends Controller
 
         $stats = [
             'total'    => $allLaporan->count(),
-            'menunggu' => $allLaporan->filter(fn($l) =>
+            'menunggu' => $allLaporan->filter(
+                fn($l) =>
                 !$l->aspirasi || $l->aspirasi->status === 'menunggu'
             )->count(),
-            'proses'   => $allLaporan->filter(fn($l) =>
+            'proses'   => $allLaporan->filter(
+                fn($l) =>
                 $l->aspirasi && $l->aspirasi->status === 'proses'
             )->count(),
-            'selesai'  => $allLaporan->filter(fn($l) =>
+            'selesai'  => $allLaporan->filter(
+                fn($l) =>
                 $l->aspirasi && $l->aspirasi->status === 'selesai'
             )->count(),
         ];

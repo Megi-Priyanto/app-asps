@@ -1,4 +1,4 @@
-﻿@extends('layouts.siswa')
+@extends('layouts.siswa')
 
 @section('title', 'Dashboard Siswa')
 
@@ -50,8 +50,8 @@
         gap: 16px;
         margin-bottom: 28px;
     }
-    @media (max-width: 768px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .stat-cards { grid-template-columns: 1fr; } }
+    @media (max-width: 992px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .stat-cards { grid-template-columns: 1fr; } } /* FULL WIDTH ON MOBILE */
 
     .stat-card {
         background: var(--card-bg);
@@ -100,7 +100,7 @@
     /* ===== AKTIVITAS ===== */
     .activity-item {
         display: flex; align-items: flex-start; gap: 12px;
-        padding: 11px 0; border-bottom: 1px solid #F8FAFC;
+        padding: 12px 0; border-bottom: 1px solid #F8FAFC;
     }
     .activity-item:last-child { border-bottom: none; padding-bottom: 0; }
     .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
@@ -108,64 +108,65 @@
     .dot-yellow { background: #F59E0B; }
     .dot-blue   { background: #3B82F6; }
     .dot-gray   { background: #CBD5E1; }
-    .activity-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+    .activity-title { font-size: 13.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
     .activity-meta  { font-size: 12px; color: var(--text-secondary); }
-    .activity-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 24px 0; }
+    .activity-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 32px 0; }
 
     /* ===== BADGE ===== */
-    .badge { font-size: 11.5px; font-weight: 600; padding: 3px 9px; border-radius: 6px; display: inline-block; }
-    .badge-menunggu  { background: #FFFBEB; color: #B45309; }
-    .badge-proses    { background: #FFF7ED; color: #C2410C; }
-    .badge-selesai   { background: #ECFDF5; color: #059669; }
+    .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; text-transform: uppercase; letter-spacing: 0.3px; }
+    .badge-menunggu  { background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7; }
+    .badge-proses    { background: #EFF6FF; color: #1D4ED8; border: 1px solid #DBEAFE; }
+    .badge-selesai   { background: #ECFDF5; color: #059669; border: 1px solid #D1FAE5; }
 
     /* ===== PROGRESS ===== */
-    .progress-row { display: flex; justify-content: space-between; font-size: 12.5px; margin-bottom: 5px; }
-    .progress-row strong { font-weight: 700; }
-    .progress-bar { height: 7px; background: #F1F5F9; border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+    .progress-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+    .progress-row strong { font-weight: 700; color: var(--text-primary); }
+    .progress-bar { height: 8px; background: #F1F5F9; border-radius: 4px; overflow: hidden; margin-bottom: 16px; }
     .progress-fill { height: 100%; border-radius: 4px; transition: width .6s ease; }
     .progress-fill.green  { background: var(--success); }
-    .progress-fill.orange { background: #F97316; }
+    .progress-fill.blue   { background: var(--primary); }
     .progress-fill.yellow { background: var(--warning); }
 
     /* ===== TIP CARD ===== */
     .tip-card {
-        background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px;
-        padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start;
+        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        border: 1px solid #BFDBFE; border-radius: 14px;
+        padding: 16px 20px; display: flex; gap: 14px; align-items: center;
+        margin-bottom: 20px;
     }
-    .tip-card .tip-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
-    .tip-card .tip-title { font-size: 13px; font-weight: 700; color: #1D4ED8; margin-bottom: 3px; }
-    .tip-card .tip-desc  { font-size: 12px; color: #3B82F6; line-height: 1.5; margin: 0; }
+    .tip-icon { font-size: 24px; flex-shrink: 0; }
+    .tip-title { font-size: 14px; font-weight: 700; color: #1D4ED8; margin-bottom: 2px; }
+    .tip-desc  { font-size: 12.5px; color: #3B82F6; line-height: 1.5; margin: 0; opacity: 0.9; }
 
     /* ===== QUICK ACTION ===== */
     .quick-btn {
-        display: flex; align-items: center; gap: 10px; width: 100%;
-        background: var(--card-bg); border: 1px solid var(--border);
-        border-radius: 8px; padding: 10px 14px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 13px; font-weight: 600; color: #374151;
+        display: flex; align-items: center; gap: 12px; width: 100%;
+        background: #fff; border: 1px solid var(--border);
+        border-radius: 12px; padding: 14px 18px;
+        font-size: 14px; font-weight: 700; color: var(--text-primary);
         cursor: pointer; text-decoration: none;
-        transition: background .15s, box-shadow .15s;
-        margin-bottom: 8px;
+        transition: all 0.2s;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .quick-btn:last-child { margin-bottom: 0; }
-    .quick-btn:hover { background: #F8FAFC; box-shadow: 0 2px 8px rgba(0,0,0,0.06); color: #374151; }
-    .quick-btn i { opacity: .6; font-size: 15px; }
+    .quick-btn:hover { background: #fdfdfd; border-color: #BFDBFE; transform: translateX(5px); color: var(--primary); }
+    .quick-btn i { font-size: 18px; opacity: 0.8; }
 
     /* ===== SIDE STACK ===== */
-    .side-stack { display: flex; flex-direction: column; gap: 16px; }
+    .side-stack { display: flex; flex-direction: column; gap: 20px; }
 
-    /* ===== ALERT ===== */
-    .alert { border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; padding: 12px 16px; }
-    .alert-success { background: #ECFDF5; color: #065F46; }
+    .alert { border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; padding: 14px 20px; }
+    .alert-success { background: #ECFDF5; color: #065F46; box-shadow: 0 2px 10px rgba(16,185,129,0.1); }
 </style>
 @endpush
 
 @section('content')
 
 @if (session('success'))
-    <div class="alert alert-success mb-4 d-flex align-items-center gap-2">
+    <div class="alert alert-success mb-4 d-flex align-items-center gap-3">
         <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
-        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" style="font-size:12px;"></button>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
 
@@ -173,9 +174,9 @@
 <div class="welcome-banner">
     <div>
         <h2>Halo, {{ Auth::guard('siswa')->user()->nama }}</h2>
-        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;Â·&nbsp; Siswa</p>
+        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;•&nbsp; Siswa</p>
     </div>
-    <div class="welcome-avatar" style="overflow:hidden;">
+    <div class="welcome-avatar" style="overflow:hidden; border:2px solid rgba(255,255,255,0.3);">
         @if(Auth::guard('siswa')->user()->foto)
             <img src="{{ asset('storage/' . Auth::guard('siswa')->user()->foto) }}" alt="Avatar" style="width:100%; height:100%; object-fit:cover;">
         @else
@@ -189,19 +190,31 @@
 <div class="stat-cards">
     <div class="stat-card">
         <div class="stat-icon blue"><i class="bi bi-folder2-open"></i></div>
-        <div><div class="stat-value">{{ $stats['total'] }}</div><div class="stat-label">Total Laporan</div></div>
+        <div>
+            <div class="stat-value">{{ $stats['total'] }}</div>
+            <div class="stat-label">Total</div>
+        </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon yellow"><i class="bi bi-hourglass-split"></i></div>
-        <div><div class="stat-value">{{ $stats['menunggu'] }}</div><div class="stat-label">Menunggu</div></div>
+        <div>
+            <div class="stat-value">{{ $stats['menunggu'] }}</div>
+            <div class="stat-label">Menunggu</div>
+        </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon orange"><i class="bi bi-arrow-repeat"></i></div>
-        <div><div class="stat-value">{{ $stats['proses'] }}</div><div class="stat-label">Diproses</div></div>
+        <div>
+            <div class="stat-value">{{ $stats['proses'] }}</div>
+            <div class="stat-label">Diproses</div>
+        </div>
     </div>
     <div class="stat-card">
         <div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div>
-        <div><div class="stat-value">{{ $stats['selesai'] }}</div><div class="stat-label">Selesai</div></div>
+        <div>
+            <div class="stat-value">{{ $stats['selesai'] }}</div>
+            <div class="stat-label">Selesai</div>
+        </div>
     </div>
 </div>
 
@@ -211,111 +224,116 @@
     {{-- Aktivitas Terbaru --}}
     <div class="card">
         <div class="card-header">
-            <span><i class="bi bi-clock-history me-2" style="color:#2563EB;"></i>Aktivitas Terbaru</span>
-            <a href="{{ route('siswa.laporan.index') }}" class="header-link">Lihat semua â†’</a>
+            <span><i class="bi bi-clock-history me-2" style="color:var(--primary);"></i>Aktivitas Terbaru</span>
+            <a href="{{ route('siswa.laporan.index') }}" class="header-link">Semua &rarr;</a>
         </div>
         <div class="card-body">
             @forelse ($laporanTerbaru as $item)
                 @php
                     $status = $item->status ?? 'menunggu';
-                    $dotClass = $status === 'selesai' ? 'dot-green' : ($status === 'proses' ? 'dot-yellow' : 'dot-blue');
+                    $dotClass = match($status) {
+                        'selesai' => 'dot-green',
+                        'proses' => 'dot-yellow',
+                        default => 'dot-blue'
+                    };
+                    $badgeClass = 'badge-' . $status;
                 @endphp
                 <div class="activity-item">
                     <div class="activity-dot {{ $dotClass }}"></div>
-                    <div style="flex:1;min-width:0">
-                        <div class="activity-title d-flex align-items-center gap-2 flex-wrap">
-                            <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px">
-                                {{ Str::limit($item->ket, 45) }}
+                    <div style="flex:1; min-width:0">
+                        <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                            <span class="activity-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                                {{ Str::limit($item->ket, 50) }}
                             </span>
-                            <span class="badge badge-{{ $status }}">{{ ucfirst($status) }}</span>
+                            <span class="badge {{ $badgeClass }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            {{ $item->kategoriAspirasi->nama ?? '-' }} Â· {{ $item->created_at->diffForHumans() }}
+                            <i class="bi bi-tag me-1"></i> {{ $item->kategori->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->diffForHumans() }}
                         </div>
                     </div>
-                    <a href="{{ route('siswa.laporan.show', $item->id) }}" class="btn btn-sm"
-                       style="font-size:11px;color:#2563EB;font-weight:600;white-space:nowrap;padding:3px 8px;border:1px solid #BFDBFE;border-radius:6px;background:#EFF6FF;text-decoration:none">
-                        Detail
-                    </a>
                 </div>
             @empty
                 <div class="activity-empty">
-                    <i class="bi bi-inbox" style="font-size:28px;display:block;margin-bottom:8px;color:#CBD5E1;"></i>
-                    Belum ada laporan yang dibuat.
+                    <i class="bi bi-inbox" style="font-size:32px; display:block; margin-bottom:10px; opacity:0.3;"></i>
+                    Belum ada laporan yang Anda buat.
                 </div>
             @endforelse
+            
+            @if(count($laporanTerbaru) > 0)
+                <div class="text-center mt-3">
+                    <a href="{{ route('siswa.laporan.create') }}" class="btn btn-sm btn-primary px-3" style="border-radius:20px; font-weight:700; font-size:12px;">
+                        <i class="bi bi-plus-lg me-1"></i> Buat Laporan
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 
     {{-- Panel Kanan --}}
     <div class="side-stack">
 
-        {{-- Tip --}}
-        @if ($stats['total'] > 0)
-            @php
-                $pct = $stats['total'] > 0 ? round($stats['selesai'] / $stats['total'] * 100) : 0;
-            @endphp
-            <div class="tip-card">
-                <div class="tip-icon">
-                    @if ($pct >= 60) ðŸ† @elseif ($pct >= 30) ðŸ‘ @else ðŸ’¡ @endif
-                </div>
-                <div>
-                    <div class="tip-title">
-                        @if ($pct >= 60) Tingkat penyelesaian kamu tinggi!
-                        @elseif ($pct >= 30) Laporan kamu sedang diproses!
-                        @else Yuk mulai buat laporan pertamamu!
-                        @endif
-                    </div>
-                    <p class="tip-desc">
-                        {{ $pct }}% laporan kamu sudah selesai ditangani. Terus laporkan masalah di sekitarmu agar sekolah semakin baik.
-                    </p>
-                </div>
-            </div>
-        @endif
-
-        {{-- Progres Visual --}}
-        @if ($stats['total'] > 0)
+        {{-- Tip / Progress --}}
         <div class="card">
-            <div class="card-header"><i class="bi bi-bar-chart-fill me-2" style="color:#2563EB;"></i>Progres Laporan</div>
+            <div class="card-header">
+                <span><i class="bi bi-bar-chart-fill me-2" style="color:var(--warning);"></i>Penyelesaian Laporan</span>
+            </div>
             <div class="card-body">
+                @php
+                    $total = $stats['total'] > 0 ? $stats['total'] : 1;
+                    $pctSelesai = round(($stats['selesai'] / $total) * 100);
+                    $pctProses = round(($stats['proses'] / $total) * 100);
+                    $pctMenunggu = round(($stats['menunggu'] / $total) * 100);
+                @endphp
+
                 <div class="progress-row">
-                    <span>Selesai</span>
-                    <strong>{{ $stats['selesai'] }} / {{ $stats['total'] }}</strong>
+                    <span>Laporan Selesai</span>
+                    <strong>{{ $stats['selesai'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill green"
-                         style="width:{{ $stats['total'] ? round($stats['selesai']/$stats['total']*100) : 0 }}%"></div>
+                    <div class="progress-fill green" style="width: {{ $pctSelesai }}%"></div>
                 </div>
+
                 <div class="progress-row">
-                    <span>Diproses</span>
-                    <strong>{{ $stats['proses'] }} / {{ $stats['total'] }}</strong>
+                    <span>Sedang Diproses</span>
+                    <strong>{{ $stats['proses'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill orange"
-                         style="width:{{ $stats['total'] ? round($stats['proses']/$stats['total']*100) : 0 }}%"></div>
+                    <div class="progress-fill blue" style="width: {{ $pctProses }}%"></div>
                 </div>
+
                 <div class="progress-row">
-                    <span>Menunggu</span>
-                    <strong>{{ $stats['menunggu'] }} / {{ $stats['total'] }}</strong>
+                    <span>Menunggu Tanggapan</span>
+                    <strong>{{ $stats['menunggu'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill yellow"
-                         style="width:{{ $stats['total'] ? round($stats['menunggu']/$stats['total']*100) : 0 }}%"></div>
+                    <div class="progress-fill yellow" style="width: {{ $pctMenunggu }}%"></div>
                 </div>
             </div>
         </div>
-        @endif
 
         {{-- Aksi Cepat --}}
-        <div class="card">
-            <div class="card-header"><i class="bi bi-lightning-charge-fill me-2" style="color:#F59E0B;"></i>Aksi Cepat</div>
-            <div class="card-body">
-                <a href="{{ route('siswa.laporan.create') }}" class="quick-btn">
-                    <i class="bi bi-plus-circle"></i> Buat Laporan Baru
-                </a>
-                <a href="{{ route('siswa.laporan.index') }}" class="quick-btn">
-                    <i class="bi bi-list-ul"></i> Riwayat Semua Laporan
-                </a>
+        <div>
+            <div class="section-label">Aksi Cepat</div>
+            <a href="{{ route('siswa.laporan.create') }}" class="quick-btn">
+                <i class="bi bi-pencil-square" style="color:var(--primary);"></i>
+                <span>Tulis Laporan Baru</span>
+            </a>
+            <a href="{{ route('siswa.laporan.index') }}" class="quick-btn">
+                <i class="bi bi-collection-fill" style="color:var(--warning);"></i>
+                <span>Riwayat Laporan Saya</span>
+            </a>
+            <a href="{{ route('siswa.peminjaman-barang.index') }}" class="quick-btn">
+                <i class="bi bi-box-seam-fill" style="color:var(--success);"></i>
+                <span>Pinjam Barang / Fasilitas</span>
+            </a>
+        </div>
+
+        {{-- Help Card --}}
+        <div class="tip-card">
+            <div class="tip-icon">💡</div>
+            <div>
+                <div class="tip-title">Butuh Bantuan?</div>
+                <p class="tip-desc">Gunakan menu Laporan untuk mengadukan kerusakan fasilitas sekolah.</p>
             </div>
         </div>
 
