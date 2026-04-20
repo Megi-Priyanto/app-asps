@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 ->where('is_read', false);
 
                 $unread = $query->count();
-                $recentNotifs = $query->with('laporan.kategori')->latest()->take(5)->get();
+                $recentNotifs = $query->with('laporan.kategoriAspirasi')->latest()->take(5)->get();
 
                 $view->with('notifKomentar', $unread);
                 $view->with('notifKomentarList', $recentNotifs);
@@ -72,16 +72,40 @@ class AppServiceProvider extends ServiceProvider
         });
 
         // Global Notifikasi Pegawai
-        \Illuminate\Support\Facades\View::composer('layouts.pegawai', function ($view) {
+        \Illuminate\Support\Facades\View::composer(['layouts.pegawai', 'layouts.navbar.pegawai'], function ($view) {
             if (\Illuminate\Support\Facades\Auth::guard('pegawai')->check()) {
-                $view->with('notifPegawai', 0);
+                $pegawaiId = \Illuminate\Support\Facades\Auth::guard('pegawai')->id();
+                
+                $query = \App\Models\KomentarLaporan::whereHas('laporan', function ($q) use ($pegawaiId) {
+                    $q->where('reporter_id', $pegawaiId)->where('reporter_type', 'pegawai');
+                })
+                ->whereIn('sender_type', ['admin', 'superadmin'])
+                ->where('is_read', false);
+
+                $unread = $query->count();
+                $recentNotifs = $query->with('laporan.kategoriAspirasi')->latest()->take(5)->get();
+
+                $view->with('notifKomentar', $unread);
+                $view->with('notifKomentarList', $recentNotifs);
             }
         });
 
         // Global Notifikasi Guru
-        \Illuminate\Support\Facades\View::composer('layouts.guru', function ($view) {
+        \Illuminate\Support\Facades\View::composer(['layouts.guru', 'layouts.navbar.guru'], function ($view) {
             if (\Illuminate\Support\Facades\Auth::guard('guru')->check()) {
-                $view->with('notifGuru', 0);
+                $guruId = \Illuminate\Support\Facades\Auth::guard('guru')->id();
+                
+                $query = \App\Models\KomentarLaporan::whereHas('laporan', function ($q) use ($guruId) {
+                    $q->where('reporter_id', $guruId)->where('reporter_type', 'guru');
+                })
+                ->whereIn('sender_type', ['admin', 'superadmin'])
+                ->where('is_read', false);
+
+                $unread = $query->count();
+                $recentNotifs = $query->with('laporan.kategoriAspirasi')->latest()->take(5)->get();
+
+                $view->with('notifKomentar', $unread);
+                $view->with('notifKomentarList', $recentNotifs);
             }
         });
     }

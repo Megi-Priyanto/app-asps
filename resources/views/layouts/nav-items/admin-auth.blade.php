@@ -18,17 +18,6 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link position-relative me-3" href="{{ route('admin.laporan.index') }}">
-        <i class="bi bi-bell-fill fs-5"></i>
-        @if(isset($notifAdmin) && $notifAdmin > 0)
-            <span class="position-absolute top-25 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
-                {{ $notifAdmin }}
-                <span class="visually-hidden">notifikasi belum dibaca</span>
-            </span>
-        @endif
-    </a>
-</li>
 
 <li class="nav-item dropdown">
     <a

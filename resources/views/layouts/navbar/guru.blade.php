@@ -192,13 +192,54 @@
         </ul>
 
         <div class="nav-right">
-            <!-- Notifikasi -->
-            <a href="{{ route('guru.dashboard') }}" class="nav-notif-btn" title="Notifikasi">
-                <i class="bi bi-bell-fill"></i>
-                @if(isset($notifKomentar) && $notifKomentar > 0)
-                    <span class="nav-notif-dot"></span>
-                @endif
-            </a>
+            <!-- Notifikasi Dropdown -->
+            <div class="nav-notif-dropdown">
+                <button class="nav-notif-btn" id="navNotifTrigger" title="Notifikasi">
+                    <i class="bi bi-bell-fill"></i>
+                    @if(isset($notifKomentar) && $notifKomentar > 0)
+                        <span class="nav-notif-dot"></span>
+                    @endif
+                </button>
+                
+                <div class="nav-notif-menu" id="navNotifMenu">
+                    <div class="nav-notif-header">
+                        Notifikasi
+                        @if(isset($notifKomentar) && $notifKomentar > 0)
+                            <span class="nav-notif-badge">{{ $notifKomentar }} Baru</span>
+                        @endif
+                    </div>
+                    
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        @if(isset($notifKomentarList) && $notifKomentarList->count() > 0)
+                            @foreach($notifKomentarList as $notif)
+                                <a href="{{ route('guru.laporan.show', $notif->laporan_id) }}" class="nav-notif-item">
+                                    <div class="nav-notif-icon">
+                                        <i class="bi bi-chat-dots-fill"></i>
+                                    </div>
+                                    <div>
+                                        <div class="nav-notif-text">
+                                            <strong>Admin</strong> merespon laporan Anda tentang 
+                                            <strong>{{ optional($notif->laporan->kategoriAspirasi)->nama_kategori ?? 'Fasilitas' }}</strong>
+                                        </div>
+                                        <div class="nav-notif-time">
+                                            {{ $notif->created_at->diffForHumans() }}
+                                        </div>
+                                    </div>
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="nav-notif-empty">
+                                <i class="bi bi-bell-slash"></i>
+                                Belum ada notifikasi baru
+                            </div>
+                        @endif
+                    </div>
+                    
+                    <div class="nav-notif-footer">
+                        <a href="{{ route('guru.laporan.index') }}">Buka Semua Laporan</a>
+                    </div>
+                </div>
+            </div>
 
             <div class="nav-user-dropdown">
                 <button class="nav-user-trigger" id="navUserTrigger">
@@ -286,18 +327,41 @@
     const mobileToggle = document.getElementById('navMobileToggle');
     const mobileMenu   = document.getElementById('navMobileMenu');
 
+    const notifTrigger = document.getElementById('navNotifTrigger');
+    const notifMenu    = document.getElementById('navNotifMenu');
+
     if (userTrigger && dropdownMenu) {
         userTrigger.addEventListener('click', function(e) {
             e.stopPropagation();
+            if (notifMenu && notifMenu.classList.contains('open')) {
+                notifMenu.classList.remove('open');
+            }
             const isOpen = dropdownMenu.classList.contains('open');
             dropdownMenu.classList.toggle('open', !isOpen);
             userTrigger.classList.toggle('open', !isOpen);
         });
-        document.addEventListener('click', function() {
-            dropdownMenu.classList.remove('open');
-            userTrigger.classList.remove('open');
+    }
+
+    if (notifTrigger && notifMenu) {
+        notifTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (dropdownMenu && dropdownMenu.classList.contains('open')) {
+                dropdownMenu.classList.remove('open');
+                userTrigger.classList.remove('open');
+            }
+            notifMenu.classList.toggle('open');
         });
     }
+
+    document.addEventListener('click', function() {
+        if(dropdownMenu) {
+            dropdownMenu.classList.remove('open');
+            userTrigger.classList.remove('open');
+        }
+        if(notifMenu) {
+            notifMenu.classList.remove('open');
+        }
+    });
 
     if (mobileToggle && mobileMenu) {
         mobileToggle.addEventListener('click', function() {

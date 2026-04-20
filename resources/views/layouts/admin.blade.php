@@ -773,12 +773,6 @@
 
     <!-- Right -->
     <div class="topbar-right">
-        <a href="{{ route('admin.laporan.index') }}" class="topbar-icon-btn" title="Notifikasi">
-            <i class="bi bi-bell"></i>
-            @if(isset($notifAdmin) && $notifAdmin > 0)
-                <span class="topbar-notif-badge"></span>
-            @endif
-        </a>
         <div class="topbar-divider"></div>
         @auth('admin')
         <div class="topbar-user-dropdown" id="adminUserDropdown">
