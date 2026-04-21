@@ -1,4 +1,4 @@
-﻿@extends('layouts.siswa')
+@extends('layouts.siswa')
 
 @section('title', 'Riwayat Laporan Pengaduan')
 

@@ -42,8 +42,10 @@ use App\Http\Controllers\SuperAdmin\PegawaiImportController;
 use App\Http\Controllers\SuperAdmin\GuruImportController;
 use App\Http\Controllers\SuperAdmin\AdminController as SuperAdminAdminController;
 use App\Http\Controllers\SuperAdmin\LaporanBarangController as SuperLaporanBarangController;
+use App\Http\Controllers\SuperAdmin\KategoriBarangController as SuperKategoriBarangController;
 
 use App\Http\Controllers\UserTanggapanController;
+use App\Http\Controllers\ApiController;
 
 // Inventaris
 use App\Http\Controllers\Admin\InventarisController;
@@ -52,6 +54,12 @@ use App\Http\Controllers\Admin\PerbaikanBarangController;
 use App\Http\Controllers\Guru\PeminjamanBarangController as GuruPeminjamanBarangController;
 use App\Http\Controllers\Siswa\PeminjamanBarangController as SiswaPeminjamanBarangController;
 use App\Http\Controllers\Pegawai\PeminjamanBarangController as PegawaiPeminjamanBarangController;
+
+// ─────────────────────────────────────────────
+// API (JSON) — Kategori berdasarkan Lokasi
+// ─────────────────────────────────────────────
+Route::get('/api/lokasi/{lokasi}/kategori', [ApiController::class, 'getKategoriByLokasi'])
+    ->name('api.kategori-by-lokasi');
 
 // ─────────────────────────────────────────────
 // Welcome
@@ -191,7 +199,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // ── Inventaris & Peminjaman Barang ──
         Route::resource('kategori-aspirasi', KategoriAspirasiController::class);
-        Route::resource('kategori-barang', AdminKategoriBarangController::class);
+        Route::resource('kategori-barang', AdminKategoriBarangController::class)->only(['index', 'create', 'store', 'destroy']);
         Route::resource('inventaris', InventarisController::class);
         Route::get('peminjaman-barang', [AdminPeminjamanBarangController::class, 'index'])->name('peminjaman-barang.index');
         Route::get('peminjaman-barang/create', [AdminPeminjamanBarangController::class, 'create'])->name('peminjaman-barang.create');
@@ -234,6 +242,7 @@ Route::prefix('superadmin')->name('superadmin.')->group(function () {
     Route::resource('admin', SuperAdminAdminController::class);
 
     Route::resource('lokasi', SuperLokasiController::class);
+    Route::resource('kategori-barang', SuperKategoriBarangController::class);
 
     // ── Laporan Barang ──
     Route::get('laporan-barang', [SuperLaporanBarangController::class, 'index'])->name('laporan-barang.index');

@@ -5,62 +5,61 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\KategoriBarang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriBarangController extends Controller
 {
     public function index()
     {
-        $kategoris = KategoriBarang::latest()->paginate(10);
+        $admin = Auth::guard('admin')->user();
+        $lokasiId = $admin->lokasi_id;
+
+        // Kategori yang sudah ditambahkan di lokasi ini
+        $kategoris = KategoriBarang::whereHas('lokasis', function ($q) use ($lokasiId) {
+            $q->where('lokasis.id', $lokasiId);
+        })->withCount(['barangs' => fn($q) => $q->where('lokasi_id', $lokasiId)])->latest()->get();
+
         return view('admin.kategori-barang.index', compact('kategoris'));
     }
 
     public function create()
     {
-        return view('admin.kategori-barang.create');
+        $admin = Auth::guard('admin')->user();
+        $lokasiId = $admin->lokasi_id;
+
+        // Kategori yang belum ditambahkan di lokasi ini
+        $kategoriTersedia = KategoriBarang::whereDoesntHave('lokasis', function ($q) use ($lokasiId) {
+            $q->where('lokasis.id', $lokasiId);
+        })->orderBy('nama_kategori')->get();
+
+        return view('admin.kategori-barang.create', compact('kategoriTersedia'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kategori' => 'required|string|max:100|unique:kategori_barangs,nama_kategori',
-            'deskripsi'     => 'nullable|string'
+            'kategori_barang_id' => 'required|exists:kategori_barangs,id',
         ]);
 
-        KategoriBarang::create($request->all());
+        $admin = Auth::guard('admin')->user();
+        $lokasi = $admin->lokasi;
+
+        // Attach kategori ke lokasi (jika belum ada)
+        $lokasi->kategoriBarangs()->syncWithoutDetaching([$request->kategori_barang_id]);
 
         return redirect()->route('admin.kategori-barang.index')
-            ->with('success', 'Kategori Barang berhasil ditambahkan.');
-    }
-
-    public function edit(KategoriBarang $kategoriBarang)
-    {
-        return view('admin.kategori-barang.edit', compact('kategoriBarang'));
-    }
-
-    public function update(Request $request, KategoriBarang $kategoriBarang)
-    {
-        $request->validate([
-            'nama_kategori' => 'required|string|max:100|unique:kategori_barangs,nama_kategori,' . $kategoriBarang->id,
-            'deskripsi'     => 'nullable|string'
-        ]);
-
-        $kategoriBarang->update($request->all());
-
-        return redirect()->route('admin.kategori-barang.index')
-            ->with('success', 'Kategori Barang berhasil diperbarui.');
+            ->with('success', 'Kategori Barang berhasil ditambahkan ke lokasi Anda.');
     }
 
     public function destroy(KategoriBarang $kategoriBarang)
     {
-        // Pastikan tidak ada barang yang terkait dengan kategori ini sebelum dihapus
-        if ($kategoriBarang->barangs()->count() > 0) {
-            return redirect()->route('admin.kategori-barang.index')
-                ->with('error', 'Kategori tidak dapat dihapus karena masih digunakan oleh beberapa barang.');
-        }
+        $admin = Auth::guard('admin')->user();
+        $lokasi = $admin->lokasi;
 
-        $kategoriBarang->delete();
+        // Detach kategori dari lokasi
+        $lokasi->kategoriBarangs()->detach($kategoriBarang->id);
 
         return redirect()->route('admin.kategori-barang.index')
-            ->with('success', 'Kategori Barang berhasil dihapus.');
+            ->with('success', 'Kategori Barang berhasil dihapus dari lokasi Anda.');
     }
 }

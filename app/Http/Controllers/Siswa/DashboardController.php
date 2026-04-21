@@ -33,7 +33,7 @@ class DashboardController extends Controller
 
         // Ambil 5 laporan terbaru untuk aktivitas di dashboard
         $laporanTerbaru = $siswa->laporan()
-            ->with(['kategori', 'aspirasi'])
+            ->with(['kategoriAspirasi', 'aspirasi'])
             ->latest()
             ->take(5)
             ->get()

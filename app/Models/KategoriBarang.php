@@ -14,4 +14,9 @@ class KategoriBarang extends Model
     {
         return $this->hasMany(Barang::class, 'kategori_barang_id');
     }
+
+    public function lokasis()
+    {
+        return $this->belongsToMany(Lokasi::class, 'kategori_barang_lokasi')->withTimestamps();
+    }
 }

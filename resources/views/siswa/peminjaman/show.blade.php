@@ -64,10 +64,6 @@
 
 @section('content')
 
-<div class="mb-3 d-flex align-items-center justify-content-between">
-    <a href="{{ route('siswa.peminjaman-barang.index') }}" class="btn-back"><i class="bi bi-arrow-left"></i> Kembali</a>
-</div>
-
 <div class="row g-4">
 
     {{-- ===== Detail Info ===== --}}

@@ -21,6 +21,9 @@
     .file-drop { border: 2px dashed var(--border); border-radius: 10px; padding: 24px; text-align: center; color: var(--text-secondary); background: #F8FAFC; cursor: pointer; transition: border-color 0.15s; }
     .file-drop:hover { border-color: var(--primary); }
     .file-drop i { font-size: 28px; color: #CBD5E1; display: block; margin-bottom: 6px; }
+    .form-select:disabled { background: #F1F5F9; color: #94A3B8; cursor: not-allowed; }
+    .kategori-loading { display: none; font-size: 12px; color: var(--primary); margin-top: 4px; }
+    .kategori-loading.show { display: block; }
 </style>
 @endpush
 
@@ -36,19 +39,39 @@
                 <form action="{{ route('siswa.laporan.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
+                    {{-- 1. Pilih Lokasi --}}
                     <div class="mb-3">
-                        <x-select label="Kategori Aspirasi" name="kategori_aspirasi_id" :options="$kategori" label-field="nama_kategori" />
+                        <label class="form-label">Lokasi Kejadian</label>
+                        <select name="lokasi" id="lokasi-select" class="form-select @error('lokasi') is-invalid @enderror" required>
+                            <option value="">-- Pilih Lokasi --</option>
+                            @foreach($lokasi as $lok)
+                                <option value="{{ $lok->nama_lokasi }}" data-id="{{ $lok->id }}" {{ old('lokasi') == $lok->nama_lokasi ? 'selected' : '' }}>
+                                    {{ $lok->nama_lokasi }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('lokasi')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
+                    {{-- 2. Pilih Kategori (dinamis berdasarkan lokasi) --}}
                     <div class="mb-3">
-                        <x-input label="Lokasi Kejadian" name="lokasi" placeholder="Contoh: Ruang Kelas X RPL A" />
+                        <label class="form-label">Kategori Aspirasi</label>
+                        <select name="kategori_aspirasi_id" id="kategori-select" class="form-select @error('kategori_aspirasi_id') is-invalid @enderror" required disabled>
+                            <option value="">-- Pilih Lokasi Terlebih Dahulu --</option>
+                        </select>
+                        <div class="kategori-loading" id="kategori-loading">
+                            <i class="bi bi-arrow-repeat"></i> Memuat kategori...
+                        </div>
+                        @error('kategori_aspirasi_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
 
+                    {{-- 3. Foto --}}
                     <div class="mb-3">
                         <label class="form-label">Foto Bukti / Lampiran <span style="color:#94A3B8; font-weight:400;">(Opsional)</span></label>
                         <input class="form-control" type="file" name="foto" accept="image/*">
                     </div>
 
+                    {{-- 4. Keterangan --}}
                     <div class="mb-3">
                         <x-textarea label="Keterangan" name="ket" placeholder="Jelaskan detail kerusakan atau masalah yang terjadi..." rows="5" />
                     </div>
@@ -68,8 +91,8 @@
                 <div class="d-flex mb-3 align-items-start gap-3">
                     <div style="width:32px; height:32px; background:#2563EB; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:700; font-size:13px; flex-shrink:0;">1</div>
                     <div>
-                        <div style="font-weight:600; font-size:13.5px; color:#0F172A;">Pilih kategori yang tepat</div>
-                        <div style="font-size:12px; color:#94A3B8; margin-top:2px;">Agar laporan ditangani oleh pihak yang sesuai.</div>
+                        <div style="font-weight:600; font-size:13.5px; color:#0F172A;">Pilih lokasi yang tepat</div>
+                        <div style="font-size:12px; color:#94A3B8; margin-top:2px;">Pilih lokasi agar kategori aspirasi muncul otomatis.</div>
                     </div>
                 </div>
                 <div class="d-flex mb-3 align-items-start gap-3">
@@ -92,3 +115,63 @@
 </div>
 
 @endsection
+
+@push('js')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lokasiSelect   = document.getElementById('lokasi-select');
+    const kategoriSelect = document.getElementById('kategori-select');
+    const kategoriLoading = document.getElementById('kategori-loading');
+    const oldKategori    = "{{ old('kategori_aspirasi_id') }}";
+
+    lokasiSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        const lokasiId = selectedOption.getAttribute('data-id');
+
+        // Reset kategori
+        kategoriSelect.innerHTML = '<option value="">-- Memuat Kategori... --</option>';
+        kategoriSelect.disabled = true;
+
+        if (!lokasiId) {
+            kategoriSelect.innerHTML = '<option value="">-- Pilih Lokasi Terlebih Dahulu --</option>';
+            return;
+        }
+
+        // Show loading
+        kategoriLoading.classList.add('show');
+
+        // Fetch kategori berdasarkan lokasi
+        fetch(`/api/lokasi/${lokasiId}/kategori`)
+            .then(response => response.json())
+            .then(data => {
+                kategoriLoading.classList.remove('show');
+                kategoriSelect.innerHTML = '<option value="">-- Pilih Kategori --</option>';
+
+                if (data.length === 0) {
+                    kategoriSelect.innerHTML = '<option value="">-- Tidak ada kategori di lokasi ini --</option>';
+                    return;
+                }
+
+                data.forEach(kat => {
+                    const option = document.createElement('option');
+                    option.value = kat.id;
+                    option.textContent = kat.nama_kategori;
+                    if (oldKategori == kat.id) option.selected = true;
+                    kategoriSelect.appendChild(option);
+                });
+
+                kategoriSelect.disabled = false;
+            })
+            .catch(() => {
+                kategoriLoading.classList.remove('show');
+                kategoriSelect.innerHTML = '<option value="">-- Gagal memuat kategori --</option>';
+            });
+    });
+
+    // Trigger change jika ada old value
+    if (lokasiSelect.value) {
+        lokasiSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+@endpush

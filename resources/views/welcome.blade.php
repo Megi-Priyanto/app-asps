@@ -764,7 +764,7 @@
 
 <!-- ===== FOOTER ===== -->
 <footer class="site-footer">
-    <p>© {{ date('Y') }} <strong style="color:rgba(255,255,255,0.6);">Apss</strong> — Aplikasi Pengaduan Sarana Sekolah. All rights reserved.</p>
+    <p>© {{ date('Y') }} <strong style="color:rgba(255,255,255,0.6);">Asps</strong> — Dibuat oleh Akbar Dwi Pebriansyah & Megi Priyanto.</p>
 </footer>
 
 @endsection

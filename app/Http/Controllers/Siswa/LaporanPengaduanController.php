@@ -98,8 +98,9 @@ class LaporanPengaduanController extends Controller
      */
     public function create()
     {
+        $lokasi = \App\Models\Lokasi::whereHas('admins')->orderBy('nama_lokasi')->get();
         $kategori = KategoriAspirasi::all();
-        return view('siswa.laporan.create', compact('kategori'));
+        return view('siswa.laporan.create', compact('kategori', 'lokasi'));
     }
 
     /**
@@ -119,6 +120,7 @@ class LaporanPengaduanController extends Controller
             $fotoName = $request->file('foto')->store('laporan', 'public');
         }
 
+        /** @var \App\Models\Siswa $siswa */
         $siswa = Auth::guard('siswa')->user();
         $siswa->laporanSebagaiReporter()->create([
             'siswa_id'             => $siswa->id, // Pertahankan untuk kompatibilitas filter yang lama
