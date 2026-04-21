@@ -587,8 +587,8 @@
     <div class="navbar-inner">
         <!-- Brand -->
         <a href="{{ route('welcome') }}" class="nav-brand">
-            <div class="nav-brand-icon">
-                <i class="bi bi-shield-check"></i>
+            <div class="nav-brand-icon" style="background: transparent; box-shadow: none;">
+                <img src="{{ asset('images/logosmk_transparent.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="nav-brand-text">
                 Asps

@@ -26,6 +26,7 @@ return new class extends Migration
 
             $table->enum('status', ['Menunggu', 'Dalam Perbaikan', 'Selesai'])->default('Menunggu');
             $table->text('catatan_perbaikan')->nullable();
+            $table->string('foto_nota')->nullable();
             $table->decimal('biaya_perbaikan', 15, 2)->nullable();
 
             // Admin yang menangani perbaikan

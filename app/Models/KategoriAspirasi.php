@@ -11,7 +11,13 @@ class KategoriAspirasi extends Model
 
     protected $fillable = [
         'nama_kategori',
+        'lokasi_id',
     ];
+
+    public function lokasi()
+    {
+        return $this->belongsTo(Lokasi::class);
+    }
 
     public function laporan()
     {

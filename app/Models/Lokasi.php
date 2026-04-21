@@ -17,4 +17,14 @@ class Lokasi extends Model
     {
         return $this->hasMany(Barang::class);
     }
+
+    public function kategoriAspirasis()
+    {
+        return $this->hasMany(KategoriAspirasi::class);
+    }
+
+    public function kategoriBarangs()
+    {
+        return $this->belongsToMany(KategoriBarang::class, 'kategori_barang_lokasi')->withTimestamps();
+    }
 }

@@ -647,8 +647,8 @@
     <!-- Brand -->
     <div class="sidebar-brand">
         <div class="sidebar-brand-left">
-            <div class="sidebar-brand-icon">
-                <i class="bi bi-shield-lock-fill"></i>
+            <div class="sidebar-brand-icon" style="background: transparent; box-shadow: none;">
+                <img src="{{ asset('images/logosmk_transparent.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="sidebar-brand-text">
                 Asps
@@ -692,6 +692,14 @@
 
         <div class="sidebar-section-label">Sarpras</div>
 
+        <a href="{{ route('superadmin.kategori-barang.index') }}"
+            data-tooltip="Kategori Barang"
+            data-page-title="Kategori Barang"
+            class="sidebar-item {{ request()->routeIs('superadmin.kategori-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-tags-fill"></i>
+            <span class="sidebar-item-text">Kategori Barang</span>
+        </a>
+
         <a href="{{ route('superadmin.laporan-barang.index') }}"
             data-tooltip="Laporan Barang"
             data-page-title="Laporan Data Barang"
@@ -706,6 +714,9 @@
             class="sidebar-item {{ request()->routeIs('superadmin.perbaikan-barang.*') ? 'active' : '' }}">
             <i class="bi bi-tools"></i>
             <span class="sidebar-item-text">Perbaikan & Biaya</span>
+            @if(isset($notifBiayaPerbaikan) && $notifBiayaPerbaikan > 0)
+                <span class="sidebar-badge bg-danger text-white">{{ $notifBiayaPerbaikan }}</span>
+            @endif
         </a>
 
         {{-- Pengguna Dropdown --}}

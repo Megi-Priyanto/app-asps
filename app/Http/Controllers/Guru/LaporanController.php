@@ -69,8 +69,9 @@ class LaporanController extends Controller
 
     public function create()
     {
+        $lokasi = \App\Models\Lokasi::whereHas('admins')->orderBy('nama_lokasi')->get();
         $kategori = KategoriAspirasi::all();
-        return view('guru.laporan.create', compact('kategori'));
+        return view('guru.laporan.create', compact('kategori', 'lokasi'));
     }
 
     public function store(Request $request)

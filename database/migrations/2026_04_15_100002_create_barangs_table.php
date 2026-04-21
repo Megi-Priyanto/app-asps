@@ -16,6 +16,10 @@ return new class extends Migration
                 ->constrained('kategori_barangs')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            $table->foreignId('lokasi_id')
+                ->nullable()
+                ->constrained('lokasis')
+                ->nullOnDelete();
             $table->string('lokasi_simpan', 150)->nullable(); // Lokasi penyimpanan (ruang sarpras, lab, dll)
             $table->integer('jumlah')->default(0);
             $table->integer('jumlah_baik')->default(0);

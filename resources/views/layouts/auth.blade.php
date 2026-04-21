@@ -158,7 +158,9 @@
         <div class="auth-left-overlay"></div>
         <div class="auth-left-content">
             <a href="{{ route('welcome') }}" class="auth-brand">
-                <div class="auth-brand-icon"><i class="bi bi-shield-check"></i></div>
+                <div class="auth-brand-icon" style="background: transparent; box-shadow: none;">
+                    <img src="{{ asset('images/logosmk_transparent.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                </div>
                 <div class="auth-brand-text">Asps<span class="auth-brand-sub">Sarana Sekolah</span></div>
             </a>
             <div class="auth-left-hero">

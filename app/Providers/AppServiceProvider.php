@@ -53,7 +53,11 @@ class AppServiceProvider extends ServiceProvider
                 $unreadKomentar = \App\Models\KomentarLaporan::where('sender_type', 'siswa')
                     ->where('is_read', false)
                     ->count();
+                
+                $peminjamanBaru = \App\Models\PeminjamanBarang::where('status', 'Menunggu')->count();
+
                 $view->with('notifAdmin', $laporanBaru + $unreadKomentar);
+                $view->with('notifPeminjamanAdmin', $peminjamanBaru);
             }
         });
 
@@ -67,7 +71,13 @@ class AppServiceProvider extends ServiceProvider
                 $unreadKomentar = \App\Models\KomentarLaporan::where('sender_type', 'siswa')
                     ->where('is_read', false)
                     ->count();
+
+                $biayaPerbaikanPending = \App\Models\PerbaikanBarang::where('status', 'Selesai')
+                    ->whereNull('biaya_perbaikan')
+                    ->count();
+
                 $view->with('notifSuperAdmin', $laporanBaru + $unreadKomentar);
+                $view->with('notifBiayaPerbaikan', $biayaPerbaikanPending);
             }
         });
 

@@ -647,8 +647,8 @@
     <!-- Brand -->
     <div class="sidebar-brand">
         <div class="sidebar-brand-left">
-            <div class="sidebar-brand-icon">
-                <i class="bi bi-shield-check"></i>
+            <div class="sidebar-brand-icon" style="background: transparent; box-shadow: none;">
+                <img src="{{ asset('images/logosmk_transparent.png') }}" alt="Logo" style="width: 100%; height: 100%; object-fit: contain;">
             </div>
             <div class="sidebar-brand-text">
                 Asps
@@ -719,6 +719,9 @@
             class="sidebar-item {{ request()->routeIs('admin.peminjaman-barang.*') ? 'active' : '' }}">
             <i class="bi bi-box-seam-fill"></i>
             <span class="sidebar-item-text">Peminjaman Barang</span>
+            @if(isset($notifPeminjamanAdmin) && $notifPeminjamanAdmin > 0)
+                <span class="sidebar-badge bg-warning text-dark">{{ $notifPeminjamanAdmin }}</span>
+            @endif
         </a>
 
         <a href="{{ route('admin.perbaikan-barang.index') }}"

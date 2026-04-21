@@ -38,6 +38,11 @@ return new class extends Migration
             $table->foreignId('admin_id')->nullable()->constrained('admins')->onDelete('set null');
             $table->text('catatan_admin')->nullable();
 
+            // Kolom identitas peminjam yang diinput manual oleh Admin
+            $table->string('nama_peminjam')->nullable();
+            $table->enum('peran_peminjam', ['Siswa', 'Guru', 'Pegawai'])->nullable();
+            $table->string('detail_peminjam')->nullable(); // kelas (siswa) atau jabatan (guru/pegawai)
+
             $table->timestamps();
 
             // Index untuk polymorphic
