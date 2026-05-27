@@ -1,0 +1,36 @@
+{
+  "name": "Apss Sarana Sekolah",
+  "short_name": "Apss",
+  "description": "Aplikasi Pengaduan Sarana Sekolah",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2563EB",
+  "theme_color": "#2563EB",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logosmk.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logosmk.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logosmk_transparent.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/logosmk_transparent.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

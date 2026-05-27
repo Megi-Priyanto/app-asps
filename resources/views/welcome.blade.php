@@ -608,6 +608,9 @@
                     <a href="{{ route('login') }}" class="btn-hero-primary">
                         <i class="bi bi-box-arrow-in-right"></i> Masuk
                     </a>
+                    <button type="button" class="btn-hero-outline" id="heroInstallBtn" style="display: none;" onclick="triggerInstall()">
+                        <i class="bi bi-download"></i> Instal Aplikasi
+                    </button>
                 @endguest
                 @auth('siswa')
                     <a href="{{ route('siswa.dashboard') }}" class="btn-hero-dashboard">
@@ -766,5 +769,266 @@
 <footer class="site-footer">
     <p>© {{ date('Y') }} <strong style="color:rgba(255,255,255,0.6);">Asps</strong> — Dibuat oleh Akbar Dwi Pebriansyah & Megi Priyanto.</p>
 </footer>
+
+<!-- ===== PWA INSTALL BANNER ===== -->
+<div class="pwa-install-banner" id="pwaInstallBanner">
+    <div class="pwa-install-inner">
+        <div class="pwa-install-left">
+            <div class="pwa-install-icon">
+                <img src="{{ asset('images/logosmk_transparent.png') }}" alt="Apss" style="width:100%;height:100%;object-fit:contain;">
+            </div>
+            <div class="pwa-install-info">
+                <div class="pwa-install-name">Instal Apss</div>
+                <div class="pwa-install-desc">Akses cepat dari layar utama HP Anda</div>
+            </div>
+        </div>
+        <div class="pwa-install-actions">
+            <button type="button" class="pwa-install-btn" id="pwaInstallAccept" onclick="triggerInstall()">
+                <i class="bi bi-download"></i> Instal
+            </button>
+            <button type="button" class="pwa-install-close" id="pwaInstallClose" onclick="dismissInstallBanner()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ===== PWA Install Banner ===== */
+    .pwa-install-banner {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        padding: 12px 16px;
+        padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        animation: slideUpBanner 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .pwa-install-banner.show {
+        display: block;
+    }
+
+    @keyframes slideUpBanner {
+        from { transform: translateY(100%); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .pwa-install-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 14px 18px;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05) inset;
+    }
+
+    .pwa-install-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .pwa-install-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #2563EB, #60A5FA);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+        padding: 6px;
+    }
+
+    .pwa-install-name {
+        font-size: 14px;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.3px;
+    }
+
+    .pwa-install-desc {
+        font-size: 11.5px;
+        color: rgba(255,255,255,0.55);
+        font-weight: 500;
+        margin-top: 1px;
+    }
+
+    .pwa-install-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .pwa-install-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 9px 18px;
+        background: linear-gradient(135deg, #2563EB, #3B82F6);
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        transition: all 0.2s;
+        box-shadow: 0 4px 12px rgba(37,99,235,0.4);
+        white-space: nowrap;
+    }
+
+    .pwa-install-btn:hover {
+        background: linear-gradient(135deg, #1D4ED8, #2563EB);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(37,99,235,0.5);
+    }
+
+    .pwa-install-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border: none;
+        background: rgba(255,255,255,0.08);
+        color: rgba(255,255,255,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+
+    .pwa-install-close:hover {
+        background: rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.8);
+    }
+
+    @media (max-width: 400px) {
+        .pwa-install-desc { display: none; }
+    }
+</style>
+
+<script>
+let deferredPrompt = null;
+let installBannerDismissed = sessionStorage.getItem('pwa-banner-dismissed') === 'true';
+
+// Capture the beforeinstallprompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Show the hero install button
+    const heroBtn = document.getElementById('heroInstallBtn');
+    if (heroBtn) heroBtn.style.display = 'inline-flex';
+
+    // Show the bottom banner (if not dismissed)
+    if (!installBannerDismissed) {
+        setTimeout(() => {
+            const banner = document.getElementById('pwaInstallBanner');
+            if (banner) banner.classList.add('show');
+        }, 2000);
+    }
+});
+
+// If the browser does NOT fire beforeinstallprompt (e.g., HTTP),
+// show the banner with manual instructions after 3 seconds
+setTimeout(() => {
+    if (!deferredPrompt && !installBannerDismissed) {
+        // Check if running on mobile
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        // Check if NOT already installed as PWA (standalone)
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+        if (isMobile && !isStandalone) {
+            const banner = document.getElementById('pwaInstallBanner');
+            const installBtn = document.getElementById('pwaInstallAccept');
+            if (banner && installBtn) {
+                // Change button text for manual install
+                installBtn.innerHTML = '<i class="bi bi-phone"></i> Cara Instal';
+                installBtn.onclick = showManualInstallGuide;
+                banner.classList.add('show');
+            }
+        }
+    }
+}, 3000);
+
+function triggerInstall() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            // Hide install UI
+            const heroBtn = document.getElementById('heroInstallBtn');
+            if (heroBtn) heroBtn.style.display = 'none';
+            const banner = document.getElementById('pwaInstallBanner');
+            if (banner) banner.classList.remove('show');
+        });
+    } else {
+        showManualInstallGuide();
+    }
+}
+
+function showManualInstallGuide() {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    let message = '';
+    if (isAndroid) {
+        message = '📱 Cara Instal di Android:\n\n'
+            + '1. Ketuk ikon ⋮ (titik tiga) di pojok kanan atas Chrome\n'
+            + '2. Pilih "Tambahkan ke Layar Utama" atau "Install App"\n'
+            + '3. Ketuk "Tambahkan"\n\n'
+            + '✅ Aplikasi Apss akan muncul di layar utama HP Anda!';
+    } else if (isIOS) {
+        message = '📱 Cara Instal di iPhone/iPad:\n\n'
+            + '1. Ketuk ikon Share (kotak dengan panah ke atas) di Safari\n'
+            + '2. Scroll ke bawah, pilih "Add to Home Screen"\n'
+            + '3. Ketuk "Add"\n\n'
+            + '✅ Aplikasi Apss akan muncul di layar utama!';
+    } else {
+        message = '💻 Cara Instal di Desktop:\n\n'
+            + '1. Klik ikon install (monitor kecil) di address bar browser\n'
+            + '2. Atau klik menu browser > "Install Apss Sarana Sekolah"\n\n'
+            + '✅ Aplikasi akan terpasang di desktop Anda!';
+    }
+
+    alert(message);
+}
+
+function dismissInstallBanner() {
+    const banner = document.getElementById('pwaInstallBanner');
+    if (banner) banner.classList.remove('show');
+    sessionStorage.setItem('pwa-banner-dismissed', 'true');
+    installBannerDismissed = true;
+}
+
+// Hide install UI when app is installed
+window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+    deferredPrompt = null;
+    const heroBtn = document.getElementById('heroInstallBtn');
+    if (heroBtn) heroBtn.style.display = 'none';
+    const banner = document.getElementById('pwaInstallBanner');
+    if (banner) banner.classList.remove('show');
+});
+</script>
 
 @endsection
