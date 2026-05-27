@@ -154,6 +154,99 @@
         .nav-links, .nav-right { display: none !important; }
         .apss-navbar .navbar-inner { padding: 0 16px; }
     }
+
+    /* ===== BOTTOM NAV (Mobile Only) ===== */
+    .apss-bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 1050;
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.06), 0 -1px 6px rgba(0, 0, 0, 0.03);
+        padding: 6px 8px 0;
+        padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+        .apss-bottom-nav { display: flex; }
+    }
+
+    .apss-bottom-nav .bottom-nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        max-width: 500px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        padding: 6px 0 8px;
+        text-decoration: none;
+        color: #94A3B8;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        flex: 1;
+        min-width: 0;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .bottom-nav-item i {
+        font-size: 20px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        line-height: 1;
+    }
+
+    .bottom-nav-item span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 64px;
+        text-align: center;
+    }
+
+    .bottom-nav-item.active {
+        color: #2563EB;
+    }
+
+    .bottom-nav-item.active i {
+        transform: translateY(-2px) scale(1.1);
+    }
+
+    .bottom-nav-item.active::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 32px;
+        height: 3px;
+        border-radius: 0 0 3px 3px;
+        background: linear-gradient(90deg, #2563EB, #60A5FA);
+    }
+
+    .bottom-nav-item:hover {
+        color: #475569;
+        text-decoration: none;
+    }
+
+    .bottom-nav-item.active:hover {
+        color: #2563EB;
+    }
 </style>
 
 <nav class="apss-navbar" id="apssNavbar">
@@ -319,6 +412,32 @@
         </button>
     </form>
 </div>
+
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="apss-bottom-nav" id="apssBottomNav">
+    <div class="bottom-nav-inner">
+        <a href="{{ route('guru.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('guru.dashboard') ? 'active' : '' }}">
+            <i class="bi bi-grid-1x2-fill"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ route('guru.laporan.index') }}" class="bottom-nav-item {{ request()->routeIs('guru.laporan.*') ? 'active' : '' }}">
+            <i class="bi bi-file-earmark-text-fill"></i>
+            <span>Laporan</span>
+        </a>
+        <a href="{{ route('guru.peminjaman-barang.index') }}" class="bottom-nav-item {{ request()->routeIs('guru.peminjaman-barang.*') ? 'active' : '' }}">
+            <i class="bi bi-box-seam-fill"></i>
+            <span>Peminjaman</span>
+        </a>
+        <a href="{{ route('guru.tanggapan.index') }}" class="bottom-nav-item {{ request()->routeIs('guru.tanggapan.*') ? 'active' : '' }}">
+            <i class="bi bi-chat-left-text-fill"></i>
+            <span>Tanggapan</span>
+        </a>
+        <a href="{{ route('guru.akun') }}" class="bottom-nav-item {{ request()->routeIs('guru.akun*') ? 'active' : '' }}">
+            <i class="bi bi-person-circle"></i>
+            <span>Akun</span>
+        </a>
+    </div>
+</nav>
 
 <script>
 (function() {
