@@ -1,4 +1,4 @@
-﻿<table class="table">
+<table class="table">
     <thead>
         <tr>
             <th>No</th>
@@ -29,11 +29,11 @@
                 <td style="color:#64748B; max-width:220px;">{{ Str::limit($item->ket, 55) }}</td>
                 <td>
                     @if ($item->status === 'selesai')
-                        <span class="badge bg-success">Selesai</span>
+                        <span class="badge" style="background: #ECFDF5; color: #059669; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">Selesai</span>
                     @elseif ($item->status === 'proses')
-                        <span class="badge bg-warning">Proses</span>
+                        <span class="badge" style="background: #FFF7ED; color: #C2410C; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">Proses</span>
                     @else
-                        <span class="badge bg-secondary">Belum Diproses</span>
+                        <span class="badge" style="background: #FFFBEB; color: #B45309; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">Belum Diproses</span>
                     @endif
                 </td>
                 <td style="color:#94A3B8; font-size:12.5px;">{{ $item->feedback ?? '-' }}</td>

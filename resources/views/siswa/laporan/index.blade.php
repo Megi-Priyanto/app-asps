@@ -1,6 +1,6 @@
 @extends('layouts.siswa')
 
-@section('title', 'Riwayat Laporan Pengaduan')
+@section('title', 'Laporan Pengaduan - Siswa')
 
 @push('css')
 <style>
@@ -163,7 +163,7 @@
 {{-- ===== PAGE HEADER ===== --}}
 <div class="page-header">
     <div>
-        <h1><i class="bi bi-file-earmark-text me-2" style="color:#2563EB;"></i>Riwayat Laporan Pengaduan</h1>
+        <h1><i class="bi bi-file-earmark-text me-2" style="color:#2563EB;"></i>Laporan Pengaduan</h1>
         <p>Semua laporan yang pernah kamu buat</p>
     </div>
     <a href="{{ route('siswa.laporan.create') }}" class="btn btn-primary">
@@ -302,13 +302,13 @@
                             </td>
                             <td>
                                 @if ($item->aspirasi?->status === 'selesai')
-                                    @if ($item->feedback)
+                                    @if ($item->aspirasi->feedback)
                                         <div class="stars">
                                             @for ($s = 1; $s <= 5; $s++)
-                                                {{ $s <= ($item->aspirasi->feedback) ? 'â˜…' : 'â˜†' }}
+                                                {!! $s <= ($item->aspirasi->feedback) ? '&#9733;' : '&#9734;' !!}
                                             @endfor
                                         </div>
-                                        <div style="font-size:11px;color:var(--text-muted);">{{ $item->feedback }}</div>
+                                        <div style="font-size:11px;color:var(--text-muted);">{{ [1=>'Tidak Puas',2=>'Kurang Puas',3=>'Cukup Puas',4=>'Puas',5=>'Sangat Puas'][$item->aspirasi->feedback] ?? '' }}</div>
                                     @else
                                         <a href="{{ route('siswa.laporan.show', $item->id) }}"
                                            style="font-size:12px;color:#F59E0B;font-weight:600;text-decoration:none;">
@@ -316,9 +316,10 @@
                                         </a>
                                     @endif
                                 @else
-                                    <span style="font-size:12px;color:var(--text-muted);">â€”</span>
+                                    <span style="font-size:12px;color:var(--text-muted);">&mdash;</span>
                                 @endif
                             </td>
+
                             <td style="white-space:nowrap;">
                                 <div style="font-size:13px;">{{ $item->created_at->format('d M Y') }}</div>
                                 <div style="font-size:11px;color:var(--text-muted);">{{ $item->created_at->format('H:i') }}</div>

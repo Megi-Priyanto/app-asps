@@ -248,7 +248,7 @@
                             <span class="badge {{ $badgeClass }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            <i class="bi bi-tag me-1"></i> {{ $item->kategori->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->diffForHumans() }}
+                            <i class="bi bi-tag me-1"></i> {{ $item->kategoriAspirasi->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </div>

@@ -591,7 +591,7 @@
         <!-- Left -->
         <div class="hero-left">
             <div class="hero-badge">
-                <i class="bi bi-stars"></i> v2.0 Enterprise
+                <i class="bi bi-building"></i> Platform Resmi Sekolah
             </div>
 
             <h1 class="hero-title">
@@ -608,7 +608,7 @@
                     <a href="{{ route('login') }}" class="btn-hero-primary">
                         <i class="bi bi-box-arrow-in-right"></i> Masuk
                     </a>
-                    <button type="button" class="btn-hero-outline" id="heroInstallBtn" style="display: none;" onclick="triggerInstall()">
+                    <button type="button" class="btn-hero-outline" id="heroInstallBtn" onclick="triggerInstall()">
                         <i class="bi bi-download"></i> Instal Aplikasi
                     </button>
                 @endguest
@@ -932,9 +932,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
 
-    // Show the hero install button
-    const heroBtn = document.getElementById('heroInstallBtn');
-    if (heroBtn) heroBtn.style.display = 'inline-flex';
+    // Hero install button is now always visible, no need to show/hide
 
     // Show the bottom banner (if not dismissed)
     if (!installBannerDismissed) {
@@ -945,10 +943,10 @@ window.addEventListener('beforeinstallprompt', (e) => {
     }
 });
 
-// If the browser does NOT fire beforeinstallprompt (e.g., HTTP),
-// show the banner with manual instructions after 3 seconds
+// Always show the bottom install banner on mobile after 3 seconds
+// (works even without HTTPS / beforeinstallprompt)
 setTimeout(() => {
-    if (!deferredPrompt && !installBannerDismissed) {
+    if (!installBannerDismissed) {
         // Check if running on mobile
         const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         // Check if NOT already installed as PWA (standalone)
@@ -958,9 +956,11 @@ setTimeout(() => {
             const banner = document.getElementById('pwaInstallBanner');
             const installBtn = document.getElementById('pwaInstallAccept');
             if (banner && installBtn) {
-                // Change button text for manual install
-                installBtn.innerHTML = '<i class="bi bi-phone"></i> Cara Instal';
-                installBtn.onclick = showManualInstallGuide;
+                if (!deferredPrompt) {
+                    // No native prompt available, show manual instructions
+                    installBtn.innerHTML = '<i class="bi bi-phone"></i> Cara Instal';
+                    installBtn.onclick = showManualInstallGuide;
+                }
                 banner.classList.add('show');
             }
         }
@@ -975,7 +975,7 @@ function triggerInstall() {
                 console.log('User accepted the install prompt');
             }
             deferredPrompt = null;
-            // Hide install UI
+            // Hide bottom banner after install
             const heroBtn = document.getElementById('heroInstallBtn');
             if (heroBtn) heroBtn.style.display = 'none';
             const banner = document.getElementById('pwaInstallBanner');

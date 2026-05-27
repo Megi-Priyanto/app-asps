@@ -111,9 +111,10 @@
     .nav-scrolled .nav-links .nav-link-item a {
         color: #475569;
     }
-    .nav-scrolled .nav-links .nav-link-item a:hover {
-        color: #0F172A;
-        background: #F8FAFC;
+    .nav-scrolled .nav-links .nav-link-item a:hover,
+    .nav-scrolled .nav-links .nav-link-item a.active {
+        color: #2563EB;
+        background: #EFF6FF;
     }
 
     /* Notif bell */
@@ -573,9 +574,20 @@
     .nav-mobile-divider { height: 1px; background: #F1F5F9; margin: 8px 0; }
 
     @media (max-width: 768px) {
-        .nav-mobile-toggle { display: flex !important; }
-        .nav-links, .nav-right { display: none !important; }
+        .nav-mobile-toggle { display: none !important; }
+        .nav-links { display: none !important; }
+        .nav-right { display: flex !important; }
         .apss-navbar .navbar-inner { padding: 0 16px; }
+    }
+
+    @media (max-width: 576px) {
+        .nav-user-name {
+            max-width: 80px;
+        }
+        .nav-notif-menu {
+            width: 290px;
+            right: -20px;
+        }
     }
 
     /* ===== BOTTOM NAV (Mobile Only) ===== */
@@ -681,7 +693,11 @@
             </div>
             <div class="nav-brand-text">
                 Asps
-                <span class="nav-brand-sub">Sarana Sekolah</span>
+                @auth('siswa')
+                    <span class="nav-brand-sub">Portal Siswa</span>
+                @else
+                    <span class="nav-brand-sub">Sarana Sekolah</span>
+                @endauth
             </div>
         </a>
 

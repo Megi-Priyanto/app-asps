@@ -26,10 +26,6 @@
 
 @section('content')
 
-<a href="{{ route('guru.laporan.index') }}" class="page-back">
-    <i class="bi bi-arrow-left"></i> Kembali
-</a>
-
 <div class="row">
     <div class="col-md-7">
         <div class="card">

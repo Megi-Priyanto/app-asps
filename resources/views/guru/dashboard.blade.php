@@ -5,7 +5,7 @@
 @push('css')
 <style>
     :root {
-        --primary: #0EA5E9; --primary-light: #F0F9FF;
+        --primary: #2563EB; --primary-light: #EFF6FF;
         --body-bg: #F8FAFC; --card-bg: #fff;
         --border: #E2E8F0; --text-primary: #0F172A;
         --text-secondary: #64748B; --text-muted: #94A3B8;
@@ -16,7 +16,7 @@
 
     /* ===== WELCOME BANNER ===== */
     .welcome-banner {
-        background: linear-gradient(135deg, #0EA5E9 0%, #2563EB 100%);
+        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
         border-radius: var(--radius);
         padding: 22px 28px;
         margin-bottom: 24px;
@@ -51,7 +51,7 @@
         margin-bottom: 28px;
     }
     @media (max-width: 992px) { .stat-cards { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .stat-cards { grid-template-columns: 1fr; } }
+    @media (max-width: 480px) { .stat-cards { grid-template-columns: 1fr; } } /* FULL WIDTH ON MOBILE */
 
     .stat-card {
         background: var(--card-bg);
@@ -70,7 +70,7 @@
         display: flex; align-items: center; justify-content: center;
         font-size: 22px; flex-shrink: 0;
     }
-    .stat-icon.blue   { background: #F0F9FF; color: #0EA5E9; }
+    .stat-icon.blue   { background: #EFF6FF; color: #2563EB; }
     .stat-icon.yellow { background: #FFFBEB; color: #D97706; }
     .stat-icon.orange { background: #FFF7ED; color: #EA580C; }
     .stat-icon.green  { background: #F0FDF4; color: #16A34A; }
@@ -106,7 +106,7 @@
     .activity-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
     .dot-green  { background: #10B981; }
     .dot-yellow { background: #F59E0B; }
-    .dot-blue   { background: #0EA5E9; }
+    .dot-blue   { background: #3B82F6; }
     .dot-gray   { background: #CBD5E1; }
     .activity-title { font-size: 13.5px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
     .activity-meta  { font-size: 12px; color: var(--text-secondary); }
@@ -115,7 +115,7 @@
     /* ===== BADGE ===== */
     .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; display: inline-block; text-transform: uppercase; letter-spacing: 0.3px; }
     .badge-menunggu  { background: #FFFBEB; color: #B45309; border: 1px solid #FEF3C7; }
-    .badge-proses    { background: #F0F9FF; color: #0369A1; border: 1px solid #E0F2FE; }
+    .badge-proses    { background: #EFF6FF; color: #1D4ED8; border: 1px solid #DBEAFE; }
     .badge-selesai   { background: #ECFDF5; color: #059669; border: 1px solid #D1FAE5; }
 
     /* ===== PROGRESS ===== */
@@ -129,14 +129,14 @@
 
     /* ===== TIP CARD ===== */
     .tip-card {
-        background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
-        border: 1px solid #BEE3F8; border-radius: 14px;
+        background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+        border: 1px solid #BFDBFE; border-radius: 14px;
         padding: 16px 20px; display: flex; gap: 14px; align-items: center;
         margin-bottom: 20px;
     }
     .tip-icon { font-size: 24px; flex-shrink: 0; }
-    .tip-title { font-size: 14px; font-weight: 700; color: #0369A1; margin-bottom: 2px; }
-    .tip-desc  { font-size: 12.5px; color: #0EA5E9; line-height: 1.5; margin: 0; opacity: 0.9; }
+    .tip-title { font-size: 14px; font-weight: 700; color: #1D4ED8; margin-bottom: 2px; }
+    .tip-desc  { font-size: 12.5px; color: #3B82F6; line-height: 1.5; margin: 0; opacity: 0.9; }
 
     /* ===== QUICK ACTION ===== */
     .quick-btn {
@@ -150,10 +150,12 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     .quick-btn:last-child { margin-bottom: 0; }
-    .quick-btn:hover { background: #fdfdfd; border-color: #BAE6FD; transform: translateX(5px); color: var(--primary); }
+    .quick-btn:hover { background: #fdfdfd; border-color: #BFDBFE; transform: translateX(5px); color: var(--primary); }
     .quick-btn i { font-size: 18px; opacity: 0.8; }
 
+    /* ===== SIDE STACK ===== */
     .side-stack { display: flex; flex-direction: column; gap: 20px; }
+
     .alert { border: none; border-radius: var(--radius); font-size: 13.5px; font-weight: 500; padding: 14px 20px; }
     .alert-success { background: #ECFDF5; color: #065F46; box-shadow: 0 2px 10px rgba(16,185,129,0.1); }
 </style>
@@ -172,7 +174,7 @@
 <div class="welcome-banner">
     <div>
         <h2>Halo, {{ Auth::guard('guru')->user()->nama }}</h2>
-        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;•&nbsp; Bapak/Ibu Guru</p>
+        <p>{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }} &nbsp;•&nbsp; Guru</p>
     </div>
     <div class="welcome-avatar" style="overflow:hidden; border:2px solid rgba(255,255,255,0.3);">
         @if(Auth::guard('guru')->user()->foto)
@@ -187,28 +189,28 @@
 <div class="section-label">Ringkasan Laporan Saya</div>
 <div class="stat-cards">
     <div class="stat-card">
-        <div class="stat-icon blue"><i class="bi bi-file-earmark-text"></i></div>
+        <div class="stat-icon blue"><i class="bi bi-folder2-open"></i></div>
         <div>
             <div class="stat-value">{{ $stats['total'] }}</div>
             <div class="stat-label">Total</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon yellow"><i class="bi bi-clock-history"></i></div>
+        <div class="stat-icon yellow"><i class="bi bi-hourglass-split"></i></div>
         <div>
             <div class="stat-value">{{ $stats['menunggu'] }}</div>
             <div class="stat-label">Menunggu</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon orange"><i class="bi bi-gear-fill"></i></div>
+        <div class="stat-icon orange"><i class="bi bi-arrow-repeat"></i></div>
         <div>
             <div class="stat-value">{{ $stats['proses'] }}</div>
             <div class="stat-label">Diproses</div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon green"><i class="bi bi-patch-check-fill"></i></div>
+        <div class="stat-icon green"><i class="bi bi-check-circle-fill"></i></div>
         <div>
             <div class="stat-value">{{ $stats['selesai'] }}</div>
             <div class="stat-label">Selesai</div>
@@ -222,7 +224,7 @@
     {{-- Aktivitas Terbaru --}}
     <div class="card">
         <div class="card-header">
-            <span><i class="bi bi-activity me-2" style="color:var(--primary);"></i>Laporan Terbaru Bapak/Ibu</span>
+            <span><i class="bi bi-clock-history me-2" style="color:var(--primary);"></i>Aktivitas Terbaru</span>
             <a href="{{ route('guru.laporan.index') }}" class="header-link">Semua &rarr;</a>
         </div>
         <div class="card-body">
@@ -241,31 +243,39 @@
                     <div style="flex:1; min-width:0">
                         <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
                             <span class="activity-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                                {{ Str::limit($item->ket, 60) }}
+                                {{ Str::limit($item->ket, 50) }}
                             </span>
                             <span class="badge {{ $badgeClass }}">{{ ucfirst($status) }}</span>
                         </div>
                         <div class="activity-meta">
-                            <i class="bi bi-tag me-1"></i> {{ $item->kategori->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->translatedFormat('d M Y') }}
+                            <i class="bi bi-tag me-1"></i> {{ $item->kategoriAspirasi->nama ?? 'Umum' }} &nbsp;•&nbsp; {{ $item->created_at->diffForHumans() }}
                         </div>
                     </div>
                 </div>
             @empty
                 <div class="activity-empty">
-                    <i class="bi bi-clipboard-x" style="font-size:32px; display:block; margin-bottom:10px; opacity:0.3;"></i>
-                    Bapak/Ibu belum memiliki riwayat laporan.
+                    <i class="bi bi-inbox" style="font-size:32px; display:block; margin-bottom:10px; opacity:0.3;"></i>
+                    Belum ada laporan yang Anda buat.
                 </div>
             @endforelse
+            
+            @if(count($laporanTerbaru) > 0)
+                <div class="text-center mt-3">
+                    <a href="{{ route('guru.laporan.create') }}" class="btn btn-sm btn-primary px-3" style="border-radius:20px; font-weight:700; font-size:12px;">
+                        <i class="bi bi-plus-lg me-1"></i> Buat Laporan
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 
     {{-- Panel Kanan --}}
     <div class="side-stack">
 
-        {{-- Progress Laporan --}}
+        {{-- Tip / Progress --}}
         <div class="card">
             <div class="card-header">
-                <span><i class="bi bi-graph-up-arrow me-2" style="color:var(--success);"></i>Progres Penyelesaian</span>
+                <span><i class="bi bi-bar-chart-fill me-2" style="color:var(--warning);"></i>Penyelesaian Laporan</span>
             </div>
             <div class="card-body">
                 @php
@@ -276,7 +286,7 @@
                 @endphp
 
                 <div class="progress-row">
-                    <span>Sudah Tuntas</span>
+                    <span>Laporan Selesai</span>
                     <strong>{{ $stats['selesai'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
@@ -284,7 +294,7 @@
                 </div>
 
                 <div class="progress-row">
-                    <span>Sedang Tindak Lanjut</span>
+                    <span>Sedang Diproses</span>
                     <strong>{{ $stats['proses'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
@@ -292,7 +302,7 @@
                 </div>
 
                 <div class="progress-row">
-                    <span>Antrian</span>
+                    <span>Menunggu Tanggapan</span>
                     <strong>{{ $stats['menunggu'] }} / {{ $stats['total'] ?: 0 }}</strong>
                 </div>
                 <div class="progress-bar">
@@ -303,27 +313,27 @@
 
         {{-- Aksi Cepat --}}
         <div>
-            <div class="section-label">Aksi Cepat Guru</div>
+            <div class="section-label">Aksi Cepat</div>
             <a href="{{ route('guru.laporan.create') }}" class="quick-btn">
-                <i class="bi bi-pencil-fill" style="color:var(--primary);"></i>
-                <span>Tulis Laporan Aspirasi</span>
+                <i class="bi bi-pencil-square" style="color:var(--primary);"></i>
+                <span>Tulis Laporan Baru</span>
             </a>
             <a href="{{ route('guru.laporan.index') }}" class="quick-btn">
-                <i class="bi bi-journal-text" style="color:var(--warning);"></i>
-                <span>Lihat Laporan Saya</span>
+                <i class="bi bi-collection-fill" style="color:var(--warning);"></i>
+                <span>Riwayat Laporan Saya</span>
             </a>
-            <a href="{{ route('guru.peminjaman.index') }}" class="quick-btn">
-                <i class="bi bi-box-seam" style="color:var(--success);"></i>
-                <span>Layanan Pinjam Barang</span>
+            <a href="{{ route('guru.peminjaman-barang.index') }}" class="quick-btn">
+                <i class="bi bi-box-seam-fill" style="color:var(--success);"></i>
+                <span>Pinjam Barang / Fasilitas</span>
             </a>
         </div>
 
-        {{-- Tip Card --}}
+        {{-- Help Card --}}
         <div class="tip-card">
-            <div class="tip-icon">✨</div>
+            <div class="tip-icon">💡</div>
             <div>
-                <div class="tip-title">Layanan Guru</div>
-                <p class="tip-desc">Laporkan kendala fasilitas di ruang kelas untuk kenyamanan mengajar.</p>
+                <div class="tip-title">Butuh Bantuan?</div>
+                <p class="tip-desc">Gunakan menu Laporan untuk mengadukan kerusakan fasilitas sekolah.</p>
             </div>
         </div>
 
