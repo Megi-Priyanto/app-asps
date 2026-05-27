@@ -13,6 +13,24 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn(Request $request) => route('welcome'));
+        $middleware->redirectUsersTo(function (Request $request) {
+            if (\Illuminate\Support\Facades\Auth::guard('siswa')->check()) {
+                return route('siswa.dashboard');
+            }
+            if (\Illuminate\Support\Facades\Auth::guard('guru')->check()) {
+                return route('guru.dashboard');
+            }
+            if (\Illuminate\Support\Facades\Auth::guard('pegawai')->check()) {
+                return route('pegawai.dashboard');
+            }
+            if (\Illuminate\Support\Facades\Auth::guard('admin')->check()) {
+                return route('admin.dashboard');
+            }
+            if (\Illuminate\Support\Facades\Auth::guard('superadmin')->check()) {
+                return route('superadmin.dashboard');
+            }
+            return route('welcome');
+        });
         $middleware->alias([
             'superadmin' => \App\Http\Middleware\IsSuperAdmin::class,
         ]);

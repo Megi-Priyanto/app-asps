@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // Siswa
 use App\Http\Controllers\Siswa\AuthController;
@@ -65,6 +66,22 @@ Route::get('/api/lokasi/{lokasi}/kategori', [ApiController::class, 'getKategoriB
 // Welcome
 // ─────────────────────────────────────────────
 Route::get('/', function () {
+    if (Auth::guard('siswa')->check()) {
+        return redirect()->route('siswa.dashboard');
+    }
+    if (Auth::guard('guru')->check()) {
+        return redirect()->route('guru.dashboard');
+    }
+    if (Auth::guard('pegawai')->check()) {
+        return redirect()->route('pegawai.dashboard');
+    }
+    if (Auth::guard('admin')->check()) {
+        return redirect()->route('admin.dashboard');
+    }
+    if (Auth::guard('superadmin')->check()) {
+        return redirect()->route('superadmin.dashboard');
+    }
+
     $tanggapan = \App\Models\TanggapanAplikasi::with('user')
         ->where('is_tampil', true)
         ->latest()
@@ -76,6 +93,21 @@ Route::get('/', function () {
 // Login Gabungan (Siswa, Guru, Pegawai)
 // ─────────────────────────────────────────────
 Route::get('/login', function () {
+    if (Auth::guard('siswa')->check()) {
+        return redirect()->route('siswa.dashboard');
+    }
+    if (Auth::guard('guru')->check()) {
+        return redirect()->route('guru.dashboard');
+    }
+    if (Auth::guard('pegawai')->check()) {
+        return redirect()->route('pegawai.dashboard');
+    }
+    if (Auth::guard('admin')->check()) {
+        return redirect()->route('admin.dashboard');
+    }
+    if (Auth::guard('superadmin')->check()) {
+        return redirect()->route('superadmin.dashboard');
+    }
     return view('siswa.auth.login');
 })->name('login');
 

@@ -26,7 +26,7 @@ class AuthController extends Controller
         if (Auth::guard('siswa')->attempt([
             'nis'      => $request->nis,
             'password' => $request->password,
-        ])) {
+        ], true)) {
             $request->session()->regenerate();
             return redirect()->intended(route('siswa.dashboard'));
         }

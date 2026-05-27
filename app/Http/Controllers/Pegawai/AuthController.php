@@ -21,7 +21,7 @@ class AuthController extends Controller
         if (Auth::guard('pegawai')->attempt([
             'username' => $request->username,
             'password' => $request->password,
-        ])) {
+        ], true)) {
             $request->session()->regenerate();
             return redirect()->route('pegawai.dashboard');
         }

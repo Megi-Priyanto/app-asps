@@ -21,7 +21,7 @@ class AuthController extends Controller
         if (Auth::guard('guru')->attempt([
             'nip'      => $request->nip,
             'password' => $request->password,
-        ])) {
+        ], true)) {
             $request->session()->regenerate();
             return redirect()->intended(route('guru.dashboard'));
         }
