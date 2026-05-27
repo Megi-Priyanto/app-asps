@@ -59,7 +59,7 @@ class SiswaController extends Controller
 
     public function edit(Siswa $siswa)
     {
-        return view('superadmin.pengguna.siswa.edit', compact($siswa));
+        return view('superadmin.pengguna.siswa.edit', compact('siswa'));
     }
 
     public function update(Request $request, Siswa $siswa)

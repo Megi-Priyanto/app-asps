@@ -12,6 +12,9 @@
         .content-wrapper {
             padding: 16px 16px;
         }
+        main {
+            padding-bottom: 74px !important;
+        }
     }
 </style>
 
