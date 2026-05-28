@@ -1,4 +1,4 @@
-﻿@extends('layouts.guru')
+@extends('layouts.guru')
 
 @section('title', 'Detail Laporan')
 
@@ -48,10 +48,6 @@
         <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" style="font-size:12px;"></button>
     </div>
 @endif
-
-<a href="{{ route('guru.laporan.index') }}" class="page-back">
-    <i class="bi bi-arrow-left"></i> Kembali ke Daftar Laporan
-</a>
 
 <div class="row g-3">
     {{-- ===== KOLOM KIRI: Detail + Status + Feedback ===== --}}
@@ -189,7 +185,7 @@
                         <p style="font-size:13.5px; color:#64748B; margin-bottom:14px;">Bagaimana kepuasan Anda terhadap penanganan laporan ini?</p>
 
                         <div class="d-flex flex-wrap gap-2 mb-3">
-                            @foreach([1=>'ðŸ˜ž Tidak Puas', 2=>'ðŸ˜ Kurang Puas', 3=>'ðŸ™‚ Cukup Puas', 4=>'ðŸ˜Š Puas', 5=>'ðŸ¤© Sangat Puas'] as $val => $label)
+                            @foreach([1=>'😞 Tidak Puas', 2=>'😐 Kurang Puas', 3=>'🙂 Cukup Puas', 4=>'😊 Puas', 5=>'🤩 Sangat Puas'] as $val => $label)
                                 <label style="cursor:pointer;">
                                     <input type="radio" name="feedback" value="{{ $val }}" class="feedback-radio d-none" {{ old('feedback') == $val ? 'checked' : '' }}>
                                     <span class="feedback-opt" style="display:inline-block; padding:7px 14px; border-radius:20px; font-size:13px; font-weight:600; border:1.5px solid #E2E8F0; color:#64748B; transition:all 0.15s; user-select:none;">{{ $label }}</span>

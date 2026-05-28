@@ -1,4 +1,4 @@
-﻿@extends('layouts.guru')
+@extends('layouts.guru')
 
 @section('title', 'Laporan Pengaduan - Guru')
 
@@ -75,7 +75,7 @@
     .badge { font-size: 11.5px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
     .badge-menunggu { background: #FFFBEB; color: #B45309; }
     .badge-proses   { background: #FFF7ED; color: #C2410C; }
-    .badge-selesai  { background: #EFF6FF; color: #2563EB; }
+    .badge-selesai  { background: #ECFDF5; color: #059669; }
     .badge-anonim   { background: #F1F5F9; color: #475569; font-size: 10.5px; padding: 2px 7px; border-radius: 4px; }
     .btn-action {
         padding: 5px 10px; border-radius: 7px; font-size: 12px; font-weight: 600;
@@ -83,7 +83,13 @@
         transition: all .15s; display: inline-flex; align-items: center; gap: 4px;
     }
     .btn-detail { background: #EFF6FF; color: #2563EB; border-color: #BFDBFE; }
-    .btn-detail:hover { background: #D1FAE5; color: #1D4ED8; }
+    .btn-detail:hover { background: #DBEAFE; color: #1D4ED8; }
+    .btn-delete { background: #FFF1F2; color: #E11D48; border-color: #FECDD3; }
+    .btn-delete:hover { background: #FFE4E6; color: #BE123C; }
+
+    /* ===== FEEDBACK STAR ===== */
+    .stars { color: #F59E0B; font-size: 13px; letter-spacing: 1px; }
+    .stars.empty { color: #E2E8F0; }
     .empty-state { text-align: center; padding: 60px 20px; }
     .empty-state .empty-icon { font-size: 48px; display: block; margin-bottom: 12px; color: #CBD5E1; }
     .empty-state h3 { font-size: 16px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; }
@@ -119,7 +125,7 @@
 <div class="page-header">
     <div>
         <h1><i class="bi bi-file-earmark-text me-2" style="color:#2563EB;"></i>Laporan Pengaduan</h1>
-        <p>Semua laporan pengaduan yang masuk</p>
+        <p>Semua laporan yang pernah kamu buat</p>
     </div>
     <a href="{{ route('guru.laporan.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg me-1"></i>Buat Laporan
@@ -214,13 +220,13 @@
                 <thead>
                     <tr>
                         <th style="width:40px">#</th>
-                        <th>Pelapor</th>
                         <th>Keterangan</th>
                         <th>Kategori</th>
                         <th>Lokasi</th>
                         <th>Status</th>
+                        <th>Feedback</th>
                         <th>Tanggal</th>
-                        <th style="width:100px">Aksi</th>
+                        <th style="width:120px">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -228,10 +234,6 @@
                         <tr>
                             <td style="color:var(--text-muted);font-weight:600;">
                                 {{ $laporan->firstItem() + $i }}
-                            </td>
-                            <td>
-                                <div style="font-weight:600;font-size:13px;">{{ $item->reporter->nama ?? '-' }}</div>
-                                <div style="font-size:11px;color:var(--text-muted);">{{ ucfirst(class_basename($item->reporter_type)) }}</div>
                             </td>
                             <td style="max-width:220px;">
                                 <div style="font-weight:600;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
@@ -250,14 +252,45 @@
                                 @php $status = $item->status ?? 'menunggu'; @endphp
                                 <span class="badge badge-{{ $status }}">{{ ucfirst($status) }}</span>
                             </td>
+                            <td>
+                                @if ($item->aspirasi?->status === 'selesai')
+                                    @if ($item->aspirasi->feedback)
+                                        <div class="stars">
+                                            @for ($s = 1; $s <= 5; $s++)
+                                                {!! $s <= ($item->aspirasi->feedback) ? '&#9733;' : '&#9734;' !!}
+                                            @endfor
+                                        </div>
+                                        <div style="font-size:11px;color:var(--text-muted);">{{ [1=>'Tidak Puas',2=>'Kurang Puas',3=>'Cukup Puas',4=>'Puas',5=>'Sangat Puas'][$item->aspirasi->feedback] ?? '' }}</div>
+                                    @else
+                                        <a href="{{ route('guru.laporan.show', $item->id) }}"
+                                           style="font-size:12px;color:#F59E0B;font-weight:600;text-decoration:none;">
+                                            Beri Feedback
+                                        </a>
+                                    @endif
+                                @else
+                                    <span style="font-size:12px;color:var(--text-muted);">&mdash;</span>
+                                @endif
+                            </td>
                             <td style="white-space:nowrap;">
                                 <div style="font-size:13px;">{{ $item->created_at->format('d M Y') }}</div>
                                 <div style="font-size:11px;color:var(--text-muted);">{{ $item->created_at->format('H:i') }}</div>
                             </td>
                             <td>
-                                <a href="{{ route('guru.laporan.show', $item->id) }}" class="btn-action btn-detail">
-                                    <i class="bi bi-eye"></i> Detail
-                                </a>
+                                <div style="display:flex;gap:6px;align-items:center;">
+                                    <a href="{{ route('guru.laporan.show', $item->id) }}" class="btn-action btn-detail">
+                                        <i class="bi bi-eye"></i> Detail
+                                    </a>
+                                    @if (!$item->aspirasi || $item->aspirasi->status === 'menunggu')
+                                        <form action="{{ route('guru.laporan.destroy', $item->id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Yakin ingin menghapus laporan ini?')">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="btn-action btn-delete">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @endforeach

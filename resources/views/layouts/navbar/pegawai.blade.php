@@ -107,6 +107,154 @@
     .nav-dropdown-item.danger i { color: #FCA5A5; }
     .nav-dropdown-item.danger:hover i { color: #DC2626; }
     .nav-dropdown-divider { height: 1px; background: #F1F5F9; margin: 6px 0; }
+
+    /* Notif bell */
+    .nav-notif-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        text-decoration: none;
+        position: relative;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        background: none;
+        color: #64748B;
+    }
+    .nav-notif-btn:hover {
+        background: #F1F5F9;
+        color: #0F172A;
+    }
+
+    .nav-notif-dot {
+        position: absolute;
+        top: 7px;
+        right: 7px;
+        width: 8px;
+        height: 8px;
+        background: #EF4444;
+        border-radius: 50%;
+        border: 2px solid white;
+    }
+
+    /* Notif Dropdown */
+    .nav-notif-dropdown {
+        position: relative;
+    }
+    
+    .nav-notif-menu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: -10px;
+        width: 320px;
+        background: white;
+        border: 1px solid #E8EDF5;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+        padding: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 200;
+        overflow: hidden;
+    }
+    .nav-notif-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .nav-notif-header {
+        padding: 14px 16px;
+        border-bottom: 1px solid #F1F5F9;
+        font-size: 14px;
+        font-weight: 700;
+        color: #0F172A;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .nav-notif-badge {
+        background: #EF4444;
+        color: white;
+        font-size: 11px;
+        padding: 2px 6px;
+        border-radius: 6px;
+    }
+    .nav-notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+        text-decoration: none;
+        border-bottom: 1px solid #F8FAFC;
+        transition: all 0.2s;
+    }
+    .nav-notif-item:hover {
+        background: #F8FAFC;
+    }
+    .nav-notif-item:last-child {
+        border-bottom: none;
+    }
+    .nav-notif-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #EFF6FF;
+        color: #2563EB;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+    }
+    .nav-notif-text {
+        font-size: 13.5px;
+        color: #374151;
+        line-height: 1.4;
+    }
+    .nav-notif-text strong {
+        color: #0F172A;
+        font-weight: 700;
+    }
+    .nav-notif-time {
+        font-size: 11px;
+        color: #94A3B8;
+        margin-top: 4px;
+        font-weight: 500;
+    }
+    .nav-notif-empty {
+        padding: 30px 20px;
+        text-align: center;
+        color: #94A3B8;
+        font-size: 13px;
+    }
+    .nav-notif-empty i {
+        font-size: 24px;
+        display: block;
+        margin-bottom: 8px;
+        color: #CBD5E1;
+    }
+    .nav-notif-footer {
+        padding: 10px;
+        text-align: center;
+        background: #F8FAFC;
+        border-top: 1px solid #F1F5F9;
+    }
+    .nav-notif-footer a {
+        font-size: 13px;
+        font-weight: 600;
+        color: #2563EB;
+        text-decoration: none;
+    }
+    .nav-notif-footer a:hover {
+        text-decoration: underline;
+    }
+
     .nav-mobile-toggle {
         display: none; width: 40px; height: 40px; border-radius: 11px;
         align-items: center; justify-content: center; font-size: 20px;
@@ -132,9 +280,20 @@
     .nav-mobile-item.danger:hover { background: #FEF2F2; }
     .nav-mobile-divider { height: 1px; background: #F1F5F9; margin: 8px 0; }
     @media (max-width: 768px) {
-        .nav-mobile-toggle { display: flex !important; }
-        .nav-links, .nav-right { display: none !important; }
+        .nav-mobile-toggle { display: none !important; }
+        .nav-links { display: none !important; }
+        .nav-right { display: flex !important; }
         .apss-navbar .navbar-inner { padding: 0 16px; }
+    }
+
+    @media (max-width: 576px) {
+        .nav-user-name {
+            max-width: 80px;
+        }
+        .nav-notif-menu {
+            width: 290px;
+            right: -20px;
+        }
     }
 
     /* ===== BOTTOM NAV (Mobile Only) ===== */

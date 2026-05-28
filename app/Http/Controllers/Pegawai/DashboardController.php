@@ -21,7 +21,7 @@ class DashboardController extends Controller
         ];
 
         $laporanTerbaru = $pegawai->laporan()
-            ->with(['kategori', 'aspirasi'])
+            ->with(['kategoriAspirasi', 'aspirasi'])
             ->latest()
             ->take(5)
             ->get()
